@@ -8,6 +8,7 @@ import { NavLink, SnackbarProp } from "./Types";
 import UserDashboard from "./component/UserDashboard";
 import WfhRequestView from "./component/WfhRequestView";
 import GenericPage from "./component/GenericPage";
+import ApprovalPage from "./component/ApprovalPage";
 
 function App() {
   const defaultSnackbarProp = {
@@ -28,6 +29,7 @@ function App() {
     setNavLinks([
       { name: "Dashboard", link: "/dashboard" },
       { name: "Request WFH", link: "/wfhRequestForm" },
+      { name: "Approvals", link: "/approval" },
     ]);
   }, []);
 
@@ -64,6 +66,16 @@ function App() {
                 navLinks={navLinks}
                 notifications={notifications}
                 item={<WfhRequestView setSnackbarProp={setSnackbarProp} />}
+              />
+            }
+          />
+          <Route
+            path="/approval"
+            element={
+              <GenericPage
+                navLinks={navLinks}
+                notifications={notifications}
+                item={<ApprovalPage setSnackbarProp={setSnackbarProp} />}
               />
             }
           />

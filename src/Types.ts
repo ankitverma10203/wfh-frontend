@@ -1,4 +1,5 @@
 import {
+  EmployeeStatus,
   LoginStatus,
   RoleOptions,
   WfhRequestStatus,
@@ -54,6 +55,7 @@ export type LoginResponse = {
   id: Number;
   name: string;
   loginStatus: LoginStatus;
+  role: RoleOptions;
 };
 
 export type WfhRequest = {
@@ -77,4 +79,13 @@ export type WfhBalanceInfo = {
   pendingWfhQuantityMap: Map<WfhType, number>;
   availedWfhQuantityMap: Map<WfhType, number>;
   remainingWfhQuantityMap: Map<WfhType, number>;
+};
+
+export type EmployeeDetailData = {
+  employeeId: number;
+  name: string;
+  role: RoleOptions;
+  email: string;
+  managerId: number;
+  employeeStatus: EmployeeStatus;
 };

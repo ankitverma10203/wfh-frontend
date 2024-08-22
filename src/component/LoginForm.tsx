@@ -6,7 +6,7 @@ import { LoginFormProp, LoginInput, LoginResponse } from "../Types";
 import Typography from "@mui/material/Typography";
 import { NavLink, useNavigate } from "react-router-dom";
 import { login } from "../service/LoginService";
-import { ID_KEY, LoginStatus, NAME_KEY } from "../Constants";
+import { ID_KEY, LoginStatus, NAME_KEY, ROLE_KEY } from "../Constants";
 
 function LoginForm(prop: LoginFormProp) {
   const defaultRegisterFormData: LoginInput = {
@@ -34,8 +34,9 @@ function LoginForm(prop: LoginFormProp) {
     setLoginInput(defaultRegisterFormData);
 
     if (loginSuccessFlag) {
-      localStorage.setItem(ID_KEY, loginResponse.id.toString());
-      localStorage.setItem(NAME_KEY, loginResponse.name);
+      sessionStorage.setItem(ID_KEY, loginResponse.id.toString());
+      sessionStorage.setItem(NAME_KEY, loginResponse.name);
+      sessionStorage.setItem(ROLE_KEY, loginResponse.role);
       navigate("/dashboard");
     }
   };

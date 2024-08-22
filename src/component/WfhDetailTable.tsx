@@ -24,7 +24,7 @@ function WfhDetailTable(prop: WfhDetailTableProp) {
 
   const fetchWfhDetail = async () => {
     console.log("fetching wfhDetailData");
-    const loggedInId: string = localStorage.getItem(ID_KEY) || "";
+    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
     var wfhDataList: WfhDetailData[] = await getWfhDetail(loggedInId);
     setWfhDetailDataList(wfhDataList);
     prop.setSnackbarProp({

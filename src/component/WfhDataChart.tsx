@@ -35,7 +35,7 @@ function WfhBalanceChart() {
     useState<ChartData<"doughnut">>(defaultChartData);
 
   const fetchWfhBalance = async () => {
-    const loggedInId: string = localStorage.getItem(ID_KEY) || "";
+    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
     const wfhBalanceData: WfhBalanceInfo = await getWfhBalance(loggedInId);
     setWfhBalanceInfo(wfhBalanceData);
   };

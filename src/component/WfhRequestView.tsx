@@ -8,7 +8,7 @@ import { format } from "date-fns/format";
 function WfhRequestView(prop: WfhRequestViewProp) {
 
     const defaultWfhRequest: WfhRequest = {
-        employeeId: Number.parseInt(localStorage.getItem(ID_KEY) || '0'),
+        employeeId: Number.parseInt(sessionStorage.getItem(ID_KEY) || '0'),
         wfhType: WfhType.PWFH,
         requestedWfhDate: new Date(),
         requestedAt: new Date()

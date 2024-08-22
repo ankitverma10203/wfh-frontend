@@ -17,7 +17,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    var nameFromStorage: string | null = localStorage.getItem(NAME_KEY);
+    var nameFromStorage: string | null = sessionStorage.getItem(NAME_KEY);
     setName(nameFromStorage || "");
     setInitials(name ? name[0].toUpperCase() : name);
   }, [name]);
@@ -34,7 +34,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
     _event: MouseEvent<HTMLLIElement, globalThis.MouseEvent>
   ): void {
     console.log("handle logout");
-    localStorage.clear();
+    sessionStorage.clear();
     setAnchorEl(null);
     navigate("/login");
   }
