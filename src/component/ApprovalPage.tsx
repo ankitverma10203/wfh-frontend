@@ -1,12 +1,9 @@
-import { SnackbarProp } from "../Types";
 import RegistrationApprovalView from "./RegistrationApprovalView";
 
-function ApprovalPage(prop: {
-  setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
-}) {
+function ApprovalPage() {
   return (
     <>
-      <RegistrationApprovalView setSnackbarProp={prop.setSnackbarProp}/>
+      <RegistrationApprovalView />
     </>
   );
 }

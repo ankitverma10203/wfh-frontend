@@ -7,6 +7,7 @@ import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Box, Typography } from "@mui/material";
 import { generateNewColor } from "../utility/ColorGenerationUtility";
 import { ChartOptions } from "chart.js";
+import { useAuth0 } from "@auth0/auth0-react";
 Chart.register(ArcElement, Tooltip, Legend);
 
 function WfhBalanceChart() {
@@ -34,9 +35,12 @@ function WfhBalanceChart() {
   const [chartData, setChartData] =
     useState<ChartData<"doughnut">>(defaultChartData);
 
+  const {getAccessTokenSilently} = useAuth0();
+
   const fetchWfhBalance = async () => {
     const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
-    const wfhBalanceData: WfhBalanceInfo = await getWfhBalance(loggedInId);
+    const token = await getAccessTokenSilently();
+    const wfhBalanceData: WfhBalanceInfo = await getWfhBalance(loggedInId, token);
     setWfhBalanceInfo(wfhBalanceData);
   };
 

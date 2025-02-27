@@ -6,14 +6,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
-import { WfhDetailData, WfhDetailTableProp } from "../Types";
+import { WfhDetailData } from "../Types";
 import { getWfhDetail } from "../service/WfhDetailService";
 import { DATE_FORMAT, DATE_TIME_FORMAT, ID_KEY } from "../Constants";
 import { Box, IconButton, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { Refresh } from "@mui/icons-material";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function WfhDetailTable(prop: WfhDetailTableProp) {
+function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
     []
   );
@@ -22,20 +23,23 @@ function WfhDetailTable(prop: WfhDetailTableProp) {
     fetchWfhDetail();
   }, []);
 
+  const { getAccessTokenSilently } = useAuth0();
+
   const fetchWfhDetail = async () => {
     console.log("fetching wfhDetailData");
-    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
-    var wfhDataList: WfhDetailData[] = await getWfhDetail(loggedInId);
-    setWfhDetailDataList(wfhDataList);
-    prop.setSnackbarProp({
-      open: true,
-      message: "WFH Details Loaded",
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        scope: "openid profile email roles read:roles",
+      },
     });
+    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
+    var wfhDataList: WfhDetailData[] = await getWfhDetail(loggedInId, token);
+    setWfhDetailDataList(wfhDataList);
   };
 
   return (
     <>
-      <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh",}}>
+      <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography component={"span"} variant="h5">
             WFH Details

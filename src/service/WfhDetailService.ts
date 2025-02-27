@@ -2,22 +2,34 @@ import axios from "axios";
 import { WfhBalanceInfo, WfhDetailData } from "../Types";
 import { WfhType } from "../Constants";
 
-export async function getWfhDetail(id: string): Promise<WfhDetailData[]> {
+axios.defaults.withCredentials = true;
+
+export async function getWfhDetail(id: string, token: string): Promise<WfhDetailData[]> {
+  console.log("token: ", token);
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeeWfhDetail/" + id)
+    .get("http://localhost:8080/wfh/getEmployeeWfhDetail", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => {
       console.log(res);
       return res.data;
     })
     .catch((err) => {
+      console.log("error")
       console.error(err);
+      if (err.response) {
+        // handleUnauthentication(err.response.status);
+      }
       return [];
     });
 }
 
-export async function getWfhBalance(id: string): Promise<WfhBalanceInfo> {
+export async function getWfhBalance(id: string, token: string): Promise<WfhBalanceInfo> {
+  console.log("token: ", token);
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeeWfhBalance/" + id)
+    .get("http://localhost:8080/wfh/getEmployeeWfhBalance", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     .then((res) => {
       console.log(res);
       return {
@@ -50,3 +62,4 @@ export async function getWfhBalance(id: string): Promise<WfhBalanceInfo> {
       };
     });
 }
+

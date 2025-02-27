@@ -1,9 +1,13 @@
 import { RegisterInput } from "../Types";
 import axios from "axios";
 
-export async function register(registerInput: RegisterInput): Promise<boolean> {
+axios.defaults.withCredentials = true;
 
-    return await axios.post('http://localhost:8080/wfh/register', registerInput)
+export async function register(registerInput: RegisterInput, token: string): Promise<boolean> {
+
+    return await axios.post('http://localhost:8080/wfh/register', registerInput, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
         .then(
             res => {
                 console.log(res);

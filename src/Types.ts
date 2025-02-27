@@ -13,11 +13,6 @@ export type RegisterInput = {
   role: RoleOptions;
 };
 
-export type LoginInput = {
-  id: string;
-  password: string;
-};
-
 export type SnackbarProp = {
   open: boolean;
   message: string;
@@ -31,15 +26,7 @@ export type RegisterFormProp = {
   setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
 };
 
-export type WfhRequestViewProp = {
-  setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
-};
-
 export type UserDashboardProp = {
-  setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
-};
-
-export type WfhDetailTableProp = {
   setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
 };
 
@@ -56,10 +43,10 @@ export type LoginResponse = {
   name: string;
   loginStatus: LoginStatus;
   role: RoleOptions;
+  jwtToken: string;
 };
 
 export type WfhRequest = {
-  employeeId: Number;
   wfhType: WfhType;
   requestedWfhDate: Date;
   requestedAt: Date;
@@ -82,7 +69,7 @@ export type WfhBalanceInfo = {
 };
 
 export type EmployeeDetailData = {
-  employeeId: number;
+  employeeId: string;
   name: string;
   role: RoleOptions;
   email: string;

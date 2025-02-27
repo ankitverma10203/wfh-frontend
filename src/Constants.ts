@@ -5,6 +5,12 @@ export const ROLE_KEY: string = "role";
 export const DATE_FORMAT: string = "dd/MM/yyyy";
 export const DATE_TIME_FORMAT: string = "dd/MM/yyyy, HH:mm:ss";
 
+export const NAV_LINKS = [
+  { name: "Dashboard", link: "/dashboard" },
+  { name: "Request WFH", link: "/wfhRequestForm" },
+  { name: "Approvals", link: "/approval" },
+]
+
 export enum RoleOptions {
   EMPLOYEE = "EMPLOYEE",
   MANAGER = "MANAGER",

@@ -4,12 +4,13 @@ import MenuItem from '@mui/material/MenuItem'
 import Box from '@mui/material/Box'
 import { RoleOptions } from '../Constants'
 import Button from '@mui/material/Button'
-import { RegisterFormProp, RegisterInput } from '../Types'
+import { RegisterInput } from '../Types'
 import { register } from '../service/RegistrationService'
 import Typography from '@mui/material/Typography'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useAuth0 } from '@auth0/auth0-react'
 
-function RegisterForm(prop: RegisterFormProp) {
+function RegisterForm() {
 
     const defaultRegisterFormData: RegisterInput = {
         name: '',
@@ -19,17 +20,15 @@ function RegisterForm(prop: RegisterFormProp) {
     }
     const [registerInput, setRegisterInput] = useState<RegisterInput>(defaultRegisterFormData);
     const navigate = useNavigate();
+    const {getAccessTokenSilently} = useAuth0();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setRegisterInput({ ...registerInput, [e.target.name]: e.target.value });
     }
 
     const handleRegistration = async () => {
-        var successFlag: boolean = await register(registerInput);
-        prop.setSnackbarProp({
-            open: true,
-            message: successFlag ? "Registartion Successful" : "Registration Failed"
-        });
+        const token = await getAccessTokenSilently();
+        var successFlag: boolean = await register(registerInput, token);
         setRegisterInput(defaultRegisterFormData);
         navigate("/login");
     }

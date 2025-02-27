@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EmployeeDetailData, SnackbarProp } from "../Types";
+import { EmployeeDetailData } from "../Types";
 import {
   fetchManagerDetails,
   fetchPendingRegistrationData,
@@ -23,16 +23,16 @@ import {
   Button,
 } from "@mui/material";
 import { EmployeeStatus, ID_KEY, RoleOptions } from "../Constants";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function RegistrationApprovalView(prop: {
-  setSnackbarProp: React.Dispatch<React.SetStateAction<SnackbarProp>>;
-}) {
+function RegistrationApprovalView() {
   const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
     useState<EmployeeDetailData[]>([]);
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
     []
   );
-
+  const {getAccessTokenSilently} = useAuth0();
+  
   useEffect(() => {
     loadData();
   }, []);
@@ -43,7 +43,8 @@ function RegistrationApprovalView(prop: {
   };
 
   const fetchPendingRegistrations = async () => {
-    const pendingRegistrationDataList = await fetchPendingRegistrationData();
+    const token = await getAccessTokenSilently();
+    const pendingRegistrationDataList = await fetchPendingRegistrationData(token);
 
     pendingRegistrationDataList.forEach((pendingResitrationData) => {
       if (!pendingResitrationData.managerId || pendingResitrationData.managerId === 0) {
@@ -57,7 +58,8 @@ function RegistrationApprovalView(prop: {
   };
 
   const fetchManagersData = async () => {
-    setManagerDetails(await fetchManagerDetails());
+    const token = await getAccessTokenSilently();
+    setManagerDetails(await fetchManagerDetails(token));
   };
 
   function handleChange(
@@ -80,7 +82,8 @@ function RegistrationApprovalView(prop: {
   const updateEmployeeInfo = async (
     pendingEmployeeDetail: EmployeeDetailData
   ) => {
-    await updateEmployeeData(pendingEmployeeDetail);
+    const token = await getAccessTokenSilently();
+    await updateEmployeeData(pendingEmployeeDetail, token);
     loadData();
   };
 

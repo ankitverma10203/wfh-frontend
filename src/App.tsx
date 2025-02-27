@@ -1,93 +1,38 @@
-import Snackbar from "@mui/material/Snackbar";
 import "./App.css";
 import LoginForm from "./component/LoginForm";
 import RegisterForm from "./component/RegisterForm";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { NavLink, SnackbarProp } from "./Types";
 import UserDashboard from "./component/UserDashboard";
 import WfhRequestView from "./component/WfhRequestView";
-import GenericPage from "./component/GenericPage";
 import ApprovalPage from "./component/ApprovalPage";
+import { AuthenticationGuard } from "./component/AuthenticationGuard";
+import Callback from "./component/Callback";
+import NavBar from "./component/NavBar";
+import { NAV_LINKS } from "./Constants";
 
 function App() {
-  const defaultSnackbarProp = {
-    open: false,
-    message: "",
-  };
-
-  const [snackbarProp, setSnackbarProp] =
-    useState<SnackbarProp>(defaultSnackbarProp);
-  const [notifications, setNotifications] = useState([]);
-  const [navLinks, setNavLinks] = useState<NavLink[]>([]);
-
-  function handleSnackbarClose(): void {
-    setSnackbarProp(defaultSnackbarProp);
-  }
-
-  useEffect(() => {
-    setNavLinks([
-      { name: "Dashboard", link: "/dashboard" },
-      { name: "Request WFH", link: "/wfhRequestForm" },
-      { name: "Approvals", link: "/approval" },
-    ]);
-  }, []);
-
   return (
     <>
       <BrowserRouter>
+        <NavBar links={NAV_LINKS} notifications={[]} />
         <Routes>
-          <Route
-            path="/"
-            element={<LoginForm setSnackbarProp={setSnackbarProp} />}
-          />
-          <Route
-            path="/login"
-            element={<LoginForm setSnackbarProp={setSnackbarProp} />}
-          />
-          <Route
-            path="/register"
-            element={<RegisterForm setSnackbarProp={setSnackbarProp} />}
-          />
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/callback" element={<Callback />} />
+          <Route path="/register" element={<RegisterForm />} />
           <Route
             path="/dashboard"
-            element={
-              <GenericPage
-                navLinks={navLinks}
-                notifications={notifications}
-                item={<UserDashboard setSnackbarProp={setSnackbarProp} />}
-              />
-            }
+            element={<AuthenticationGuard component={UserDashboard} />}
           />
           <Route
             path="/wfhRequestForm"
-            element={
-              <GenericPage
-                navLinks={navLinks}
-                notifications={notifications}
-                item={<WfhRequestView setSnackbarProp={setSnackbarProp} />}
-              />
-            }
+            element={<AuthenticationGuard component={WfhRequestView} />}
           />
           <Route
             path="/approval"
-            element={
-              <GenericPage
-                navLinks={navLinks}
-                notifications={notifications}
-                item={<ApprovalPage setSnackbarProp={setSnackbarProp} />}
-              />
-            }
+            element={<AuthenticationGuard component={ApprovalPage} />}
           />
         </Routes>
       </BrowserRouter>
-
-      <Snackbar
-        open={snackbarProp.open}
-        autoHideDuration={3000}
-        message={snackbarProp.message}
-        onClose={handleSnackbarClose}
-      />
     </>
   );
 }

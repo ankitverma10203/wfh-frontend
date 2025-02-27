@@ -6,21 +6,19 @@ import { Logout, NotificationsTwoTone } from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import { Avatar, Box, Link, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
-import { NAME_KEY } from "../Constants";
-import { useNavigate } from "react-router-dom";
 import { NavLink } from "../Types";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
-  const [name, setName] = useState<string>("");
-  const [initials, setInitials] = useState<string>("");
+  const { user, logout } = useAuth0();
+  const [name, setName] = useState<string>(user?.name || "");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    var nameFromStorage: string | null = sessionStorage.getItem(NAME_KEY);
-    setName(nameFromStorage || "");
-    setInitials(name ? name[0].toUpperCase() : name);
-  }, [name]);
+    if (user?.name || !name) {
+      setName(user?.name || "");
+    }
+  }, [user?.name]);
 
   function handleClose(
     _event: {},
@@ -34,9 +32,12 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
     _event: MouseEvent<HTMLLIElement, globalThis.MouseEvent>
   ): void {
     console.log("handle logout");
-    sessionStorage.clear();
     setAnchorEl(null);
-    navigate("/login");
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   }
 
   function handleClick(
@@ -71,6 +72,11 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
             <NotificationsTwoTone fontSize="large" color="inherit" />
           </Badge>
         </IconButton>
+        <Typography
+          sx={{ marginLeft: 2, fontSize: "large", fontFamily: "monospace" }}
+        >
+          {user?.name}
+        </Typography>
         <IconButton
           aria-label="AccountCircleRounded"
           color="default"
@@ -78,7 +84,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
           size="small"
           sx={{ ml: 2 }}
         >
-          <Avatar sx={{ width: 32, height: 32 }}> {initials} </Avatar>
+          <Avatar sx={{ width: 32, height: 32 }} src={user?.picture} />
         </IconButton>
 
         <Menu
