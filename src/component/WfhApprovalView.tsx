@@ -15,7 +15,11 @@ import {
   Button,
 } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
-import { fetchPendingWfhData } from "../service/WfhDetailService";
+import {
+  fetchPendingWfhData,
+  updateWfhRequestStatus,
+} from "../service/WfhDetailService";
+import { WfhRequestStatus } from "../Constants";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -37,6 +41,20 @@ function WfhApprovalView() {
     const pendingWfhRequestList = await fetchPendingWfhData(token);
 
     setPendingWfhRequestData(pendingWfhRequestList);
+  };
+
+  const handleWfhRequestApproval = async (
+    wfhRequestId: number,
+    status: WfhRequestStatus
+  ): Promise<void> => {
+    const token = await getAccessTokenSilently();
+    const wfhRequestStatus: WfhRequestStatus = await updateWfhRequestStatus(
+      token,
+      wfhRequestId,
+      status
+    );
+
+    loadData();
   };
 
   return (
@@ -66,7 +84,7 @@ function WfhApprovalView() {
             </TableHead>
             <TableBody>
               {pendingWfhRequestData.map((pendingWfhRequestDetail) => (
-                <TableRow key={pendingWfhRequestDetail.employeeId}>
+                <TableRow key={pendingWfhRequestDetail.wfhRequestId}>
                   <TableCell align="center">
                     {pendingWfhRequestDetail.employeeId}
                   </TableCell>
@@ -83,10 +101,32 @@ function WfhApprovalView() {
                     {pendingWfhRequestDetail.requestDate}
                   </TableCell>
                   <TableCell align="center">
-                    <Button variant="outlined">Approve</Button>
+                    <Button
+                      variant="outlined"
+                      color="success"
+                      onClick={() =>
+                        handleWfhRequestApproval(
+                          pendingWfhRequestDetail.wfhRequestId,
+                          WfhRequestStatus.APPROVED
+                        )
+                      }
+                    >
+                      Approve
+                    </Button>
                   </TableCell>
                   <TableCell align="center">
-                    <Button variant="outlined" color="error">Reject</Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() =>
+                        handleWfhRequestApproval(
+                          pendingWfhRequestDetail.wfhRequestId,
+                          WfhRequestStatus.REJECTED
+                        )
+                      }
+                    >
+                      Reject
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

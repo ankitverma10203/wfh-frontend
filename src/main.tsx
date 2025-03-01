@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")!).render(
       cacheLocation={"localstorage"}
       authorizationParams={{
         redirect_uri: window.location.origin + "/callback",
-        scope: "openid profile email",
+        scope: authConfig.scope,
         audience: authConfig.audience
       }}
     >

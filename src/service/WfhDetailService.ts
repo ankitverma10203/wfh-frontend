@@ -1,6 +1,6 @@
 import axios from "axios";
 import { EmployeeWfhDetailData, WfhBalanceInfo, WfhDetailData } from "../Types";
-import { WfhType } from "../Constants";
+import { WfhRequestStatus, WfhType } from "../Constants";
 
 axios.defaults.withCredentials = true;
 
@@ -70,5 +70,27 @@ export async function fetchPendingWfhData(
     .catch((err) => {
       console.error(err);
       return [];
+    });
+}
+
+export async function updateWfhRequestStatus(
+  token: string,
+  wfhRequestId: number,
+  status: WfhRequestStatus
+): Promise<WfhRequestStatus> {
+  return await axios
+    .post("http://localhost:8080/wfh/updateWfhRequestStatus", null, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        wfhRequestId: wfhRequestId,
+        status: status,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return null;
     });
 }
