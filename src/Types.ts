@@ -73,6 +73,16 @@ export type EmployeeDetailData = {
   name: string;
   role: RoleOptions;
   email: string;
-  managerId: number;
+  managerId: string;
   employeeStatus: EmployeeStatus;
+};
+
+export type EmployeeWfhDetailData = {
+  employeeId: string;
+  name: string;
+  email: string;
+  managerId: string;
+  requestType: WfhType;
+  requestDate: String;
+  status: WfhRequestStatus;
 };

@@ -8,9 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
 import { WfhDetailData } from "../Types";
 import { getWfhDetail } from "../service/WfhDetailService";
-import { DATE_FORMAT, DATE_TIME_FORMAT, ID_KEY } from "../Constants";
 import { Box, IconButton, Typography } from "@mui/material";
-import { format } from "date-fns";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -26,14 +24,8 @@ function WfhDetailTable() {
   const { getAccessTokenSilently } = useAuth0();
 
   const fetchWfhDetail = async () => {
-    console.log("fetching wfhDetailData");
-    const token = await getAccessTokenSilently({
-      authorizationParams: {
-        scope: "openid profile email roles read:roles",
-      },
-    });
-    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
-    var wfhDataList: WfhDetailData[] = await getWfhDetail(loggedInId, token);
+    const token = await getAccessTokenSilently();
+    var wfhDataList: WfhDetailData[] = await getWfhDetail(token);
     setWfhDetailDataList(wfhDataList);
   };
 
@@ -65,16 +57,16 @@ function WfhDetailTable() {
                 <TableRow key={wfhDetailData.createdTimestamp.toLocaleString()}>
                   <TableCell align="center">{wfhDetailData.wfhType}</TableCell>
                   <TableCell align="center">
-                    {format(wfhDetailData.requestedWfhDate, DATE_FORMAT)}
+                    {wfhDetailData.requestedWfhDate.toString()}
                   </TableCell>
                   <TableCell align="center">
                     {wfhDetailData.status.toString()}
                   </TableCell>
                   <TableCell align="center">
-                    {format(wfhDetailData.createdTimestamp, DATE_TIME_FORMAT)}
+                    {wfhDetailData.createdTimestamp.toString()}
                   </TableCell>
                   <TableCell align="center">
-                    {format(wfhDetailData.updatedTimestamp, DATE_TIME_FORMAT)}
+                    {wfhDetailData.updatedTimestamp.toString()}
                   </TableCell>
                 </TableRow>
               ))}

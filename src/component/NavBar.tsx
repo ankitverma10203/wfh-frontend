@@ -24,14 +24,12 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
     _event: {},
     _reason: "escapeKeyDown" | "backdropClick"
   ): void {
-    console.log("handle close");
     setAnchorEl(null);
   }
 
   function handleLogout(
     _event: MouseEvent<HTMLLIElement, globalThis.MouseEvent>
   ): void {
-    console.log("handle logout");
     setAnchorEl(null);
     logout({
       logoutParams: {
@@ -43,7 +41,6 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
   function handleClick(
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ): void {
-    console.log("handle Click");
     setAnchorEl(event.currentTarget);
   }
 
