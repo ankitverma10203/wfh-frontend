@@ -31,8 +31,8 @@ function RegistrationApprovalView() {
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
     []
   );
-  const {getAccessTokenSilently} = useAuth0();
-  
+  const { getAccessTokenSilently } = useAuth0();
+
   useEffect(() => {
     loadData();
   }, []);
@@ -44,15 +44,9 @@ function RegistrationApprovalView() {
 
   const fetchPendingRegistrations = async () => {
     const token = await getAccessTokenSilently();
-    const pendingRegistrationDataList = await fetchPendingRegistrationData(token);
-
-    pendingRegistrationDataList.forEach((pendingResitrationData) => {
-      if (!pendingResitrationData.managerId || pendingResitrationData.managerId === 0) {
-        pendingResitrationData.managerId = parseInt(
-          sessionStorage.getItem(ID_KEY) ?? "0"
-        );
-      }
-    });
+    const pendingRegistrationDataList = await fetchPendingRegistrationData(
+      token
+    );
 
     setPendingEmployeeRegistrationData(pendingRegistrationDataList);
   };
@@ -109,6 +103,7 @@ function RegistrationApprovalView() {
                 <TableCell align="center">Role</TableCell>
                 <TableCell align="center">Manager</TableCell>
                 <TableCell align="center">Status</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

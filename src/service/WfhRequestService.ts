@@ -13,7 +13,6 @@ export async function requestWfh(
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
-      console.log(res);
       return res.data;
     })
     .catch((err) => {

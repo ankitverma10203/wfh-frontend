@@ -38,9 +38,8 @@ function WfhBalanceChart() {
   const {getAccessTokenSilently} = useAuth0();
 
   const fetchWfhBalance = async () => {
-    const loggedInId: string = sessionStorage.getItem(ID_KEY) || "";
     const token = await getAccessTokenSilently();
-    const wfhBalanceData: WfhBalanceInfo = await getWfhBalance(loggedInId, token);
+    const wfhBalanceData: WfhBalanceInfo = await getWfhBalance(token);
     setWfhBalanceInfo(wfhBalanceData);
   };
 

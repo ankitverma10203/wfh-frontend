@@ -17,7 +17,6 @@ function WfhRequestView() {
   const { getAccessTokenSilently } = useAuth0();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.name, " => ", e.target.value);
     setWfhRequest({
       ...wfhRequest,
       [e.target.name]: e.target.value,
@@ -26,7 +25,6 @@ function WfhRequestView() {
   };
 
   const handleWfhRequest = async () => {
-    console.log(wfhRequest);
     const token = await getAccessTokenSilently();
     var wfhResponse: WfhResponse = await requestWfh(wfhRequest, token);
     setWfhRequest(defaultWfhRequest);
