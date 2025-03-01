@@ -1,25 +1,14 @@
 import { useEffect, useState } from "react";
 import { EmployeeWfhDetailData } from "../Types";
 import { Refresh } from "@mui/icons-material";
-import {
-  Box,
-  Typography,
-  IconButton,
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Button,
-} from "@mui/material";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   fetchPendingWfhData,
   updateWfhRequestStatus,
 } from "../service/WfhDetailService";
 import { WfhRequestStatus } from "../Constants";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -57,6 +46,88 @@ function WfhApprovalView() {
     loadData();
   };
 
+  const columns: GridColDef<(typeof pendingWfhRequestData)[number]>[] = [
+    {
+      field: "employeeId",
+      headerName: "Empolyee Id",
+      description: "This is employeeId of the user reqesting for WFH",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      description: "This is name of the user reqesting for WFH",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      description: "This is email of the user reqesting for WFH",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "requestType",
+      headerName: "Request Type",
+      description: "This is the type of WFH which was requested",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "requestDate",
+      headerName: "Requested WFH Date",
+      description: "This is the date for which the WFH was requested",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "approveButton",
+      headerName: "",
+      flex: 1,
+      minWidth: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            color="success"
+            sx={{ width: "100%", height: "80%" }}
+            onClick={() =>
+              handleWfhRequestApproval(params.row.id, WfhRequestStatus.APPROVED)
+            }
+          >
+            Approve
+          </Button>
+        );
+      },
+    },
+    {
+      field: "rejectButton",
+      headerName: "",
+      flex: 1,
+      minWidth: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ width: "100%", height: "80%" }}
+            onClick={() =>
+              handleWfhRequestApproval(params.row.id, WfhRequestStatus.REJECTED)
+            }
+          >
+            Reject
+          </Button>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
@@ -69,70 +140,21 @@ function WfhApprovalView() {
           </IconButton>
         </Box>
 
-        <TableContainer component={Paper} sx={{ minWidth: "50%" }}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Employee Id</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="center">Request Type</TableCell>
-                <TableCell align="center">Requested WFH Date</TableCell>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {pendingWfhRequestData.map((pendingWfhRequestDetail) => (
-                <TableRow key={pendingWfhRequestDetail.wfhRequestId}>
-                  <TableCell align="center">
-                    {pendingWfhRequestDetail.employeeId}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingWfhRequestDetail.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingWfhRequestDetail.email}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingWfhRequestDetail.requestType}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingWfhRequestDetail.requestDate}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      color="success"
-                      onClick={() =>
-                        handleWfhRequestApproval(
-                          pendingWfhRequestDetail.wfhRequestId,
-                          WfhRequestStatus.APPROVED
-                        )
-                      }
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() =>
-                        handleWfhRequestApproval(
-                          pendingWfhRequestDetail.wfhRequestId,
-                          WfhRequestStatus.REJECTED
-                        )
-                      }
-                    >
-                      Reject
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box sx={{ width: "100%" }}>
+          <DataGrid
+            rows={pendingWfhRequestData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Box>
     </>
   );

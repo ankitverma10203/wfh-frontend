@@ -58,7 +58,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
   }
 
   return (
-    <AppBar position="static" sx={{ margin: 0, padding: 0 }}>
+    <AppBar position="sticky" sx={{ margin: 0, padding: 0 }}>
       <Toolbar>
         <Typography variant="h3" component="span">
           WFH
