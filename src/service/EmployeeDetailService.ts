@@ -68,18 +68,22 @@ export async function fetchManagerDetails(
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
-      if (sessionStorage.getItem(ROLE_KEY) === RoleOptions.ADMIN.toString()) {
-        const currentAdminDetails: EmployeeDetailData = {
-          employeeId: "0",
-          name: sessionStorage.getItem(NAME_KEY) ?? "",
-          role: RoleOptions.ADMIN,
-          email: "",
-          managerId: "0",
-          employeeStatus: EmployeeStatus.ACTIVE,
-        };
-        return [currentAdminDetails, ...res.data];
-      }
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+}
 
+export async function fetchAdminDetails(
+  token: string
+): Promise<EmployeeDetailData[]> {
+  return await axios
+    .get("http://localhost:8080/wfh/getAdmins", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
       return res.data;
     })
     .catch((err) => {

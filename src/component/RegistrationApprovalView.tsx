@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { EmployeeDetailData } from "../Types";
 import {
+  fetchAdminDetails,
   fetchManagerDetails,
   fetchPendingRegistrationData,
   updateEmployeeData,
@@ -22,7 +23,7 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { EmployeeStatus, ID_KEY, RoleOptions } from "../Constants";
+import { EmployeeStatus, RoleOptions } from "../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function RegistrationApprovalView() {
@@ -31,7 +32,8 @@ function RegistrationApprovalView() {
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
     []
   );
-  const { getAccessTokenSilently } = useAuth0();
+  const [adminDetails, setAdminDetails] = useState<EmployeeDetailData[]>([]);
+  const { user, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     loadData();
@@ -40,6 +42,7 @@ function RegistrationApprovalView() {
   const loadData = () => {
     fetchPendingRegistrations();
     fetchManagersData();
+    fetchAdminsData();
   };
 
   const fetchPendingRegistrations = async () => {
@@ -54,6 +57,11 @@ function RegistrationApprovalView() {
   const fetchManagersData = async () => {
     const token = await getAccessTokenSilently();
     setManagerDetails(await fetchManagerDetails(token));
+  };
+
+  const fetchAdminsData = async () => {
+    const token = await getAccessTokenSilently();
+    setAdminDetails(await fetchAdminDetails(token));
   };
 
   function handleChange(
@@ -76,6 +84,9 @@ function RegistrationApprovalView() {
   const updateEmployeeInfo = async (
     pendingEmployeeDetail: EmployeeDetailData
   ) => {
+    if (pendingEmployeeDetail.managerId === "0") {
+      pendingEmployeeDetail.managerId = user?.sub || "0";
+    }
     const token = await getAccessTokenSilently();
     await updateEmployeeData(pendingEmployeeDetail, token);
     loadData();
@@ -145,6 +156,14 @@ function RegistrationApprovalView() {
                         handleChange(e, pendingEmployeeDetail);
                       }}
                     >
+                      {Object.values(adminDetails).map((adminDetail) => (
+                        <MenuItem
+                          key={adminDetail.employeeId}
+                          value={adminDetail.employeeId}
+                        >
+                          {`${adminDetail.employeeId} - ${adminDetail.name}`}
+                        </MenuItem>
+                      ))}
                       {Object.values(managerDetails).map((managerDetail) => (
                         <MenuItem
                           key={managerDetail.employeeId}
