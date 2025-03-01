@@ -78,6 +78,7 @@ export type EmployeeDetailData = {
 };
 
 export type EmployeeWfhDetailData = {
+  wfhRequestId: number;
   employeeId: string;
   name: string;
   email: string;
