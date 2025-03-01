@@ -31,6 +31,7 @@ export type UserDashboardProp = {
 };
 
 export type WfhDetailData = {
+  id: number;
   wfhType: WfhType;
   requestedWfhDate: Date;
   status: WfhRequestStatus;
@@ -60,6 +61,7 @@ export type WfhResponse = {
 export type NavLink = {
   name: string;
   link: string;
+  roles: RoleOptions[];
 };
 
 export type WfhBalanceInfo = {
@@ -69,7 +71,7 @@ export type WfhBalanceInfo = {
 };
 
 export type EmployeeDetailData = {
-  employeeId: string;
+  id: string;
   name: string;
   role: RoleOptions;
   email: string;
@@ -78,6 +80,7 @@ export type EmployeeDetailData = {
 };
 
 export type EmployeeWfhDetailData = {
+  id: number;
   employeeId: string;
   name: string;
   email: string;

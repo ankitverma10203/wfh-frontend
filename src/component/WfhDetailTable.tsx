@@ -1,16 +1,11 @@
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
 import { WfhDetailData } from "../Types";
 import { getWfhDetail } from "../service/WfhDetailService";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { WfhRequestStatus } from "../Constants";
 
 function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
@@ -29,6 +24,59 @@ function WfhDetailTable() {
     setWfhDetailDataList(wfhDataList);
   };
 
+  const columns: GridColDef<(typeof wfhDetailDataList)[number]>[] = [
+    {
+      field: "wfhType",
+      headerName: "WFH Type",
+      description: "This is the type of WFH which was requested",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "requestedWfhDate",
+      headerName: "Requested WFH Date",
+      description: "This is the date for which the WFH was requested",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      description: "This is the status of the WFH Request",
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => {
+        let color = "red";
+        switch (params.value) {
+          case WfhRequestStatus.APPROVED:
+            color = "green";
+            break;
+          case WfhRequestStatus.PENDING_APPROVAL:
+            color = "rgb(204, 153, 0)";
+            break;
+          default:
+            color = "red";
+        }
+
+        return <span style={{ color }}>{params.value}</span>;
+      },
+    },
+    {
+      field: "createdTimestamp",
+      headerName: "Requested on",
+      description: "This is the date on which the request was created",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "updatedTimestamp",
+      headerName: "Update On",
+      description: "This is the date on which the request was last updated",
+      flex: 1,
+      minWidth: 200,
+    },
+  ];
+
   return (
     <>
       <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
@@ -41,38 +89,21 @@ function WfhDetailTable() {
           </IconButton>
         </Box>
 
-        <TableContainer component={Paper} sx={{ minWidth: "50%" }}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">WFH Type</TableCell>
-                <TableCell align="center">Requested WFH Date</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Created Timestamp</TableCell>
-                <TableCell align="center">Updated Timestamp</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {wfhDetailDataList.map((wfhDetailData) => (
-                <TableRow key={wfhDetailData.createdTimestamp.toLocaleString()}>
-                  <TableCell align="center">{wfhDetailData.wfhType}</TableCell>
-                  <TableCell align="center">
-                    {wfhDetailData.requestedWfhDate.toString()}
-                  </TableCell>
-                  <TableCell align="center">
-                    {wfhDetailData.status.toString()}
-                  </TableCell>
-                  <TableCell align="center">
-                    {wfhDetailData.createdTimestamp.toString()}
-                  </TableCell>
-                  <TableCell align="center">
-                    {wfhDetailData.updatedTimestamp.toString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box sx={{ width: "100%" }}>
+          <DataGrid
+            rows={wfhDetailDataList}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Box>
     </>
   );

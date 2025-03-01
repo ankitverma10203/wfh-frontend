@@ -8,17 +8,30 @@ import { Avatar, Box, Link, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import { NavLink } from "../Types";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getEmployeeData } from "../service/EmployeeDetailService";
+import { RoleOptions } from "../Constants";
 
 function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
-  const { user, logout } = useAuth0();
+  const { user, logout, getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState<string>(user?.name || "");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [role, setRole] = useState<RoleOptions>(RoleOptions.EMPLOYEE);
 
   useEffect(() => {
     if (user?.name || !name) {
       setName(user?.name || "");
     }
   }, [user?.name]);
+
+  useEffect(() => {
+    fetchEmployeeDetail();
+  }, []);
+
+  const fetchEmployeeDetail = async () => {
+    const token = await getAccessTokenSilently();
+    const employeeDetails = await getEmployeeData(token);
+    setRole(employeeDetails.role);
+  };
 
   function handleClose(
     _event: {},
@@ -45,23 +58,30 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
   }
 
   return (
-    <AppBar position="static" sx={{ margin: 0, padding: 0 }}>
+    <AppBar position="sticky" sx={{ margin: 0, padding: 0 }}>
       <Toolbar>
         <Typography variant="h3" component="span">
           WFH
         </Typography>
         <Box sx={{ flexGrow: 1 }}>
-          {prop.links.map((navLink) => (
-            <Link
-              key={navLink.name}
-              href={navLink.link}
-              color={"inherit"}
-              underline="none"
-              sx={{ marginLeft: 5, fontSize: "large", fontFamily: "monospace" }}
-            >
-              {navLink.name}
-            </Link>
-          ))}
+          {prop.links.map(
+            (navLink) =>
+              navLink.roles.includes(role) && (
+                <Link
+                  key={navLink.name}
+                  href={navLink.link}
+                  color={"inherit"}
+                  underline="none"
+                  sx={{
+                    marginLeft: 5,
+                    fontSize: "large",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {navLink.name}
+                </Link>
+              )
+          )}
         </Box>
 
         <IconButton aria-label="NotificationsActive" color="default">

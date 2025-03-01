@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { EmployeeDetailData } from "../Types";
 import {
+  fetchAdminDetails,
   fetchManagerDetails,
   fetchPendingRegistrationData,
   updateEmployeeData,
@@ -10,20 +11,24 @@ import {
   Box,
   Typography,
   IconButton,
-  TableContainer,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
   Select,
   MenuItem,
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { EmployeeStatus, ID_KEY, RoleOptions } from "../Constants";
+import { EmployeeStatus, RoleOptions } from "../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+
+function getStylingForSelectInsideAtableCell() {
+  return {
+    width: "100%",
+    height: "100%",
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+  };
+}
 
 function RegistrationApprovalView() {
   const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
@@ -31,7 +36,8 @@ function RegistrationApprovalView() {
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
     []
   );
-  const { getAccessTokenSilently } = useAuth0();
+  const [adminDetails, setAdminDetails] = useState<EmployeeDetailData[]>([]);
+  const { user, getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     loadData();
@@ -40,6 +46,7 @@ function RegistrationApprovalView() {
   const loadData = () => {
     fetchPendingRegistrations();
     fetchManagersData();
+    fetchAdminsData();
   };
 
   const fetchPendingRegistrations = async () => {
@@ -47,7 +54,7 @@ function RegistrationApprovalView() {
     const pendingRegistrationDataList = await fetchPendingRegistrationData(
       token
     );
-
+    console.log(pendingRegistrationDataList)
     setPendingEmployeeRegistrationData(pendingRegistrationDataList);
   };
 
@@ -56,15 +63,18 @@ function RegistrationApprovalView() {
     setManagerDetails(await fetchManagerDetails(token));
   };
 
+  const fetchAdminsData = async () => {
+    const token = await getAccessTokenSilently();
+    setAdminDetails(await fetchAdminDetails(token));
+  };
+
   function handleChange(
     e: SelectChangeEvent<string | number>,
     pendingEmployeeDetail: EmployeeDetailData
   ): void {
     const newPendingEmployeeRegistrationData =
       pendingEmployeeRegistrationData.map((pendingEmployeeData) => {
-        if (
-          pendingEmployeeData.employeeId === pendingEmployeeDetail.employeeId
-        ) {
+        if (pendingEmployeeData.id === pendingEmployeeDetail.id) {
           return { ...pendingEmployeeData, [e.target.name]: e.target.value };
         }
         return pendingEmployeeData;
@@ -76,10 +86,144 @@ function RegistrationApprovalView() {
   const updateEmployeeInfo = async (
     pendingEmployeeDetail: EmployeeDetailData
   ) => {
+    if (pendingEmployeeDetail.managerId === "0") {
+      pendingEmployeeDetail.managerId = user?.sub || "0";
+    }
     const token = await getAccessTokenSilently();
     await updateEmployeeData(pendingEmployeeDetail, token);
     loadData();
   };
+
+  const columns: GridColDef<
+    (typeof pendingEmployeeRegistrationData)[number]
+  >[] = [
+    {
+      field: "id",
+      headerName: "Empolyee Id",
+      description: "This is employeeId of the user who is registering",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      description: "This is name of the user who is registering",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      description: "This is email of the user who is registering",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      description: "Select the Role that needs to be assigned to this user",
+      flex: 1,
+      minWidth: 100,
+      renderCell: (params) => {
+        return (
+          <Select
+            required
+            id="role"
+            name="role"
+            value={params.value}
+            sx={getStylingForSelectInsideAtableCell()}
+            onChange={(e) => {
+              handleChange(e, params.row);
+            }}
+          >
+            {Object.values(RoleOptions).map((role) => (
+              <MenuItem key={role} value={role}>
+                {role}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
+    },
+    {
+      field: "managerId",
+      headerName: "Manager",
+      description: "Select the Manager Id that this user needs to be assigned to",
+      flex: 1,
+      minWidth: 300,
+      renderCell: (params) => {
+        return (
+          <Select
+            required
+            id="managerId"
+            name="managerId"
+            value={params.value}
+            sx={getStylingForSelectInsideAtableCell()}
+            onChange={(e) => {
+              handleChange(e, params.row);
+            }}
+          >
+            {Object.values(adminDetails).map((adminDetail) => (
+              <MenuItem key={adminDetail.id} value={adminDetail.id}>
+                {`${adminDetail.id} - ${adminDetail.name}`}
+              </MenuItem>
+            ))}
+            {Object.values(managerDetails).map((managerDetail) => (
+              <MenuItem key={managerDetail.id} value={managerDetail.id}>
+                {`${managerDetail.id} - ${managerDetail.name}`}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
+    },
+    {
+      field: "employeeStatus",
+      headerName: "Status",
+      description: "Select User Registration Status",
+      flex: 1,
+      minWidth: 150,
+      renderCell: (params) => {
+        return (
+          <Select
+            required
+            id="employeeStatus"
+            name="employeeStatus"
+            value={params.value}
+            sx={getStylingForSelectInsideAtableCell()}
+            onChange={(e) => {
+              handleChange(e, params.row);
+            }}
+          >
+            {Object.values(EmployeeStatus).map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        );
+      },
+    },
+    {
+      field: "updateButton",
+      headerName: "",
+      flex: 1,
+      minWidth: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            sx={{ width: "100%", height: "80%" }}
+            onClick={() => updateEmployeeInfo(params.row)}
+          >
+            Update
+          </Button>
+        );
+      },
+    },
+  ];
 
   return (
     <>
@@ -93,98 +237,21 @@ function RegistrationApprovalView() {
           </IconButton>
         </Box>
 
-        <TableContainer component={Paper} sx={{ minWidth: "50%" }}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Employee Id</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Email</TableCell>
-                <TableCell align="center">Role</TableCell>
-                <TableCell align="center">Manager</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {pendingEmployeeRegistrationData.map((pendingEmployeeDetail) => (
-                <TableRow key={pendingEmployeeDetail.employeeId}>
-                  <TableCell align="center">
-                    {pendingEmployeeDetail.employeeId}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingEmployeeDetail.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    {pendingEmployeeDetail.email}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Select
-                      required
-                      id="role"
-                      name="role"
-                      value={pendingEmployeeDetail.role}
-                      onChange={(e) => {
-                        handleChange(e, pendingEmployeeDetail);
-                      }}
-                    >
-                      {Object.values(RoleOptions).map((role) => (
-                        <MenuItem key={role} value={role}>
-                          {role}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Select
-                      required
-                      id="managerId"
-                      name="managerId"
-                      value={pendingEmployeeDetail.managerId}
-                      onChange={(e) => {
-                        handleChange(e, pendingEmployeeDetail);
-                      }}
-                    >
-                      {Object.values(managerDetails).map((managerDetail) => (
-                        <MenuItem
-                          key={managerDetail.employeeId}
-                          value={managerDetail.employeeId}
-                        >
-                          {`${managerDetail.employeeId} - ${managerDetail.name}`}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Select
-                      required
-                      id="employeeStatus"
-                      name="employeeStatus"
-                      value={pendingEmployeeDetail.employeeStatus}
-                      onChange={(e) => {
-                        handleChange(e, pendingEmployeeDetail);
-                      }}
-                    >
-                      {Object.values(EmployeeStatus).map((status) => (
-                        <MenuItem key={status} value={status}>
-                          {status}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="outlined"
-                      onClick={() => updateEmployeeInfo(pendingEmployeeDetail)}
-                    >
-                      Update
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box sx={{ width: "100%" }}>
+          <DataGrid
+            rows={pendingEmployeeRegistrationData}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            disableRowSelectionOnClick
+          />
+        </Box>
       </Box>
     </>
   );
