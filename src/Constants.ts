@@ -5,12 +5,6 @@ export const ROLE_KEY: string = "role";
 export const DATE_FORMAT: string = "dd/MM/yyyy";
 export const DATE_TIME_FORMAT: string = "dd/MM/yyyy, HH:mm:ss";
 
-export const NAV_LINKS = [
-  { name: "Dashboard", link: "/dashboard" },
-  { name: "Request WFH", link: "/wfhRequestForm" },
-  { name: "Approvals", link: "/approval" },
-]
-
 export enum RoleOptions {
   EMPLOYEE = "EMPLOYEE",
   MANAGER = "MANAGER",
@@ -44,3 +38,21 @@ export enum EmployeeStatus {
   PENDING_APPROVAL = "PENDING_APPROVAL",
   INACTIVE = "INACTIVE",
 }
+
+export const NAV_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/dashboard",
+    roles: [RoleOptions.ADMIN, RoleOptions.EMPLOYEE, RoleOptions.MANAGER],
+  },
+  {
+    name: "Request WFH",
+    link: "/wfhRequestForm",
+    roles: [RoleOptions.ADMIN, RoleOptions.EMPLOYEE, RoleOptions.MANAGER],
+  },
+  {
+    name: "Approvals",
+    link: "/approval",
+    roles: [RoleOptions.ADMIN, RoleOptions.MANAGER],
+  },
+];

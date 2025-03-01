@@ -60,6 +60,7 @@ export type WfhResponse = {
 export type NavLink = {
   name: string;
   link: string;
+  roles: RoleOptions[];
 };
 
 export type WfhBalanceInfo = {
