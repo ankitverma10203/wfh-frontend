@@ -10,7 +10,6 @@ createRoot(document.getElementById("root")!).render(
     <Auth0Provider
       domain={authConfig.domain}
       clientId={authConfig.clientId}
-      cacheLocation={"localstorage"}
       authorizationParams={{
         redirect_uri: window.location.origin + "/callback",
         scope: authConfig.scope,
