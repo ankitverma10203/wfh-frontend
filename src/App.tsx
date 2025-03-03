@@ -8,13 +8,45 @@ import ApprovalPage from "./component/ApprovalPage";
 import { AuthenticationGuard } from "./component/AuthenticationGuard";
 import Callback from "./component/Callback";
 import NavBar from "./component/NavBar";
-import { NAV_LINKS } from "./Constants";
+import { NAV_LINKS, RoleOptions } from "./Constants";
+import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getEmployeeData } from "./service/EmployeeDetailService";
 
 function App() {
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [name, setName] = useState<string>(user?.name || "");
+  const [role, setRole] = useState<RoleOptions>(RoleOptions.EMPLOYEE);
+  const [picture, setPicture] = useState<string>(user?.picture || "");
+
+  useEffect(() => {
+    setName(user?.name || "");
+  }, [user?.name]);
+
+  useEffect(() => {
+    setPicture(user?.picture || "");
+  }, [user?.picture]);
+
+  useEffect(() => {
+    fetchEmployeeDetail();
+  }, []);
+
+  const fetchEmployeeDetail = async () => {
+    const token = await getAccessTokenSilently();
+    const employeeDetails = await getEmployeeData(token);
+    setRole(employeeDetails.role);
+  };
+
   return (
     <>
       <BrowserRouter>
-        <NavBar links={NAV_LINKS} notifications={[]} />
+        <NavBar
+          links={NAV_LINKS}
+          notifications={[]}
+          role={role}
+          name={name}
+          picture={picture}
+        />
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/callback" element={<Callback />} />

@@ -5,33 +5,21 @@ import IconButton from "@mui/material/IconButton";
 import { Logout, NotificationsTwoTone } from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import { Avatar, Box, Link, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { NavLink } from "../Types";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getEmployeeData } from "../service/EmployeeDetailService";
 import { RoleOptions } from "../Constants";
+import React from "react";
 
-function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
-  const { user, logout, getAccessTokenSilently } = useAuth0();
-  const [name, setName] = useState<string>(user?.name || "");
+function NavBar(prop: {
+  links: NavLink[];
+  notifications: any[];
+  role: RoleOptions;
+  name: string;
+  picture: string;
+}) {
+  const { logout } = useAuth0();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [role, setRole] = useState<RoleOptions>(RoleOptions.EMPLOYEE);
-
-  useEffect(() => {
-    if (user?.name || !name) {
-      setName(user?.name || "");
-    }
-  }, [user?.name]);
-
-  useEffect(() => {
-    fetchEmployeeDetail();
-  }, []);
-
-  const fetchEmployeeDetail = async () => {
-    const token = await getAccessTokenSilently();
-    const employeeDetails = await getEmployeeData(token);
-    setRole(employeeDetails.role);
-  };
 
   function handleClose(
     _event: {},
@@ -66,7 +54,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
         <Box sx={{ flexGrow: 1 }}>
           {prop.links.map(
             (navLink) =>
-              navLink.roles.includes(role) && (
+              navLink.roles.includes(prop.role) && (
                 <Link
                   key={navLink.name}
                   href={navLink.link}
@@ -76,7 +64,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
                     marginLeft: 5,
                     fontSize: "large",
                     fontFamily: "monospace",
-                    whiteSpace: "nowrap"
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {navLink.name}
@@ -93,7 +81,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
         <Typography
           sx={{ marginLeft: 2, fontSize: "large", fontFamily: "monospace" }}
         >
-          {user?.name}
+          {prop.name}
         </Typography>
         <IconButton
           aria-label="AccountCircleRounded"
@@ -102,7 +90,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
           size="small"
           sx={{ ml: 2 }}
         >
-          <Avatar sx={{ width: 32, height: 32 }} src={user?.picture} />
+          <Avatar sx={{ width: 32, height: 32 }} src={prop.picture} />
         </IconButton>
 
         <Menu
@@ -122,4 +110,4 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
     </AppBar>
   );
 }
-export default NavBar;
+export default React.memo(NavBar);

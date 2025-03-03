@@ -10,8 +10,18 @@ function UserDashboard() {
           display: "flex",
           maxWidth: "90vw",
           width: "100%",
-          flexDirection: { lg: "row", md: "column", sm: "column" },
-          justifyContent: { lg: "space-between", md: "center", sm: "column" },
+          flexDirection: {
+            lg: "row",
+            md: "column",
+            sm: "column",
+            xs: "column",
+          },
+          justifyContent: {
+            lg: "space-between",
+            md: "center",
+            sm: "center",
+            xs: "center",
+          },
         }}
       >
         <WfhDetailTable />
