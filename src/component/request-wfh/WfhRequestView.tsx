@@ -70,6 +70,9 @@ function WfhRequestView() {
           type="date"
           name="requestedWfhDate"
           defaultValue={format(new Date(), "yyyy-MM-dd")}
+          inputProps={{
+            min: format(new Date(), "yyyy-MM-dd"),
+          }}
           onChange={handleChange}
         />
 
