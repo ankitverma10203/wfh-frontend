@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { EmployeeDetailData } from "../Types";
+import { EmployeeDetailData } from "../../Types";
 import {
   fetchAdminDetails,
   fetchManagerDetails,
   fetchPendingRegistrationData,
   updateEmployeeData,
-} from "../service/EmployeeDetailService";
+} from "../../service/EmployeeDetailService";
 import { Refresh } from "@mui/icons-material";
 import {
   Box,
@@ -16,7 +16,7 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { EmployeeStatus, RoleOptions } from "../Constants";
+import { EmployeeStatus, RoleOptions } from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 

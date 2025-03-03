@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { EmployeeWfhDetailData } from "../Types";
+import { EmployeeWfhDetailData } from "../../Types";
 import { Refresh } from "@mui/icons-material";
 import { Box, Typography, IconButton, Button } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   fetchPendingWfhData,
   updateWfhRequestStatus,
-} from "../service/WfhDetailService";
-import { WfhRequestStatus } from "../Constants";
+} from "../../service/WfhDetailService";
+import { WfhRequestStatus } from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 function WfhApprovalView() {

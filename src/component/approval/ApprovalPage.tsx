@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import RegistrationApprovalView from "./RegistrationApprovalView";
 import WfhApprovalView from "./WfhApprovalView";
-import { getEmployeeData } from "../service/EmployeeDetailService";
+import { getEmployeeData } from "../../service/EmployeeDetailService";
 import { useAuth0 } from "@auth0/auth0-react";
-import { RoleOptions } from "../Constants";
+import { RoleOptions } from "../../Constants";
 
 function ApprovalPage() {
   const [role, setRole] = useState<RoleOptions>();
