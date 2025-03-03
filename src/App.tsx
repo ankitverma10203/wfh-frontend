@@ -25,7 +25,6 @@ function App() {
     const employeeDetails = await getEmployeeData(token);
     if (employeeDetails.role !== role) {
       setRole(employeeDetails.role);
-      Cookies.set("role", employeeDetails.role);
     }
   }, [getAccessTokenSilently, role]);
 
@@ -33,6 +32,9 @@ function App() {
     fetchEmployeeDetail();
   }, [fetchEmployeeDetail]);
 
+  useEffect(() => {
+    Cookies.set("role", role);
+  }, [role]);
 
   return (
     <>
