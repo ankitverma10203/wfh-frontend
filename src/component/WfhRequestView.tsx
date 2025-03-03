@@ -26,7 +26,7 @@ function WfhRequestView() {
 
   const handleWfhRequest = async () => {
     const token = await getAccessTokenSilently();
-    var wfhResponse: WfhResponse = await requestWfh(wfhRequest, token);
+    await requestWfh(wfhRequest, token);
     setWfhRequest(defaultWfhRequest);
   };
 

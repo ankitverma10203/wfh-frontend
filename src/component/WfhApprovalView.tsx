@@ -37,7 +37,7 @@ function WfhApprovalView() {
     status: WfhRequestStatus
   ): Promise<void> => {
     const token = await getAccessTokenSilently();
-    const wfhRequestStatus: WfhRequestStatus = await updateWfhRequestStatus(
+    await updateWfhRequestStatus(
       token,
       wfhRequestId,
       status

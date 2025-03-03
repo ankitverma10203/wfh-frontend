@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WfhBalanceInfo } from "../Types";
-import { ID_KEY, WfhType } from "../Constants";
+import { WfhType } from "../Constants";
 import { getWfhBalance } from "../service/WfhDetailService";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
