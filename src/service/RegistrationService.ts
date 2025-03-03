@@ -2,13 +2,14 @@ import { RegisterInput } from "../Types";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function register(
   registerInput: RegisterInput,
   token: string
 ): Promise<boolean> {
   return await axios
-    .post("http://localhost:8080/wfh/register", registerInput, {
+    .post(apiUrl + "/wfh/register", registerInput, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {

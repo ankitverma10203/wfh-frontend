@@ -1,14 +1,14 @@
-import { EmployeeStatus, NAME_KEY, ROLE_KEY, RoleOptions } from "../Constants";
 import { EmployeeDetailData } from "../Types";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function fetchPendingRegistrationData(
   token: string
 ): Promise<EmployeeDetailData[]> {
   return await axios
-    .get("http://localhost:8080/wfh/getPendingEmployeeRegistration", {
+    .get(apiUrl + "/wfh/getPendingEmployeeRegistration", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -25,7 +25,7 @@ export async function updateEmployeeData(
   token: string
 ): Promise<boolean> {
   return await axios
-    .post("http://localhost:8080/wfh/updateEmployeeData", employeeDetailData, {
+    .post(apiUrl + "/wfh/updateEmployeeData", employeeDetailData, {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -41,7 +41,7 @@ export async function getEmployeeData(
   token: string
 ): Promise<EmployeeDetailData> {
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeeData", {
+    .get(apiUrl + "/wfh/getEmployeeData", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -64,7 +64,7 @@ export async function fetchManagerDetails(
   token: string
 ): Promise<EmployeeDetailData[]> {
   return await axios
-    .get("http://localhost:8080/wfh/getManagers", {
+    .get(apiUrl + "/wfh/getManagers", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -80,7 +80,7 @@ export async function fetchAdminDetails(
   token: string
 ): Promise<EmployeeDetailData[]> {
   return await axios
-    .get("http://localhost:8080/wfh/getAdmins", {
+    .get(apiUrl + "/wfh/getAdmins", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {

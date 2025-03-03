@@ -3,10 +3,11 @@ import { EmployeeWfhDetailData, WfhBalanceInfo, WfhDetailData } from "../Types";
 import { WfhRequestStatus, WfhType } from "../Constants";
 
 axios.defaults.withCredentials = true;
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function getWfhDetail(token: string): Promise<WfhDetailData[]> {
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeeWfhDetail", {
+    .get(apiUrl + "/wfh/getEmployeeWfhDetail", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -23,7 +24,7 @@ export async function getWfhDetail(token: string): Promise<WfhDetailData[]> {
 
 export async function getWfhBalance(token: string): Promise<WfhBalanceInfo> {
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeeWfhBalance", {
+    .get(apiUrl + "/wfh/getEmployeeWfhBalance", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -61,7 +62,7 @@ export async function fetchPendingWfhData(
   token: string
 ): Promise<EmployeeWfhDetailData[]> {
   return await axios
-    .get("http://localhost:8080/wfh/getEmployeePendingWfhRequests", {
+    .get(apiUrl + "/wfh/getEmployeePendingWfhRequests", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
@@ -79,7 +80,7 @@ export async function updateWfhRequestStatus(
   status: WfhRequestStatus
 ): Promise<WfhRequestStatus> {
   return await axios
-    .post("http://localhost:8080/wfh/updateWfhRequestStatus", null, {
+    .post(apiUrl + "/wfh/updateWfhRequestStatus", null, {
       headers: { Authorization: `Bearer ${token}` },
       params: {
         wfhRequestId: wfhRequestId,
