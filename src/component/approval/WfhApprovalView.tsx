@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EmployeeWfhDetailData } from "../../Types";
 import { Refresh } from "@mui/icons-material";
-import { Box, Typography, IconButton, Button } from "@mui/material";
+import { Box, Typography, IconButton, Button, Snackbar } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   fetchPendingWfhData,
@@ -16,6 +16,8 @@ function WfhApprovalView() {
   >([]);
 
   const { getAccessTokenSilently } = useAuth0();
+  const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -37,12 +39,13 @@ function WfhApprovalView() {
     status: WfhRequestStatus
   ): Promise<void> => {
     const token = await getAccessTokenSilently();
-    await updateWfhRequestStatus(
+    const wfhRequestStatus: WfhRequestStatus = await updateWfhRequestStatus(
       token,
       wfhRequestId,
       status
     );
-
+    setWfhReqStatus(wfhRequestStatus);
+    setShowSnackbar(true);
     loadData();
   };
 
@@ -156,6 +159,13 @@ function WfhApprovalView() {
           />
         </Box>
       </Box>
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+        message={`WFH Request Status: ${wfhReqStatus}`}
+      />
     </>
   );
 }

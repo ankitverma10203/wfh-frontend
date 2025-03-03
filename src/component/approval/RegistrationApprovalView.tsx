@@ -15,6 +15,7 @@ import {
   MenuItem,
   SelectChangeEvent,
   Button,
+  Snackbar,
 } from "@mui/material";
 import { EmployeeStatus, RoleOptions } from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -38,6 +39,9 @@ function RegistrationApprovalView() {
   );
   const [adminDetails, setAdminDetails] = useState<EmployeeDetailData[]>([]);
   const { user, getAccessTokenSilently } = useAuth0();
+  const [isEmpDetailUpdtSuccessful, setIsEmpDetailUpdtSuccessful] =
+    useState<boolean>();
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -91,7 +95,12 @@ function RegistrationApprovalView() {
     }
     pendingEmployeeDetail.employeeStatus = employeeStatus;
     const token = await getAccessTokenSilently();
-    await updateEmployeeData(pendingEmployeeDetail, token);
+    const isEmployeeDetailUpdateSuccessful: boolean = await updateEmployeeData(
+      pendingEmployeeDetail,
+      token
+    );
+    setIsEmpDetailUpdtSuccessful(isEmployeeDetailUpdateSuccessful);
+    setShowSnackbar(true);
     loadData();
   };
 
@@ -253,6 +262,17 @@ function RegistrationApprovalView() {
           />
         </Box>
       </Box>
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+        message={
+          isEmpDetailUpdtSuccessful
+            ? "Employee Details updated successfully"
+            : "Failed to update the Employee Details"
+        }
+      />
     </>
   );
 }
