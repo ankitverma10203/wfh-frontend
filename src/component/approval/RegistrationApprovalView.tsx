@@ -54,7 +54,6 @@ function RegistrationApprovalView() {
     const pendingRegistrationDataList = await fetchPendingRegistrationData(
       token
     );
-    console.log(pendingRegistrationDataList)
     setPendingEmployeeRegistrationData(pendingRegistrationDataList);
   };
 
@@ -84,11 +83,13 @@ function RegistrationApprovalView() {
   }
 
   const updateEmployeeInfo = async (
-    pendingEmployeeDetail: EmployeeDetailData
+    pendingEmployeeDetail: EmployeeDetailData,
+    employeeStatus: EmployeeStatus
   ) => {
     if (pendingEmployeeDetail.managerId === "0") {
       pendingEmployeeDetail.managerId = user?.sub || "0";
     }
+    pendingEmployeeDetail.employeeStatus = employeeStatus;
     const token = await getAccessTokenSilently();
     await updateEmployeeData(pendingEmployeeDetail, token);
     loadData();
@@ -123,7 +124,7 @@ function RegistrationApprovalView() {
       headerName: "Role",
       description: "Select the Role that needs to be assigned to this user",
       flex: 1,
-      minWidth: 100,
+      minWidth: 200,
       renderCell: (params) => {
         return (
           <Select
@@ -148,7 +149,8 @@ function RegistrationApprovalView() {
     {
       field: "managerId",
       headerName: "Manager",
-      description: "Select the Manager Id that this user needs to be assigned to",
+      description:
+        "Select the Manager Id that this user needs to be assigned to",
       flex: 1,
       minWidth: 300,
       renderCell: (params) => {
@@ -178,34 +180,7 @@ function RegistrationApprovalView() {
       },
     },
     {
-      field: "employeeStatus",
-      headerName: "Status",
-      description: "Select User Registration Status",
-      flex: 1,
-      minWidth: 150,
-      renderCell: (params) => {
-        return (
-          <Select
-            required
-            id="employeeStatus"
-            name="employeeStatus"
-            value={params.value}
-            sx={getStylingForSelectInsideAtableCell()}
-            onChange={(e) => {
-              handleChange(e, params.row);
-            }}
-          >
-            {Object.values(EmployeeStatus).map((status) => (
-              <MenuItem key={status} value={status}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
-        );
-      },
-    },
-    {
-      field: "updateButton",
+      field: "approveButton",
       headerName: "",
       flex: 1,
       minWidth: 150,
@@ -215,10 +190,35 @@ function RegistrationApprovalView() {
         return (
           <Button
             variant="outlined"
+            color="success"
             sx={{ width: "100%", height: "80%" }}
-            onClick={() => updateEmployeeInfo(params.row)}
+            onClick={() =>
+              updateEmployeeInfo(params.row, EmployeeStatus.ACTIVE)
+            }
           >
-            Update
+            Approve
+          </Button>
+        );
+      },
+    },
+    {
+      field: "rejectButton",
+      headerName: "",
+      flex: 1,
+      minWidth: 150,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params) => {
+        return (
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ width: "100%", height: "80%" }}
+            onClick={() =>
+              updateEmployeeInfo(params.row, EmployeeStatus.INACTIVE)
+            }
+          >
+            Reject
           </Button>
         );
       },
