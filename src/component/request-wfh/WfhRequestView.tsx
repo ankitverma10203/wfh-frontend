@@ -39,7 +39,8 @@ function WfhRequestView() {
         gap={2}
         p={4}
         sx={{
-          border: "2px solid grey",
+          border: "1px solid lightgrey",
+          borderRadius: "5px",
           backgroundColor: "white",
           minWidth: "30vw",
           maxWidth: "60vw",
