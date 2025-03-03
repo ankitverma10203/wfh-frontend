@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { WfhBalanceInfo } from "../Types";
-import { WfhType } from "../Constants";
-import { getWfhBalance } from "../service/WfhDetailService";
+import { WfhBalanceInfo } from "../../Types";
+import { WfhType } from "../../Constants";
+import { getWfhBalance } from "../../service/WfhDetailService";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Box, Typography } from "@mui/material";
-import { generateNewColor } from "../utility/ColorGenerationUtility";
+import { generateNewColor } from "../../utility/ColorGenerationUtility";
 import { ChartOptions } from "chart.js";
 import { useAuth0 } from "@auth0/auth0-react";
 Chart.register(ArcElement, Tooltip, Legend);

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { WfhDetailData } from "../Types";
-import { getWfhDetail } from "../service/WfhDetailService";
+import { WfhDetailData } from "../../Types";
+import { getWfhDetail } from "../../service/WfhDetailService";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { WfhRequestStatus } from "../Constants";
+import { WfhRequestStatus } from "../../Constants";
 
 function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(

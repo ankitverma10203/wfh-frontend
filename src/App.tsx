@@ -1,52 +1,43 @@
 import "./App.css";
-import LoginForm from "./component/LoginForm";
-import RegisterForm from "./component/RegisterForm";
+import LoginForm from "./component/authentication/LoginForm";
+import RegisterForm from "./component/authentication/RegisterForm";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserDashboard from "./component/UserDashboard";
-import WfhRequestView from "./component/WfhRequestView";
-import ApprovalPage from "./component/ApprovalPage";
-import { AuthenticationGuard } from "./component/AuthenticationGuard";
-import Callback from "./component/Callback";
-import NavBar from "./component/NavBar";
-import { NAV_LINKS, RoleOptions } from "./Constants";
-import { useEffect, useState } from "react";
+import UserDashboard from "./component/dashboard/UserDashboard";
+import WfhRequestView from "./component/request-wfh/WfhRequestView";
+import ApprovalPage from "./component/approval/ApprovalPage";
+import { AuthenticationGuard } from "./component/authentication/AuthenticationGuard";
+import Callback from "./component/authentication/Callback";
+import NavBar from "./component/navigation/NavBar";
+import { RoleOptions } from "./Constants";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getEmployeeData } from "./service/EmployeeDetailService";
+import Cookies from "js-cookie";
 
 function App() {
-  const { user, getAccessTokenSilently } = useAuth0();
-  const [name, setName] = useState<string>(user?.name || "");
-  const [role, setRole] = useState<RoleOptions>(RoleOptions.EMPLOYEE);
-  const [picture, setPicture] = useState<string>(user?.picture || "");
+  const { getAccessTokenSilently } = useAuth0();
+  const [role, setRole] = useState<RoleOptions>(
+    (Cookies.get("role") as RoleOptions) || RoleOptions.EMPLOYEE
+  );
 
-  useEffect(() => {
-    setName(user?.name || "");
-  }, [user?.name]);
-
-  useEffect(() => {
-    setPicture(user?.picture || "");
-  }, [user?.picture]);
+  const fetchEmployeeDetail = useCallback(async () => {
+    const token = await getAccessTokenSilently();
+    const employeeDetails = await getEmployeeData(token);
+    if (employeeDetails.role !== role) {
+      setRole(employeeDetails.role);
+      Cookies.set("role", employeeDetails.role);
+    }
+  }, [getAccessTokenSilently, role]);
 
   useEffect(() => {
     fetchEmployeeDetail();
-  }, []);
+  }, [fetchEmployeeDetail]);
 
-  const fetchEmployeeDetail = async () => {
-    const token = await getAccessTokenSilently();
-    const employeeDetails = await getEmployeeData(token);
-    setRole(employeeDetails.role);
-  };
 
   return (
     <>
       <BrowserRouter>
-        <NavBar
-          links={NAV_LINKS}
-          notifications={[]}
-          role={role}
-          name={name}
-          picture={picture}
-        />
+        <NavBar notifications={[]} role={role} />
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/callback" element={<Callback />} />
