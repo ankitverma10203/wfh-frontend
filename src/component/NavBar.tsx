@@ -76,6 +76,7 @@ function NavBar(prop: { links: NavLink[]; notifications: any[] }) {
                     marginLeft: 5,
                     fontSize: "large",
                     fontFamily: "monospace",
+                    whiteSpace: "nowrap"
                   }}
                 >
                   {navLink.name}
