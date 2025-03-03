@@ -2,8 +2,10 @@ import { Box, Link } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
+import { useLocation } from "react-router-dom";
 
 function NavLinksComponent(prop: { role: RoleOptions }) {
+  const location = useLocation();
   const [navLinks, setNavLinks] = useState<any[]>(
     JSON.parse(Cookies.get("navLinks") || "[]") || []
   );
@@ -34,13 +36,16 @@ function NavLinksComponent(prop: { role: RoleOptions }) {
         <Link
           key={navLink.name}
           href={navLink.link}
-          color={"inherit"}
+          color={location.pathname === navLink.link ? "cyan" : "inherit"}
           underline="none"
           sx={{
             marginLeft: 5,
             fontSize: "large",
             fontFamily: "monospace",
             whiteSpace: "nowrap",
+            "&:hover": {
+              color: "lightcyan",
+            },
           }}
         >
           {navLink.name}
