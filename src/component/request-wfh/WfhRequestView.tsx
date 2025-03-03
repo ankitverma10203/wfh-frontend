@@ -1,7 +1,14 @@
-import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { WfhRequest } from "../../Types";
-import { WfhType } from "../../Constants";
+import { WfhRequest, WfhResponse } from "../../Types";
+import { WfhRequestStatus, WfhType } from "../../Constants";
 import { requestWfh } from "../../service/WfhRequestService";
 import { format } from "date-fns/format";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -15,6 +22,8 @@ function WfhRequestView() {
 
   const [wfhRequest, setWfhRequest] = useState<WfhRequest>(defaultWfhRequest);
   const { getAccessTokenSilently } = useAuth0();
+  const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setWfhRequest({
@@ -26,7 +35,9 @@ function WfhRequestView() {
 
   const handleWfhRequest = async () => {
     const token = await getAccessTokenSilently();
-    await requestWfh(wfhRequest, token);
+    const wfhResponse: WfhResponse = await requestWfh(wfhRequest, token);
+    setWfhReqStatus(wfhResponse.status);
+    setShowSnackbar(true);
     setWfhRequest(defaultWfhRequest);
   };
 
@@ -80,6 +91,13 @@ function WfhRequestView() {
           Submit Request
         </Button>
       </Box>
+
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+        message={`WFH Request Status: ${wfhReqStatus}`}
+      />
     </>
   );
 }
