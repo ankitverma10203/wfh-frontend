@@ -28,7 +28,7 @@ function RegisterForm() {
 
     const handleRegistration = async () => {
         const token = await getAccessTokenSilently();
-        var successFlag: boolean = await register(registerInput, token);
+        await register(registerInput, token);
         setRegisterInput(defaultRegisterFormData);
         navigate("/login");
     }

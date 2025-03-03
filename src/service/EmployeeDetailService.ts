@@ -28,7 +28,7 @@ export async function updateEmployeeData(
     .post(apiUrl + "/wfh/updateEmployeeData", employeeDetailData, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => {
+    .then(() => {
       return true;
     })
     .catch((err) => {
