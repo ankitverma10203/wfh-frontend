@@ -1,6 +1,6 @@
 import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { WfhRequest, WfhResponse } from "../Types";
+import { WfhRequest } from "../Types";
 import { WfhType } from "../Constants";
 import { requestWfh } from "../service/WfhRequestService";
 import { format } from "date-fns/format";

@@ -12,7 +12,7 @@ export async function register(
     .post(apiUrl + "/wfh/register", registerInput, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => {
+    .then(() => {
       return true;
     })
     .catch((err) => {
