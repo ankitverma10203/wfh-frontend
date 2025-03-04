@@ -65,7 +65,10 @@ function NotificationComponent() {
       );
 
       eventSource.onmessage = (event) => {
-        setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          JSON.parse(event.data),
+        ]);
       };
 
       eventSource.onerror = (error) => {
@@ -77,13 +80,12 @@ function NotificationComponent() {
         eventSource.close();
       };
     }
-  }, [user?.sub]);
+  }, [user?.sub, messages]);
 
-  async function onClear(
-    notificationIds: number[],
-    index?: number
-  ): Promise<void> {
-    const updatedMessages = index ? messages.filter((_, i) => i !== index) : [];
+  async function onClear(notificationIds: number[]): Promise<void> {
+    const updatedMessages = messages.filter((msg) =>
+      !notificationIds.includes(msg.notificationId)
+    );
     setMessages(updatedMessages);
     const token = await getAccessTokenSilently();
     clearNotifications(token, notificationIds);
@@ -146,7 +148,7 @@ function NotificationComponent() {
                 minWidth: "60px",
                 marginLeft: "8px",
               }}
-              onClick={() => onClear([message.notificationId], index)}
+              onClick={() => onClear([message.notificationId])}
             >
               Clear
             </Button>
