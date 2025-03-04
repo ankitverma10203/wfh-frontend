@@ -65,7 +65,7 @@ function NotificationComponent() {
       );
 
       eventSource.onmessage = (event) => {
-        setMessages((prevMessages) => [...prevMessages, event.data]);
+        setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
       };
 
       eventSource.onerror = (error) => {
