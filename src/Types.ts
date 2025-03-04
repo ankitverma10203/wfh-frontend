@@ -89,3 +89,9 @@ export type EmployeeWfhDetailData = {
   requestDate: String;
   status: WfhRequestStatus;
 };
+
+export type EmployeeNotificationData = {
+  notificationId: number;
+  message: string;
+  createdTimestamp: string;
+};
