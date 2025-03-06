@@ -23,6 +23,8 @@ function NotificationComponent() {
     parseInt(Cookies.get("notificationCount") || messages.length.toString())
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [showFullNotification, setShowFullNotification] =
+    useState<boolean>(false);
 
   function handleClose(
     _event: {},
@@ -83,12 +85,16 @@ function NotificationComponent() {
   }, [user?.sub, messages]);
 
   async function onClear(notificationIds: number[]): Promise<void> {
-    const updatedMessages = messages.filter((msg) =>
-      !notificationIds.includes(msg.notificationId)
+    const updatedMessages = messages.filter(
+      (msg) => !notificationIds.includes(msg.notificationId)
     );
     setMessages(updatedMessages);
     const token = await getAccessTokenSilently();
     clearNotifications(token, notificationIds);
+  }
+
+  function toggleShowFullNotification() {
+    setShowFullNotification(!showFullNotification);
   }
 
   return (
@@ -97,6 +103,7 @@ function NotificationComponent() {
         aria-label="NotificationsActive"
         color="default"
         onClick={handleClick}
+        sx={{margin: "0 10px"}}
       >
         <Badge badgeContent={notificationCount} color="secondary">
           <NotificationsTwoTone fontSize="large" color="inherit" />
@@ -110,7 +117,15 @@ function NotificationComponent() {
       >
         {notificationCount === 0 && <MenuItem>No notifications</MenuItem>}
         {notificationCount !== 0 && (
-          <MenuItem>
+          <MenuItem
+            disableRipple
+            sx={{
+              "&:hover": {
+                backgroundColor: "transparent",
+                cursor: "default"
+              },
+            }}
+          >
             <Button
               sx={{
                 minWidth: "60px",
@@ -120,6 +135,17 @@ function NotificationComponent() {
             >
               Clear All
             </Button>
+            <Button
+              sx={{
+                minWidth: "60px",
+                marginLeft: "8px",
+              }}
+              onClick={() => toggleShowFullNotification()}
+            >
+              {showFullNotification
+                ? "Don't Show Full Notification"
+                : "Show Full Notification"}
+            </Button>
           </MenuItem>
         )}
         {messages.map((message, index) => (
@@ -128,17 +154,27 @@ function NotificationComponent() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
+              maxWidth: "50vw",
             }}
           >
             <Typography
-              sx={{
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                flexGrow: 1,
-                maxWidth: "90%",
-              }}
+              sx={
+                showFullNotification
+                  ? {
+                      overflow: "auto",
+                      whiteSpace: "normal",
+                      flexGrow: 1,
+                      maxWidth: "90%",
+                    }
+                  : {
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      flexGrow: 1,
+                      maxWidth: "90%",
+                    }
+              }
               title={message.message}
             >
               {message.message}
