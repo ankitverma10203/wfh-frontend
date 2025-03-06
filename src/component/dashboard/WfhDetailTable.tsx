@@ -30,21 +30,21 @@ function WfhDetailTable() {
       headerName: "WFH Type",
       description: "This is the type of WFH which was requested",
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
     },
     {
       field: "requestedWfhDate",
       headerName: "Requested WFH Date",
       description: "This is the date for which the WFH was requested",
       flex: 1,
-      minWidth: 100,
+      minWidth: 250,
     },
     {
       field: "status",
       headerName: "Status",
       description: "This is the status of the WFH Request",
       flex: 1,
-      minWidth: 100,
+      minWidth: 150,
       renderCell: (params) => {
         let color = "red";
         switch (params.value) {
@@ -70,7 +70,7 @@ function WfhDetailTable() {
     },
     {
       field: "updatedTimestamp",
-      headerName: "Update On",
+      headerName: "Updated On",
       description: "This is the date on which the request was last updated",
       flex: 1,
       minWidth: 200,
