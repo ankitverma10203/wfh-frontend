@@ -154,8 +154,7 @@ function NotificationComponent() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "flex-start",
-              maxWidth: "50vw",
+              alignItems: "flex-start"
             }}
           >
             <Typography
