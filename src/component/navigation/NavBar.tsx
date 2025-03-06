@@ -8,7 +8,6 @@ import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
-  colors,
   Divider,
   Drawer,
   IconButton,
