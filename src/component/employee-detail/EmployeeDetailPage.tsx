@@ -1,34 +1,33 @@
-import { useEffect, useState } from "react";
-import { EmployeeDetailData } from "../../Types";
-import {
-  fetchAdminDetails,
-  fetchManagerDetails,
-  fetchPendingRegistrationData,
-  updateEmployeeData,
-} from "../../service/EmployeeDetailService";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Refresh } from "@mui/icons-material";
 import {
+  SelectChangeEvent,
+  Select,
+  MenuItem,
+  Button,
   Box,
   Typography,
   IconButton,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  Button,
   Snackbar,
 } from "@mui/material";
 import {
-  APPROVAL_NOTIFICATION_EVENT_NAME,
-  EmployeeStatus,
-  RoleOptions,
-} from "../../Constants";
-import { useAuth0 } from "@auth0/auth0-react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import notificationEmitter from "../../utility/EventEmitter";
+  GridColDef,
+  DataGrid,
+} from "@mui/x-data-grid";
+import { useState, useEffect } from "react";
+import { EmployeeStatus, RoleOptions } from "../../Constants";
+import {
+  fetchManagerDetails,
+  fetchAdminDetails,
+  updateEmployeeData,
+  fetchAllEmployeesData,
+} from "../../service/EmployeeDetailService";
+import { EmployeeDetailData } from "../../Types";
 
-function RegistrationApprovalView() {
-  const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
-    useState<EmployeeDetailData[]>([]);
+function EmployeeDetailPage() {
+  const [allEmployeesData, setAllEmployeeData] = useState<EmployeeDetailData[]>(
+    []
+  );
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
     []
   );
@@ -37,23 +36,26 @@ function RegistrationApprovalView() {
   const [isEmpDetailUpdtSuccessful, setIsEmpDetailUpdtSuccessful] =
     useState<boolean>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [employeeDetailGettingUpdated, setEmpDetailGettingUpdated] =
+    useState<String | null>(null);
+  const [snackbarMessage, setSnackbarMessage] = useState<String>("");
+  const [prevEmployeeDetail, setPrevEmployeeDetail] =
+    useState<EmployeeDetailData | null>(null);
 
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = () => {
-    fetchPendingRegistrations();
+    fetchAllEmployeesDetail();
     fetchManagersData();
     fetchAdminsData();
   };
 
-  const fetchPendingRegistrations = async () => {
+  const fetchAllEmployeesDetail = async () => {
     const token = await getAccessTokenSilently();
-    const pendingRegistrationDataList = await fetchPendingRegistrationData(
-      token
-    );
-    setPendingEmployeeRegistrationData(pendingRegistrationDataList);
+    const allEmployeesDataList = await fetchAllEmployeesData(token);
+    setAllEmployeeData(allEmployeesDataList);
   };
 
   const fetchManagersData = async () => {
@@ -78,52 +80,74 @@ function RegistrationApprovalView() {
 
   function handleChange(
     e: SelectChangeEvent<string | number>,
-    pendingEmployeeDetail: EmployeeDetailData
+    employeeDetail: EmployeeDetailData
   ): void {
-    const newPendingEmployeeRegistrationData =
-      pendingEmployeeRegistrationData.map((pendingEmployeeData) => {
-        if (pendingEmployeeData.id === pendingEmployeeDetail.id) {
-          return { ...pendingEmployeeData, [e.target.name]: e.target.value };
-        }
-        return pendingEmployeeData;
-      });
+    const newEmployeeData = allEmployeesData.map((employeeData) => {
+      if (employeeData.id === employeeDetail.id) {
+        return { ...employeeData, [e.target.name]: e.target.value };
+      }
+      return employeeData;
+    });
 
-    setPendingEmployeeRegistrationData(newPendingEmployeeRegistrationData);
+    setAllEmployeeData(newEmployeeData);
   }
 
   const updateEmployeeInfo = async (
-    pendingEmployeeDetail: EmployeeDetailData,
+    employeeDetail: EmployeeDetailData,
     employeeStatus: EmployeeStatus
   ) => {
-    if (pendingEmployeeDetail.managerId === "0") {
-      pendingEmployeeDetail.managerId = user?.sub || "0";
+    if (employeeDetail.managerId === "0") {
+      employeeDetail.managerId = user?.sub || "0";
     }
-    pendingEmployeeDetail.employeeStatus = employeeStatus;
+    employeeDetail.employeeStatus = employeeStatus;
     const token = await getAccessTokenSilently();
     const isEmployeeDetailUpdateSuccessful: boolean = await updateEmployeeData(
-      pendingEmployeeDetail,
+      employeeDetail,
       token
     );
     setIsEmpDetailUpdtSuccessful(isEmployeeDetailUpdateSuccessful);
+    setSnackbarMessage(
+      isEmpDetailUpdtSuccessful
+        ? "Employee Details updated successfully"
+        : "Failed to update the Employee Details"
+    );
+    setEmpDetailGettingUpdated(null);
     setShowSnackbar(true);
     loadData();
   };
 
-  useEffect(() => {
-    const handleMyEvent = () => {
-      loadData();
-    };
+  function handleEmployeeDetailEdit(row: EmployeeDetailData): void {
+    setPrevEmployeeDetail(row);
+    setEmpDetailGettingUpdated(row.id);
+  }
 
-    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+  function handleUpdateOrEdit(row: EmployeeDetailData): void {
+    employeeDetailGettingUpdated && employeeDetailGettingUpdated === row.id
+      ? updateEmployeeInfo(row, EmployeeStatus.ACTIVE)
+      : !employeeDetailGettingUpdated
+      ? handleEmployeeDetailEdit(row)
+      : (() => {
+          setSnackbarMessage("Please update the record before switching");
+          setShowSnackbar(true);
+        })();
+  }
 
-    return () => {
-      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
-    };
-  }, []);
+  function handleDiscardChange(row: EmployeeDetailData) {
+    setEmpDetailGettingUpdated(null);
+    if (prevEmployeeDetail) {
+      const employeeDataListBeforeEdit: EmployeeDetailData[] =
+        allEmployeesData.map((employeeData) => {
+          if (employeeData.id === row.id) {
+            return prevEmployeeDetail;
+          }
+          return employeeData;
+        });
+      setAllEmployeeData(employeeDataListBeforeEdit);
+      setPrevEmployeeDetail(null);
+    }
+  }
 
-  const columns: GridColDef<
-    (typeof pendingEmployeeRegistrationData)[number]
-  >[] = [
+  const columns: GridColDef<(typeof allEmployeesData)[number]>[] = [
     {
       field: "id",
       headerName: "Empolyee Id",
@@ -152,7 +176,8 @@ function RegistrationApprovalView() {
       flex: 1,
       minWidth: 200,
       renderCell: (params) => {
-        return (
+        return employeeDetailGettingUpdated &&
+          employeeDetailGettingUpdated === params.row.id ? (
           <Select
             required
             id="role"
@@ -169,6 +194,38 @@ function RegistrationApprovalView() {
               </MenuItem>
             ))}
           </Select>
+        ) : (
+          <span>{params.value}</span>
+        );
+      },
+    },
+    {
+      field: "employeeStatus",
+      headerName: "Status",
+      description: "Select the Status that needs to be assigned to this user",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params) => {
+        return employeeDetailGettingUpdated &&
+          employeeDetailGettingUpdated === params.row.id ? (
+          <Select
+            required
+            id="status"
+            name="status"
+            value={params.value}
+            sx={getStylingForSelectInsideAtableCell()}
+            onChange={(e) => {
+              handleChange(e, params.row);
+            }}
+          >
+            {Object.values(EmployeeStatus).map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        ) : (
+          <span>{params.value}</span>
         );
       },
     },
@@ -180,7 +237,8 @@ function RegistrationApprovalView() {
       flex: 1,
       minWidth: 300,
       renderCell: (params) => {
-        return (
+        return employeeDetailGettingUpdated &&
+          employeeDetailGettingUpdated === params.row.id ? (
           <Select
             required
             id="managerId"
@@ -202,11 +260,13 @@ function RegistrationApprovalView() {
               </MenuItem>
             ))}
           </Select>
+        ) : (
+          <span>{params.value}</span>
         );
       },
     },
     {
-      field: "approveButton",
+      field: "editOrUpdateButton",
       headerName: "",
       flex: 1,
       minWidth: 150,
@@ -218,17 +278,18 @@ function RegistrationApprovalView() {
             variant="outlined"
             color="success"
             sx={{ width: "100%", height: "80%" }}
-            onClick={() =>
-              updateEmployeeInfo(params.row, EmployeeStatus.ACTIVE)
-            }
+            onClick={() => handleUpdateOrEdit(params.row)}
           >
-            Approve
+            {employeeDetailGettingUpdated &&
+            employeeDetailGettingUpdated === params.row.id
+              ? "Update"
+              : "Edit"}
           </Button>
         );
       },
     },
     {
-      field: "rejectButton",
+      field: "discardButton",
       headerName: "",
       flex: 1,
       minWidth: 150,
@@ -240,11 +301,13 @@ function RegistrationApprovalView() {
             variant="outlined"
             color="error"
             sx={{ width: "100%", height: "80%" }}
-            onClick={() =>
-              updateEmployeeInfo(params.row, EmployeeStatus.INACTIVE)
+            onClick={() => handleDiscardChange(params.row)}
+            disabled={
+              employeeDetailGettingUpdated === null ||
+              employeeDetailGettingUpdated !== params.row.id
             }
           >
-            Reject
+            Discard
           </Button>
         );
       },
@@ -265,7 +328,7 @@ function RegistrationApprovalView() {
 
         <Box sx={{ width: "100%" }}>
           <DataGrid
-            rows={pendingEmployeeRegistrationData}
+            rows={allEmployeesData}
             columns={columns}
             initialState={{
               pagination: {
@@ -274,7 +337,7 @@ function RegistrationApprovalView() {
                 },
               },
             }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[5, 10, 25, 50]}
             disableRowSelectionOnClick
           />
         </Box>
@@ -284,14 +347,10 @@ function RegistrationApprovalView() {
         open={showSnackbar}
         autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
-        message={
-          isEmpDetailUpdtSuccessful
-            ? "Employee Details updated successfully"
-            : "Failed to update the Employee Details"
-        }
+        message={snackbarMessage}
       />
     </>
   );
 }
 
-export default RegistrationApprovalView;
+export default EmployeeDetailPage;

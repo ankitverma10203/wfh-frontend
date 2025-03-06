@@ -7,6 +7,7 @@ import ApprovalPage from "./component/approval/ApprovalPage";
 import { AuthenticationGuard } from "./component/authentication/AuthenticationGuard";
 import Callback from "./component/authentication/Callback";
 import NavBar from "./component/navigation/NavBar";
+import EmployeeDetailPage from "./component/employee-detail/EmployeeDetailPage";
 
 function App() {
   return (
@@ -23,6 +24,14 @@ function App() {
           />
           <Route
             path="/approval"
+            element={<AuthenticationGuard component={ApprovalPage} />}
+          />
+          <Route
+            path="/employeeDetails"
+            element={<AuthenticationGuard component={EmployeeDetailPage} />}
+          />
+          <Route
+            path="/wfhAllocation"
             element={<AuthenticationGuard component={ApprovalPage} />}
           />
         </Routes>

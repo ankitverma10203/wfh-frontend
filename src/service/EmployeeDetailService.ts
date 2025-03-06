@@ -20,6 +20,22 @@ export async function fetchPendingRegistrationData(
     });
 }
 
+export async function fetchAllEmployeesData(
+  token: string
+): Promise<EmployeeDetailData[]> {
+  return await axios
+    .get(apiUrl + "/wfh/getAllEmployeesDetail", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
+}
+
 export async function updateEmployeeData(
   employeeDetailData: EmployeeDetailData,
   token: string

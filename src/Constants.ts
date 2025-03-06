@@ -18,8 +18,8 @@ export enum WfhType {
 
 export const WfhTypeDescription = {
   UWFH: "Unplanned WFH",
-  PWFH: "Planned WFH"
-}
+  PWFH: "Planned WFH",
+};
 
 export enum WfhRequestStatus {
   PENDING_APPROVAL = "PENDING_APPROVAL",
@@ -55,6 +55,16 @@ export const NAV_LINKS = [
     link: "/approval",
     roles: [RoleOptions.ADMIN, RoleOptions.MANAGER],
   },
+  {
+    name: "Employee Details",
+    link: "/employeeDetails",
+    roles: [RoleOptions.ADMIN],
+  },
+  {
+    name: "WFH Allocation",
+    link: "/wfhAllocation",
+    roles: [RoleOptions.ADMIN],
+  },
 ];
 
-export const APPROVAL_NOTIFICATION_EVENT_NAME = "approval-notification-event"
+export const APPROVAL_NOTIFICATION_EVENT_NAME = "approval-notification-event";
