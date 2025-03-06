@@ -35,7 +35,7 @@ function WfhBalanceChart() {
   const [chartData, setChartData] =
     useState<ChartData<"doughnut">>(defaultChartData);
 
-  const {getAccessTokenSilently} = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   const fetchWfhBalance = async () => {
     const token = await getAccessTokenSilently();
@@ -86,8 +86,9 @@ function WfhBalanceChart() {
   };
 
   const options: ChartOptions<"doughnut"> = {
+    responsive: true,
     plugins: {
-      legend: { display: true, position: 'left', labels: { color: "black" } },
+      legend: { display: true, position: "bottom", labels: { color: "black" } },
     },
   };
 
@@ -95,9 +96,10 @@ function WfhBalanceChart() {
     <>
       <Box
         sx={{
-          minWidth: { lg: "30vw", md: "50%", sm: "60%" },
-          maxWidth: { lg: "40vw", md: "70%", sm: "80%" },
-          marginTop: "5vh",
+          margin: "5px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography component={"span"} variant="h5">
@@ -105,14 +107,13 @@ function WfhBalanceChart() {
         </Typography>
         <Box
           sx={{
+            marginTop: "10px",
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <>
-            <Doughnut data={chartData} options={options} />
-          </>
+          <Doughnut data={chartData} options={options} />
         </Box>
       </Box>
     </>

@@ -7,7 +7,7 @@ import {
   fetchPendingWfhData,
   updateWfhRequestStatus,
 } from "../../service/WfhDetailService";
-import { WfhRequestStatus } from "../../Constants";
+import { WfhRequestStatus, WfhTypeDescription } from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 function WfhApprovalView() {
@@ -77,6 +77,17 @@ function WfhApprovalView() {
       description: "This is the type of WFH which was requested",
       flex: 1,
       minWidth: 200,
+      renderCell: (params) => {
+        return (
+          <span>
+            {
+              WfhTypeDescription[
+                params.value as keyof typeof WfhTypeDescription
+              ]
+            }
+          </span>
+        );
+      },
     },
     {
       field: "requestDate",

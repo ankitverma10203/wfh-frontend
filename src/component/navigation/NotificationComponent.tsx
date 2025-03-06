@@ -135,24 +135,22 @@ function NotificationComponent() {
             <Button
               sx={{
                 minWidth: "60px",
-                marginLeft: "8px",
-                whiteSpace: "nowrap"
-              }}
-              onClick={() => onClear(messages.map((msg) => msg.notificationId))}
-            >
-              Clear All
-            </Button>
-            <Button
-              sx={{
-                minWidth: "60px",
-                marginLeft: "8px",
-                whiteSpace: "nowrap"
+                whiteSpace: "nowrap",
               }}
               onClick={() => toggleShowFullNotification()}
             >
               {showFullNotification
                 ? "Don't Show Full Notification"
                 : "Show Full Notification"}
+            </Button>
+            <Button
+              sx={{
+                minWidth: "60px",
+                whiteSpace: "nowrap",
+              }}
+              onClick={() => onClear(messages.map((msg) => msg.notificationId))}
+            >
+              Clear All
             </Button>
           </MenuItem>
         )}

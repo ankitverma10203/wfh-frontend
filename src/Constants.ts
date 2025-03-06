@@ -16,6 +16,11 @@ export enum WfhType {
   PWFH = "PWFH",
 }
 
+export const WfhTypeDescription = {
+  UWFH: "Unplanned WFH",
+  PWFH: "Planned WFH"
+}
+
 export enum WfhRequestStatus {
   PENDING_APPROVAL = "PENDING_APPROVAL",
   INSUFFICIENT_WFH = "INSUFFICIENT_WFH",
@@ -43,11 +48,6 @@ export const NAV_LINKS = [
   {
     name: "Dashboard",
     link: "/dashboard",
-    roles: [RoleOptions.ADMIN, RoleOptions.EMPLOYEE, RoleOptions.MANAGER],
-  },
-  {
-    name: "Request WFH",
-    link: "/wfhRequestForm",
     roles: [RoleOptions.ADMIN, RoleOptions.EMPLOYEE, RoleOptions.MANAGER],
   },
   {

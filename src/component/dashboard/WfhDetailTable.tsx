@@ -5,7 +5,7 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { WfhRequestStatus } from "../../Constants";
+import { WfhRequestStatus, WfhTypeDescription } from "../../Constants";
 
 function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
@@ -30,14 +30,25 @@ function WfhDetailTable() {
       headerName: "WFH Type",
       description: "This is the type of WFH which was requested",
       flex: 1,
-      minWidth: 150,
+      minWidth: 140,
+      renderCell: (params) => {
+        return (
+          <span>
+            {
+              WfhTypeDescription[
+                params.value as keyof typeof WfhTypeDescription
+              ]
+            }
+          </span>
+        );
+      },
     },
     {
       field: "requestedWfhDate",
       headerName: "Requested WFH Date",
       description: "This is the date for which the WFH was requested",
       flex: 1,
-      minWidth: 250,
+      minWidth: 210,
     },
     {
       field: "status",
@@ -79,17 +90,22 @@ function WfhDetailTable() {
 
   return (
     <>
-      <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
+      <Box
+        sx={{
+          margin: "5px",
+          maxWidth: { lg: "55vw", md: "90vw", sm: "90vw", xs: "90vw" },
+        }}
+      >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography component={"span"} variant="h5">
-            WFH Details
+            Track WFH Request
           </Typography>
           <IconButton onClick={fetchWfhDetail}>
             <Refresh />
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box>
           <DataGrid
             rows={wfhDetailDataList}
             columns={columns}

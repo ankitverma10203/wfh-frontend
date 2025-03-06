@@ -1,6 +1,7 @@
 import WfhDetailTable from "./WfhDetailTable";
 import WfhBalanceChart from "./WfhDataChart";
 import Box from "@mui/material/Box";
+import WfhRequestView from "../request-wfh/WfhRequestView";
 
 function UserDashboard() {
   return (
@@ -8,24 +9,60 @@ function UserDashboard() {
       <Box
         sx={{
           display: "flex",
-          maxWidth: "90vw",
-          width: "100%",
+          maxWidth: "98vw",
           flexDirection: {
             lg: "row",
             md: "column",
             sm: "column",
             xs: "column",
           },
-          justifyContent: {
-            lg: "space-between",
-            md: "center",
-            sm: "center",
-            xs: "center",
-          },
+          alignItems: { lg: "start", md: "center", sm: "center", xs: "center" },
+          justifyContent: "space-evenly",
+          paddingTop: "30px",
         }}
       >
-        <WfhDetailTable />
-        <WfhBalanceChart />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: {
+              lg: "column",
+              md: "row",
+              sm: "row",
+              xs: "column",
+            },
+            justifyContent: "space-evenly",
+            margin: "10px",
+            width: {
+              lg: "40vw",
+              md: "80vw",
+              sm: "80vw",
+              xs: "90vw",
+            },
+          }}
+        >
+          <WfhRequestView />
+          <WfhBalanceChart />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: {
+              lg: "row",
+              md: "row",
+              sm: "row",
+              xs: "column",
+            },
+            margin: "10px",
+            width: {
+              lg: "60vw",
+              md: "90vw",
+              sm: "90vw",
+              xs: "90vw",
+            },
+          }}
+        >
+          <WfhDetailTable />
+        </Box>
       </Box>
     </>
   );
