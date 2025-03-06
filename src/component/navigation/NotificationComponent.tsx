@@ -103,7 +103,7 @@ function NotificationComponent() {
         aria-label="NotificationsActive"
         color="default"
         onClick={handleClick}
-        sx={{margin: "0 10px"}}
+        sx={{ margin: "0 10px" }}
       >
         <Badge badgeContent={notificationCount} color="secondary">
           <NotificationsTwoTone fontSize="large" color="inherit" />
@@ -120,9 +120,15 @@ function NotificationComponent() {
           <MenuItem
             disableRipple
             sx={{
+              overflow: "auto",
+              whiteSpace: "wrap",
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
               "&:hover": {
                 backgroundColor: "transparent",
-                cursor: "default"
+                cursor: "default",
               },
             }}
           >
@@ -130,6 +136,7 @@ function NotificationComponent() {
               sx={{
                 minWidth: "60px",
                 marginLeft: "8px",
+                whiteSpace: "nowrap"
               }}
               onClick={() => onClear(messages.map((msg) => msg.notificationId))}
             >
@@ -139,6 +146,7 @@ function NotificationComponent() {
               sx={{
                 minWidth: "60px",
                 marginLeft: "8px",
+                whiteSpace: "nowrap"
               }}
               onClick={() => toggleShowFullNotification()}
             >
@@ -154,7 +162,7 @@ function NotificationComponent() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "flex-start"
+              alignItems: "flex-start",
             }}
           >
             <Typography
