@@ -103,6 +103,7 @@ function NotificationComponent() {
         aria-label="NotificationsActive"
         color="default"
         onClick={handleClick}
+        sx={{margin: "0 10px"}}
       >
         <Badge badgeContent={notificationCount} color="secondary">
           <NotificationsTwoTone fontSize="large" color="inherit" />

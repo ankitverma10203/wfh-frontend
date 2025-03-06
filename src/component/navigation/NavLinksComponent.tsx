@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -53,12 +53,13 @@ function NavLinksComponent() {
   }, [role]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <>
       {navLinks.map((navLink) => (
         <Link
           key={navLink.name}
           href={navLink.link}
           color={location.pathname === navLink.link ? "cyan" : "inherit"}
+          fontWeight={location.pathname === navLink.link ? "bold" : "inherit"}
           underline="none"
           sx={{
             marginLeft: 5,
@@ -66,13 +67,23 @@ function NavLinksComponent() {
             whiteSpace: "nowrap",
             "&:hover": {
               color: "lightcyan",
+              fontWeight: "bold",
             },
           }}
         >
-          <Typography sx={{display: "inline"}}>{navLink.name}</Typography>
+          <Typography
+            sx={{
+              display: "inline",
+              fontWeight: location.pathname === navLink.link
+                ? "bold"
+                : "inherit",
+            }}
+          >
+            {navLink.name}
+          </Typography>
         </Link>
       ))}
-    </Box>
+    </>
   );
 }
 
