@@ -57,11 +57,7 @@ function UserInfo() {
 
   return (
     <>
-      <Typography
-        sx={{ marginLeft: 2, fontSize: "large", fontFamily: "monospace" }}
-      >
-        {name}
-      </Typography>
+      <Typography sx={{ marginLeft: 2, fontSize: "large" }}>{name}</Typography>
       <IconButton
         aria-label="AccountCircleRounded"
         color="default"

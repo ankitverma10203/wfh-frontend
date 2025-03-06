@@ -1,4 +1,4 @@
-import { Box, Link } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -63,14 +63,13 @@ function NavLinksComponent() {
           sx={{
             marginLeft: 5,
             fontSize: "large",
-            fontFamily: "monospace",
             whiteSpace: "nowrap",
             "&:hover": {
               color: "lightcyan",
             },
           }}
         >
-          {navLink.name}
+          <Typography sx={{display: "inline"}}>{navLink.name}</Typography>
         </Link>
       ))}
     </Box>
