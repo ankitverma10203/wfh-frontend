@@ -7,8 +7,13 @@ import {
   fetchPendingWfhData,
   updateWfhRequestStatus,
 } from "../../service/WfhDetailService";
-import { WfhRequestStatus, WfhTypeDescription } from "../../Constants";
+import {
+  APPROVAL_NOTIFICATION_EVENT_NAME,
+  WfhRequestStatus,
+  WfhTypeDescription,
+} from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import notificationEmitter from "../../utility/EventEmitter";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -48,6 +53,18 @@ function WfhApprovalView() {
     setShowSnackbar(true);
     loadData();
   };
+
+  useEffect(() => {
+    const handleMyEvent = () => {
+      loadData();
+    };
+
+    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+
+    return () => {
+      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    };
+  }, []);
 
   const columns: GridColDef<(typeof pendingWfhRequestData)[number]>[] = [
     {

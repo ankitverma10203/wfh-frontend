@@ -15,6 +15,8 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import { EmployeeNotificationData } from "../../Types";
+import notificationEmitter from "../../utility/EventEmitter";
+import { APPROVAL_NOTIFICATION_EVENT_NAME } from "../../Constants";
 
 function NotificationComponent() {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -67,10 +69,14 @@ function NotificationComponent() {
       );
 
       eventSource.onmessage = (event) => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          JSON.parse(event.data),
-        ]);
+        const notification: EmployeeNotificationData = JSON.parse(event.data);
+        setMessages((prevMessages) => [...prevMessages, notification]);
+
+        if (
+          notification.message.toLowerCase().includes("Approval".toLowerCase())
+        ) {
+          notificationEmitter.emit(APPROVAL_NOTIFICATION_EVENT_NAME);
+        }
       };
 
       eventSource.onerror = (error) => {

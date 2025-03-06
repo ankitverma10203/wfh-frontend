@@ -56,3 +56,5 @@ export const NAV_LINKS = [
     roles: [RoleOptions.ADMIN, RoleOptions.MANAGER],
   },
 ];
+
+export const APPROVAL_NOTIFICATION_EVENT_NAME = "approval-notification-event"

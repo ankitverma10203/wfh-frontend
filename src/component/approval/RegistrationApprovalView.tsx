@@ -17,9 +17,14 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-import { EmployeeStatus, RoleOptions } from "../../Constants";
+import {
+  APPROVAL_NOTIFICATION_EVENT_NAME,
+  EmployeeStatus,
+  RoleOptions,
+} from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import notificationEmitter from "../../utility/EventEmitter";
 
 function getStylingForSelectInsideAtableCell() {
   return {
@@ -103,6 +108,18 @@ function RegistrationApprovalView() {
     setShowSnackbar(true);
     loadData();
   };
+
+  useEffect(() => {
+    const handleMyEvent = () => {
+      loadData();
+    };
+
+    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+
+    return () => {
+      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    };
+  }, []);
 
   const columns: GridColDef<
     (typeof pendingEmployeeRegistrationData)[number]
