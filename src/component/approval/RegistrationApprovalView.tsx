@@ -24,7 +24,7 @@ import {
 } from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import notificationEmitter from "../../utility/EventEmitter";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function RegistrationApprovalView() {
   const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
@@ -117,10 +117,10 @@ function RegistrationApprovalView() {
       loadData();
     };
 
-    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    wfhEventEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
 
     return () => {
-      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+      wfhEventEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
     };
   }, []);
 

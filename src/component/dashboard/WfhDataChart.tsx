@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { WfhBalanceInfo } from "../../Types";
-import { WfhType } from "../../Constants";
+import { WFH_REQUEST_EVENT_NAME, WfhType } from "../../Constants";
 import { getWfhBalance } from "../../service/WfhDetailService";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
@@ -9,6 +9,7 @@ import { generateNewColor } from "../../utility/ColorGenerationUtility";
 import { ChartOptions } from "chart.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Refresh } from "@mui/icons-material";
+import wfhEventEmitter from "../../utility/EventEmitter";
 Chart.register(ArcElement, Tooltip, Legend);
 
 function WfhBalanceChart() {
@@ -51,6 +52,14 @@ function WfhBalanceChart() {
   useEffect(() => {
     createChartData();
   }, [wfhBalanceInfo]);
+
+  useEffect(() => {
+    wfhEventEmitter.on(WFH_REQUEST_EVENT_NAME, () => fetchWfhBalance());
+
+    return () => {
+      wfhEventEmitter.off(WFH_REQUEST_EVENT_NAME, () => fetchWfhBalance());
+    };
+  }, []);
 
   const createChartData = () => {
     let labels: unknown[] | undefined = [];

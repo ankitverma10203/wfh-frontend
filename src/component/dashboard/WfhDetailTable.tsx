@@ -5,7 +5,12 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { WfhRequestStatus, WfhTypeDescription } from "../../Constants";
+import {
+  WFH_REQUEST_EVENT_NAME,
+  WfhRequestStatus,
+  WfhTypeDescription,
+} from "../../Constants";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
@@ -16,6 +21,14 @@ function WfhDetailTable() {
 
   useEffect(() => {
     fetchWfhDetail();
+  }, []);
+
+  useEffect(() => {
+    wfhEventEmitter.on(WFH_REQUEST_EVENT_NAME, () => fetchWfhDetail());
+
+    return () => {
+      wfhEventEmitter.off(WFH_REQUEST_EVENT_NAME, () => fetchWfhDetail());
+    };
   }, []);
 
   const fetchWfhDetail = async () => {

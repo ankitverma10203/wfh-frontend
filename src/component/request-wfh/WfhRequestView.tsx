@@ -8,10 +8,17 @@ import {
 } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { WfhRequest, WfhResponse } from "../../Types";
-import { WfhRequestStatus, WfhType, WfhTypeDescription } from "../../Constants";
+import {
+  WFH_REQUEST_EVENT_NAME,
+  WfhRequestStatus,
+  WfhType,
+  WfhTypeDescription,
+} from "../../Constants";
 import { requestWfh } from "../../service/WfhRequestService";
 import { format } from "date-fns/format";
 import { useAuth0 } from "@auth0/auth0-react";
+import EventEmitter from "eventemitter3";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhRequestView() {
   const defaultWfhRequest: WfhRequest = {
@@ -39,6 +46,7 @@ function WfhRequestView() {
     setWfhReqStatus(wfhResponse.status);
     setShowSnackbar(true);
     setWfhRequest(defaultWfhRequest);
+    wfhEventEmitter.emit(WFH_REQUEST_EVENT_NAME);
   };
 
   return (
@@ -58,7 +66,7 @@ function WfhRequestView() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Box

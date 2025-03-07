@@ -13,7 +13,7 @@ import {
   WfhTypeDescription,
 } from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import notificationEmitter from "../../utility/EventEmitter";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -61,10 +61,10 @@ function WfhApprovalView() {
       loadData();
     };
 
-    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    wfhEventEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
 
     return () => {
-      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+      wfhEventEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
     };
   }, []);
 
