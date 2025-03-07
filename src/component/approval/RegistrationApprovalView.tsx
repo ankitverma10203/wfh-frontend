@@ -24,7 +24,7 @@ import {
 } from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import notificationEmitter from "../../utility/EventEmitter";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function RegistrationApprovalView() {
   const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
@@ -37,6 +37,7 @@ function RegistrationApprovalView() {
   const [isEmpDetailUpdtSuccessful, setIsEmpDetailUpdtSuccessful] =
     useState<boolean>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -50,9 +51,11 @@ function RegistrationApprovalView() {
 
   const fetchPendingRegistrations = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const pendingRegistrationDataList = await fetchPendingRegistrationData(
       token
     );
+    setIsLoading(false);
     setPendingEmployeeRegistrationData(pendingRegistrationDataList);
   };
 
@@ -114,10 +117,10 @@ function RegistrationApprovalView() {
       loadData();
     };
 
-    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    wfhEventEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
 
     return () => {
-      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+      wfhEventEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
     };
   }, []);
 
@@ -267,6 +270,13 @@ function RegistrationApprovalView() {
           <DataGrid
             rows={pendingEmployeeRegistrationData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

@@ -13,7 +13,7 @@ import {
   WfhTypeDescription,
 } from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import notificationEmitter from "../../utility/EventEmitter";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -23,6 +23,7 @@ function WfhApprovalView() {
   const { getAccessTokenSilently } = useAuth0();
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -34,8 +35,9 @@ function WfhApprovalView() {
 
   const fetchPendingWfhRequest = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const pendingWfhRequestList = await fetchPendingWfhData(token);
-
+    setIsLoading(false);
     setPendingWfhRequestData(pendingWfhRequestList);
   };
 
@@ -59,10 +61,10 @@ function WfhApprovalView() {
       loadData();
     };
 
-    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    wfhEventEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
 
     return () => {
-      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+      wfhEventEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
     };
   }, []);
 
@@ -175,6 +177,13 @@ function WfhApprovalView() {
           <DataGrid
             rows={pendingWfhRequestData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

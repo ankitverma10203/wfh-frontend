@@ -6,6 +6,7 @@ import {
   IconButton,
   Button,
   OutlinedInput,
+  Snackbar,
 } from "@mui/material";
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect, ChangeEvent } from "react";
@@ -23,6 +24,9 @@ function WfhAllotmentPage() {
 
   const [isEditing, setIsEditing] = useState<boolean>();
   const [rowData, setRowData] = useState<WfhReqQuantityDataType[]>([]);
+  const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [snackbarMsg, setSnackbarMsg] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     fetchWfhRefQuantityDetail();
@@ -32,7 +36,9 @@ function WfhAllotmentPage() {
 
   const fetchWfhRefQuantityDetail = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const wfhRefQuantityData = await fetchWfhRefQuantityData(token);
+    setIsLoading(false);
 
     const rowDataObject: WfhReqQuantityDataType[] = [];
     for (const [key, value] of Object.entries(wfhRefQuantityData)) {
@@ -113,7 +119,16 @@ function WfhAllotmentPage() {
         wfhRefQuantity.set(data.id as WfhType, data.value);
       });
       const token = await getAccessTokenSilently();
-      await updateWfhRefQuantityData(wfhRefQuantity, token);
+      const updateRespone = await updateWfhRefQuantityData(
+        wfhRefQuantity,
+        token
+      );
+      setSnackbarMsg(
+        updateRespone
+          ? "WFH Allocation Updated Successfully"
+          : "WFH Allocation Updated Failed"
+      );
+      setShowSnackbar(true);
       fetchWfhRefQuantityDetail();
     } catch (error) {
       console.error("Failed to update WFH quantity data", error);
@@ -152,6 +167,13 @@ function WfhAllotmentPage() {
           <DataGrid
             rows={rowData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -196,6 +218,12 @@ function WfhAllotmentPage() {
           )}
         </Box>
       </Box>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setShowSnackbar(false)}
+        message={snackbarMsg}
+      />
     </>
   );
 }

@@ -5,22 +5,37 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { WfhRequestStatus, WfhTypeDescription } from "../../Constants";
+import {
+  WFH_REQUEST_EVENT_NAME,
+  WfhRequestStatus,
+  WfhTypeDescription,
+} from "../../Constants";
+import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
     []
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     fetchWfhDetail();
   }, []);
 
-  const { getAccessTokenSilently } = useAuth0();
+  useEffect(() => {
+    wfhEventEmitter.on(WFH_REQUEST_EVENT_NAME, () => fetchWfhDetail());
+
+    return () => {
+      wfhEventEmitter.off(WFH_REQUEST_EVENT_NAME, () => fetchWfhDetail());
+    };
+  }, []);
 
   const fetchWfhDetail = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     var wfhDataList: WfhDetailData[] = await getWfhDetail(token);
+    setIsLoading(false);
     setWfhDetailDataList(wfhDataList);
   };
 
@@ -109,6 +124,13 @@ function WfhDetailTable() {
           <DataGrid
             rows={wfhDetailDataList}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

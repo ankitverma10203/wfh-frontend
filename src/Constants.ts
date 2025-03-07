@@ -77,3 +77,4 @@ export const NAV_LINKS: NavLink[] = [
 ];
 
 export const APPROVAL_NOTIFICATION_EVENT_NAME = "approval-notification-event";
+export const WFH_REQUEST_EVENT_NAME = "wfh-request-event";

@@ -1,4 +1,4 @@
 import EventEmitter from "eventemitter3";
 
-const notificationEmitter = new EventEmitter();
-export default notificationEmitter;
+const wfhEventEmitter = new EventEmitter();
+export default wfhEventEmitter;
