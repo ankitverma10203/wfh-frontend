@@ -98,7 +98,7 @@ function WfhBalanceChart() {
   const options: ChartOptions<"doughnut"> = {
     responsive: true,
     plugins: {
-      legend: { display: true, position: "bottom", labels: { color: "black" } },
+      legend: { display: true, position: "bottom", labels: { color: "black", boxWidth: 12 } },
     },
   };
 
