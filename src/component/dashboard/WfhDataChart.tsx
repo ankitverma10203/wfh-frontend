@@ -4,10 +4,11 @@ import { WfhType } from "../../Constants";
 import { getWfhBalance } from "../../service/WfhDetailService";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { generateNewColor } from "../../utility/ColorGenerationUtility";
 import { ChartOptions } from "chart.js";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Refresh } from "@mui/icons-material";
 Chart.register(ArcElement, Tooltip, Legend);
 
 function WfhBalanceChart() {
@@ -105,6 +106,9 @@ function WfhBalanceChart() {
         <Typography component={"span"} variant="h5">
           WFH Balance
         </Typography>
+        <IconButton onClick={fetchWfhBalance}>
+          <Refresh />
+        </IconButton>
         <Box
           sx={{
             marginTop: "10px",
