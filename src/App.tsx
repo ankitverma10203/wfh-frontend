@@ -8,6 +8,7 @@ import { AuthenticationGuard } from "./component/authentication/AuthenticationGu
 import Callback from "./component/authentication/Callback";
 import NavBar from "./component/navigation/NavBar";
 import EmployeeDetailPage from "./component/employee-detail/EmployeeDetailPage";
+import WfhAllotmentPage from "./component/wfh-allotment/WfhAllotmentPage";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           />
           <Route
             path="/wfhAllocation"
-            element={<AuthenticationGuard component={ApprovalPage} />}
+            element={<AuthenticationGuard component={WfhAllotmentPage} />}
           />
         </Routes>
       </BrowserRouter>

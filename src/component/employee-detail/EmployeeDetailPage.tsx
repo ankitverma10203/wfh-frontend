@@ -319,7 +319,7 @@ function EmployeeDetailPage() {
       <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography component={"span"} variant="h5">
-            Pending Registrations
+            Employee Details
           </Typography>
           <IconButton onClick={loadData}>
             <Refresh />
