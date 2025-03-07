@@ -1,3 +1,5 @@
+import { NavLink } from "./Types";
+
 export const ID_KEY: string = "id";
 export const NAME_KEY: string = "name";
 export const ROLE_KEY: string = "role";
@@ -44,24 +46,31 @@ export enum EmployeeStatus {
   INACTIVE = "INACTIVE",
 }
 
-export const NAV_LINKS = [
+export enum NAV_LINK_NAME {
+  DASHBOARD="Dashboard",
+  APPROVALS="Approvals",
+  EMPLOYEE_DETAILS="Employee Details",
+  WFH_ALLOCATION="WFH Allocation"
+}
+
+export const NAV_LINKS: NavLink[] = [
   {
-    name: "Dashboard",
+    name: NAV_LINK_NAME.DASHBOARD,
     link: "/dashboard",
     roles: [RoleOptions.ADMIN, RoleOptions.EMPLOYEE, RoleOptions.MANAGER],
   },
   {
-    name: "Approvals",
+    name: NAV_LINK_NAME.APPROVALS,
     link: "/approval",
     roles: [RoleOptions.ADMIN, RoleOptions.MANAGER],
   },
   {
-    name: "Employee Details",
+    name: NAV_LINK_NAME.EMPLOYEE_DETAILS,
     link: "/employeeDetails",
     roles: [RoleOptions.ADMIN],
   },
   {
-    name: "WFH Allocation",
+    name: NAV_LINK_NAME.WFH_ALLOCATION,
     link: "/wfhAllocation",
     roles: [RoleOptions.ADMIN],
   },
