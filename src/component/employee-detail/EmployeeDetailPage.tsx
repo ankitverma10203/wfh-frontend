@@ -10,10 +10,7 @@ import {
   IconButton,
   Snackbar,
 } from "@mui/material";
-import {
-  GridColDef,
-  DataGrid,
-} from "@mui/x-data-grid";
+import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { EmployeeStatus, RoleOptions } from "../../Constants";
 import {
@@ -41,6 +38,7 @@ function EmployeeDetailPage() {
   const [snackbarMessage, setSnackbarMessage] = useState<String>("");
   const [prevEmployeeDetail, setPrevEmployeeDetail] =
     useState<EmployeeDetailData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -54,7 +52,9 @@ function EmployeeDetailPage() {
 
   const fetchAllEmployeesDetail = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const allEmployeesDataList = await fetchAllEmployeesData(token);
+    setIsLoading(false);
     setAllEmployeeData(allEmployeesDataList);
   };
 
@@ -330,6 +330,13 @@ function EmployeeDetailPage() {
           <DataGrid
             rows={allEmployeesData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

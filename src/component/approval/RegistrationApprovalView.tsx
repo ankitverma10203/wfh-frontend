@@ -37,6 +37,7 @@ function RegistrationApprovalView() {
   const [isEmpDetailUpdtSuccessful, setIsEmpDetailUpdtSuccessful] =
     useState<boolean>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -50,9 +51,11 @@ function RegistrationApprovalView() {
 
   const fetchPendingRegistrations = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const pendingRegistrationDataList = await fetchPendingRegistrationData(
       token
     );
+    setIsLoading(false);
     setPendingEmployeeRegistrationData(pendingRegistrationDataList);
   };
 
@@ -267,6 +270,13 @@ function RegistrationApprovalView() {
           <DataGrid
             rows={pendingEmployeeRegistrationData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

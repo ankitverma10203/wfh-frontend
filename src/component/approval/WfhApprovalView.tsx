@@ -23,6 +23,7 @@ function WfhApprovalView() {
   const { getAccessTokenSilently } = useAuth0();
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -34,8 +35,9 @@ function WfhApprovalView() {
 
   const fetchPendingWfhRequest = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     const pendingWfhRequestList = await fetchPendingWfhData(token);
-
+    setIsLoading(false);
     setPendingWfhRequestData(pendingWfhRequestList);
   };
 
@@ -175,6 +177,13 @@ function WfhApprovalView() {
           <DataGrid
             rows={pendingWfhRequestData}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {

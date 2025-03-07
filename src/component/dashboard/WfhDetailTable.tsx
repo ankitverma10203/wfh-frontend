@@ -11,16 +11,18 @@ function WfhDetailTable() {
   const [wfhDetailDataList, setWfhDetailDataList] = useState<WfhDetailData[]>(
     []
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     fetchWfhDetail();
   }, []);
 
-  const { getAccessTokenSilently } = useAuth0();
-
   const fetchWfhDetail = async () => {
     const token = await getAccessTokenSilently();
+    setIsLoading(true);
     var wfhDataList: WfhDetailData[] = await getWfhDetail(token);
+    setIsLoading(false);
     setWfhDetailDataList(wfhDataList);
   };
 
@@ -109,6 +111,13 @@ function WfhDetailTable() {
           <DataGrid
             rows={wfhDetailDataList}
             columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
             initialState={{
               pagination: {
                 paginationModel: {
