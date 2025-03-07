@@ -7,8 +7,13 @@ import {
   fetchPendingWfhData,
   updateWfhRequestStatus,
 } from "../../service/WfhDetailService";
-import { WfhRequestStatus } from "../../Constants";
+import {
+  APPROVAL_NOTIFICATION_EVENT_NAME,
+  WfhRequestStatus,
+  WfhTypeDescription,
+} from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import notificationEmitter from "../../utility/EventEmitter";
 
 function WfhApprovalView() {
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
@@ -49,6 +54,18 @@ function WfhApprovalView() {
     loadData();
   };
 
+  useEffect(() => {
+    const handleMyEvent = () => {
+      loadData();
+    };
+
+    notificationEmitter.on(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+
+    return () => {
+      notificationEmitter.off(APPROVAL_NOTIFICATION_EVENT_NAME, handleMyEvent);
+    };
+  }, []);
+
   const columns: GridColDef<(typeof pendingWfhRequestData)[number]>[] = [
     {
       field: "employeeId",
@@ -76,14 +93,25 @@ function WfhApprovalView() {
       headerName: "Request Type",
       description: "This is the type of WFH which was requested",
       flex: 1,
-      minWidth: 100,
+      minWidth: 200,
+      renderCell: (params) => {
+        return (
+          <span>
+            {
+              WfhTypeDescription[
+                params.value as keyof typeof WfhTypeDescription
+              ]
+            }
+          </span>
+        );
+      },
     },
     {
       field: "requestDate",
       headerName: "Requested WFH Date",
       description: "This is the date for which the WFH was requested",
       flex: 1,
-      minWidth: 150,
+      minWidth: 250,
     },
     {
       field: "approveButton",

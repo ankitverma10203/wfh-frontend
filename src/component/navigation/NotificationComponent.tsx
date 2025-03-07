@@ -15,6 +15,8 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import { EmployeeNotificationData } from "../../Types";
+import notificationEmitter from "../../utility/EventEmitter";
+import { APPROVAL_NOTIFICATION_EVENT_NAME } from "../../Constants";
 
 function NotificationComponent() {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -67,10 +69,14 @@ function NotificationComponent() {
       );
 
       eventSource.onmessage = (event) => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          JSON.parse(event.data),
-        ]);
+        const notification: EmployeeNotificationData = JSON.parse(event.data);
+        setMessages((prevMessages) => [...prevMessages, notification]);
+
+        if (
+          notification.message.toLowerCase().includes("Approval".toLowerCase())
+        ) {
+          notificationEmitter.emit(APPROVAL_NOTIFICATION_EVENT_NAME);
+        }
       };
 
       eventSource.onerror = (error) => {
@@ -103,7 +109,7 @@ function NotificationComponent() {
         aria-label="NotificationsActive"
         color="default"
         onClick={handleClick}
-        sx={{margin: "0 10px"}}
+        sx={{ margin: "0 10px" }}
       >
         <Badge badgeContent={notificationCount} color="secondary">
           <NotificationsTwoTone fontSize="large" color="inherit" />
@@ -120,31 +126,37 @@ function NotificationComponent() {
           <MenuItem
             disableRipple
             sx={{
+              overflow: "auto",
+              whiteSpace: "wrap",
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
               "&:hover": {
                 backgroundColor: "transparent",
-                cursor: "default"
+                cursor: "default",
               },
             }}
           >
             <Button
               sx={{
                 minWidth: "60px",
-                marginLeft: "8px",
-              }}
-              onClick={() => onClear(messages.map((msg) => msg.notificationId))}
-            >
-              Clear All
-            </Button>
-            <Button
-              sx={{
-                minWidth: "60px",
-                marginLeft: "8px",
+                whiteSpace: "nowrap",
               }}
               onClick={() => toggleShowFullNotification()}
             >
               {showFullNotification
                 ? "Don't Show Full Notification"
                 : "Show Full Notification"}
+            </Button>
+            <Button
+              sx={{
+                minWidth: "60px",
+                whiteSpace: "nowrap",
+              }}
+              onClick={() => onClear(messages.map((msg) => msg.notificationId))}
+            >
+              Clear All
             </Button>
           </MenuItem>
         )}
@@ -155,7 +167,6 @@ function NotificationComponent() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
-              maxWidth: "50vw",
             }}
           >
             <Typography

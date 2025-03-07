@@ -99,7 +99,7 @@ function NavBar() {
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
             <NotificationComponent />
-            {!isSmallScreen && <Typography>{name}</Typography>}
+            {!isSmallScreen && <Typography sx={{whiteSpace: "nowrap"}}>{name}</Typography>}
 
             <Box>
               <IconButton
