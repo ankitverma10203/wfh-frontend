@@ -112,7 +112,10 @@ function NotificationComponent() {
         sx={{ margin: "0 10px" }}
       >
         <Badge badgeContent={notificationCount} color="secondary">
-          <NotificationsTwoTone fontSize="large" color="inherit" />
+          <NotificationsTwoTone
+            fontSize="large"
+            color={notificationCount === 0 ? "disabled" : "secondary"}
+          />
         </Badge>
       </IconButton>
       <Menu

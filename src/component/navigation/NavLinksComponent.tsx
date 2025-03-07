@@ -1,10 +1,11 @@
-import { Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getEmployeeData } from "../../service/EmployeeDetailService";
+import NavigationIcons from "./NavigationIcons";
 
 function NavLinksComponent() {
   const location = useLocation();
@@ -62,7 +63,7 @@ function NavLinksComponent() {
           fontWeight={location.pathname === navLink.link ? "bold" : "inherit"}
           underline="none"
           sx={{
-            marginLeft: 5,
+            margin: 1,
             fontSize: "large",
             whiteSpace: "nowrap",
             "&:hover": {
@@ -71,16 +72,15 @@ function NavLinksComponent() {
             },
           }}
         >
-          <Typography
+          <Box
             sx={{
-              display: "inline",
-              fontWeight: location.pathname === navLink.link
-                ? "bold"
-                : "inherit",
+              display: "inline-flex",
+              flexDirection: "row",
             }}
           >
-            {navLink.name}
-          </Typography>
+            <NavigationIcons navLinkName={navLink.name} />
+            <Typography sx={{ marginLeft: 1 }}>{navLink.name}</Typography>
+          </Box>
         </Link>
       ))}
     </>

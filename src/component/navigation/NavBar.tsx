@@ -89,7 +89,7 @@ function NavBar() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h3" component="span">
+          <Typography variant="h3" component="span" sx={{marginRight: 3}}>
             WFH
           </Typography>
           {!isMediumScreen && (
