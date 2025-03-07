@@ -17,7 +17,6 @@ import {
 import { requestWfh } from "../../service/WfhRequestService";
 import { format } from "date-fns/format";
 import { useAuth0 } from "@auth0/auth0-react";
-import EventEmitter from "eventemitter3";
 import wfhEventEmitter from "../../utility/EventEmitter";
 
 function WfhRequestView() {
