@@ -79,7 +79,7 @@ function NavLinksComponent() {
             }}
           >
             <NavigationIcons navLinkName={navLink.name} />
-            <Typography sx={{ marginLeft: 1 }}>{navLink.name}</Typography>
+            <Typography sx={{ marginLeft: 0.5 }}>{navLink.name}</Typography>
           </Box>
         </Link>
       ))}
