@@ -8,8 +8,6 @@ import { useTheme } from "@mui/material/styles";
 import {
   Avatar,
   Box,
-  Divider,
-  Drawer,
   IconButton,
   ListItemIcon,
   Menu,
@@ -17,10 +15,10 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Logout } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
+import NavDrawer from "./NavDrawer";
 
 function NavBar() {
   const theme = useTheme();
@@ -173,69 +171,13 @@ function NavBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => toggleDrawer(false)}
-        PaperProps={{
-          sx: {
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "20px",
-          },
-        }}
-      >
-        <IconButton sx={{ color: "white" }} onClick={() => toggleDrawer(false)}>
-          <ArrowBackIcon />
-        </IconButton>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            aria-label="AccountCircleRounded"
-            color="default"
-            size="small"
-            sx={{ ml: 2 }}
-          >
-            <Avatar sx={{ width: 100, height: 100 }} src={picture} />
-          </IconButton>
-          <Typography>{name}</Typography>
-          <Typography sx={{ fontWeight: "" }}>{user?.email}</Typography>
-        </Box>
-        <Divider
-          sx={{
-            margin: "10px",
-            width: "100%",
-            backgroundColor: "lightblue",
-            opacity: "30%",
-          }}
-        />
-        <Box
-          sx={{ marginRight: "35px", display: "flex", flexDirection: "column" }}
-        >
-          <NavLinksComponent />
-        </Box>
-        <Divider
-          sx={{
-            margin: "10px",
-            width: "100%",
-            backgroundColor: "lightblue",
-            opacity: "30%",
-          }}
-        />
-        <IconButton onClick={() => handleLogout} sx={{ color: "white" }} >
-          <Logout />
-          <Typography>Logout</Typography>
-        </IconButton>
-      </Drawer>
+      <NavDrawer
+        drawerOpen={drawerOpen}
+        toggleDrawer={toggleDrawer}
+        name={name}
+        email={user?.email || ""}
+        picture={picture}
+      />
     </>
   );
 }
