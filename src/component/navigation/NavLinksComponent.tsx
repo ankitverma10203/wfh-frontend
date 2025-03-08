@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getEmployeeData } from "../../service/EmployeeDetailService";
 import NavigationIcons from "./NavigationIcons";
+import React from "react";
 
 function NavLinksComponent() {
   const location = useLocation();
@@ -87,4 +88,4 @@ function NavLinksComponent() {
   );
 }
 
-export default NavLinksComponent;
+export default React.memo(NavLinksComponent);

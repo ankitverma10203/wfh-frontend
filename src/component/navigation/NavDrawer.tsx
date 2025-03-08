@@ -11,10 +11,14 @@ import {
 import NavLinksComponent from "./NavLinksComponent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MouseEvent } from "react";
 
 function NavDrawer(props: {
   drawerOpen: boolean;
   toggleDrawer: (open: boolean) => void;
+  handleLogout: (
+    event: MouseEvent<HTMLLIElement, globalThis.MouseEvent>
+  ) => void;
   picture: string;
   name: string;
   email: string;
@@ -58,7 +62,12 @@ function NavDrawer(props: {
           size="small"
           sx={{ ml: 2 }}
         >
-          <Avatar sx={{ width: 100, height: 100 }} src={props.picture} />
+          <Avatar
+            sx={{ width: 100, height: 100 }}
+            src={props.picture}
+            alt="User Image"
+            slotProps={{ img: { draggable: false } }}
+          />
         </IconButton>
         <Typography>{props.name}</Typography>
         <Typography sx={{ fontWeight: "" }}>{props.email}</Typography>

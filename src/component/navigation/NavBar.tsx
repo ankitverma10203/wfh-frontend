@@ -5,20 +5,12 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import NavLinksComponent from "./NavLinksComponent";
 import NotificationComponent from "./NotificationComponent";
 import { useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  Box,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  useMediaQuery,
-} from "@mui/material";
+import { Avatar, Box, IconButton, useMediaQuery } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Logout } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import NavDrawer from "./NavDrawer";
+import UserInfo from "./UserInfo";
 
 function NavBar() {
   const theme = useTheme();
@@ -105,68 +97,22 @@ function NavBar() {
                 size="small"
                 sx={{ ml: 2 }}
               >
-                <Avatar sx={{ width: 32, height: 32 }} src={picture} />
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  src={picture}
+                  alt="User Image"
+                  slotProps={{ img: { draggable: false } }}
+                />
               </IconButton>
 
-              <Menu
+              <UserInfo
                 anchorEl={anchorEl}
-                id="account-menu"
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <MenuItem
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                  disableRipple
-                >
-                  <Avatar sx={{ width: 100, height: 100 }} src={picture} />
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography>
-                    <b>Name:</b> {name}
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography>
-                    <b>Email:</b> {user?.email}
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={handleLogout}
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                    <Typography>Logout</Typography>
-                  </ListItemIcon>
-                </MenuItem>
-              </Menu>
+                handleClose={handleClose}
+                name={name}
+                picture={picture}
+                email={user?.email || ""}
+                handleLogout={handleLogout}
+              />
             </Box>
           </Box>
         </Toolbar>
@@ -174,6 +120,7 @@ function NavBar() {
       <NavDrawer
         drawerOpen={drawerOpen}
         toggleDrawer={toggleDrawer}
+        handleLogout={handleLogout}
         name={name}
         email={user?.email || ""}
         picture={picture}
