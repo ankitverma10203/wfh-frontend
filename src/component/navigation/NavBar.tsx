@@ -80,7 +80,7 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h3" component="span" sx={{ marginRight: 3 }}>
+          <Typography variant="h1" component="span" sx={{ marginRight: 2 }}>
             WFH
           </Typography>
           {!isMediumScreen && (
@@ -92,15 +92,11 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
             </Box>
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
-            <IconButton
-              aria-label="theme-mode"
-              onClick={props.toggleDarkMode}
-              size="large"
-            >
+            <IconButton aria-label="theme-mode" onClick={props.toggleDarkMode}>
               {props.darkMode ? (
-                <LightModeTwoToneIcon />
+                <LightModeTwoToneIcon fontSize="medium" />
               ) : (
-                <NightlightTwoToneIcon />
+                <NightlightTwoToneIcon fontSize="medium" />
               )}
             </IconButton>
 
@@ -112,7 +108,6 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
                 color="default"
                 onClick={handleClick}
                 size="large"
-                sx={{ ml: 2 }}
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}

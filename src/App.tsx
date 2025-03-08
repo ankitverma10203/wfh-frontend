@@ -33,44 +33,45 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Box
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              width: "100%",
-              minHeight: "100vh",
-              paddingBottom: "5vh"
-            }}
-          >
-            <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+          <BrowserRouter>
+            <Box
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                width: "100%",
+                minHeight: "100vh",
+              }}
+            >
+              <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-            <Box>
-              <Routes>
-                <Route path="/" element={<LoginForm />} />
-                <Route path="/callback" element={<Callback />} />
-                <Route path="/register" element={<RegisterForm />} />
-                <Route
-                  path="/dashboard"
-                  element={<AuthenticationGuard component={UserDashboard} />}
-                />
-                <Route
-                  path="/approval"
-                  element={<AuthenticationGuard component={ApprovalPage} />}
-                />
-                <Route
-                  path="/employeeDetails"
-                  element={
-                    <AuthenticationGuard component={EmployeeDetailPage} />
-                  }
-                />
-                <Route
-                  path="/wfhAllocation"
-                  element={<AuthenticationGuard component={WfhAllotmentPage} />}
-                />
-              </Routes>
+              <Box>
+                <Routes>
+                  <Route path="/" element={<LoginForm />} />
+                  <Route path="/callback" element={<Callback />} />
+                  <Route path="/register" element={<RegisterForm />} />
+                  <Route
+                    path="/dashboard"
+                    element={<AuthenticationGuard component={UserDashboard} />}
+                  />
+                  <Route
+                    path="/approval"
+                    element={<AuthenticationGuard component={ApprovalPage} />}
+                  />
+                  <Route
+                    path="/employeeDetails"
+                    element={
+                      <AuthenticationGuard component={EmployeeDetailPage} />
+                    }
+                  />
+                  <Route
+                    path="/wfhAllocation"
+                    element={
+                      <AuthenticationGuard component={WfhAllotmentPage} />
+                    }
+                  />
+                </Routes>
+              </Box>
             </Box>
-          </Box>
-        </BrowserRouter>
+          </BrowserRouter>
       </ThemeProvider>
     </>
   );

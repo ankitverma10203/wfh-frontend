@@ -26,20 +26,25 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       h1: {
         fontSize: "2rem",
         fontWeight: 700,
-        color: darkMode ? "#ffffff" : "#333",
+        color: darkMode ? "#ffffff" : "inherit",
       },
       h2: {
+        fontSize: "1.7rem",
+        fontWeight: 600,
+        color: darkMode ? "#ffffff" : "#333",
+      },
+      h3: {
         fontSize: "1.5rem",
         fontWeight: 600,
         color: darkMode ? "#ffffff" : "#333",
       },
       h5: {
-        fontSize: "1.5rem",
+        fontSize: "1.3rem",
         fontWeight: 100,
         color: darkMode ? "#ffffff" : "#333",
       },
       h6: {
-        fontSize: "1.5rem",
+        fontSize: "1.1rem",
         fontWeight: 100,
         color: darkMode ? "#ffffff" : "#333",
       },
