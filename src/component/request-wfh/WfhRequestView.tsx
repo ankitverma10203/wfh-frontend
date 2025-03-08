@@ -66,6 +66,7 @@ function WfhRequestView() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+            minWidth: {xs: "50vw"}
           }}
         >
           <Box
@@ -86,6 +87,7 @@ function WfhRequestView() {
               border: "1px solid lightgrey",
               borderRadius: "5px",
               backgroundColor: "white",
+              width: {xs: "100%"}
             }}
           >
             <TextField
