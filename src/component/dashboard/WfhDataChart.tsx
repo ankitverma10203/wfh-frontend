@@ -4,7 +4,7 @@ import { WFH_REQUEST_EVENT_NAME, WfhType } from "../../Constants";
 import { getWfhBalance } from "../../service/WfhDetailService";
 import { Doughnut } from "react-chartjs-2";
 import { ChartData, Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { generateNewColor } from "../../utility/ColorGenerationUtility";
 import { ChartOptions } from "chart.js";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -38,6 +38,7 @@ function WfhBalanceChart() {
     useState<ChartData<"doughnut">>(defaultChartData);
 
   const { getAccessTokenSilently } = useAuth0();
+  const theme = useTheme();
 
   const fetchWfhBalance = async () => {
     const token = await getAccessTokenSilently();
@@ -101,7 +102,7 @@ function WfhBalanceChart() {
       legend: {
         display: true,
         position: "bottom",
-        labels: { color: "black", boxWidth: 12 },
+        labels: { color: theme.typography.h6.color, boxWidth: 12 },
       },
     },
   };

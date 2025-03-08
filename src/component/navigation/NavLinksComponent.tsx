@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Link, Typography, useTheme } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -8,7 +8,10 @@ import { getEmployeeData } from "../../service/EmployeeDetailService";
 import NavigationIcons from "./NavigationIcons";
 import React from "react";
 
-function NavLinksComponent() {
+function NavLinksComponent(prop: {
+  highlightColor: string;
+  hoverColor: string;
+}) {
   const location = useLocation();
   const [navLinks, setNavLinks] = useState<any[]>(
     JSON.parse(Cookies.get("navLinks") || "[]") || []
@@ -17,6 +20,7 @@ function NavLinksComponent() {
   const [role, setRole] = useState<RoleOptions>(
     (Cookies.get("role") as RoleOptions) || RoleOptions.EMPLOYEE
   );
+  const theme = useTheme();
 
   const fetchEmployeeDetail = async () => {
     const token = await getAccessTokenSilently();
@@ -60,16 +64,18 @@ function NavLinksComponent() {
         <Link
           key={navLink.name}
           href={navLink.link}
-          color={location.pathname === navLink.link ? "cyan" : "inherit"}
-          fontWeight={location.pathname === navLink.link ? "bold" : "inherit"}
+          color={
+            location.pathname === navLink.link
+              ? prop.highlightColor
+              : "inherit"
+          }
           underline="none"
           sx={{
             margin: 1,
             fontSize: "large",
             whiteSpace: "nowrap",
             "&:hover": {
-              color: "lightcyan",
-              fontWeight: "bold",
+              color: prop.hoverColor,
             },
           }}
         >
@@ -80,7 +86,9 @@ function NavLinksComponent() {
             }}
           >
             <NavigationIcons navLinkName={navLink.name} />
-            <Typography sx={{ marginLeft: 0.5 }}>{navLink.name}</Typography>
+            <Typography sx={{ marginLeft: 0.5, color: "inherit" }}>
+              {navLink.name}
+            </Typography>
           </Box>
         </Link>
       ))}

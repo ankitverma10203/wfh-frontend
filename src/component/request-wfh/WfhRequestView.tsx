@@ -91,7 +91,6 @@ function WfhRequestView() {
               },
               border: "1px solid lightgrey",
               borderRadius: "5px",
-              backgroundColor: "white",
               width: {
                 lg: "fit-content",
                 md: "fit-content",

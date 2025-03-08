@@ -147,12 +147,16 @@ function WfhAllotmentPage() {
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        marginTop: "5vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Box
-        sx={{
-          marginTop: "5vh",
-          maxWidth: { lg: "55vw", md: "90vw", sm: "90vw", xs: "90vw" },
-        }}
+        sx={{ maxWidth: { lg: "55vw", md: "90vw", sm: "90vw", xs: "90vw" } }}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography component={"span"} variant="h5">
@@ -162,29 +166,26 @@ function WfhAllotmentPage() {
             <Refresh />
           </IconButton>
         </Box>
-
-        <Box>
-          <DataGrid
-            rows={rowData}
-            columns={columns}
-            loading={isLoading}
-            slotProps={{
-              loadingOverlay: {
-                variant: "skeleton",
-                noRowsVariant: "skeleton",
+        <DataGrid
+          rows={rowData}
+          columns={columns}
+          loading={isLoading}
+          slotProps={{
+            loadingOverlay: {
+              variant: "skeleton",
+              noRowsVariant: "skeleton",
+            },
+          }}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
               },
-            }}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            disableRowSelectionOnClick
-          />
-        </Box>
+            },
+          }}
+          pageSizeOptions={[5, 10]}
+          disableRowSelectionOnClick
+        />
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           {!isEditing ? (
             <Button
@@ -200,7 +201,11 @@ function WfhAllotmentPage() {
               <Button
                 variant="outlined"
                 color="success"
-                sx={{ width: "100%", height: "80%", margin: "10px 5px 10px 0" }}
+                sx={{
+                  width: "100%",
+                  height: "80%",
+                  margin: "10px 5px 10px 0",
+                }}
                 onClick={() => handleUpdate()}
                 hidden={!isEditing}
               >
@@ -209,7 +214,11 @@ function WfhAllotmentPage() {
               <Button
                 variant="outlined"
                 color="error"
-                sx={{ width: "100%", height: "80%", margin: "10px 0 10px 5px" }}
+                sx={{
+                  width: "100%",
+                  height: "80%",
+                  margin: "10px 0 10px 5px",
+                }}
                 onClick={() => handleDecline()}
               >
                 Discard
@@ -224,7 +233,7 @@ function WfhAllotmentPage() {
         onClose={() => setShowSnackbar(false)}
         message={snackbarMsg}
       />
-    </>
+    </Box>
   );
 }
 

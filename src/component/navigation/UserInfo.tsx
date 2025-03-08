@@ -35,6 +35,7 @@ function UserInfo(props: {
           display: "flex",
           direction: "column",
           justifyContent: "center",
+          padding: 2
         }}
         disableRipple
       >

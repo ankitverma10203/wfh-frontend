@@ -315,8 +315,15 @@ function EmployeeDetailPage() {
   ];
 
   return (
-    <>
-      <Box sx={{ minWidth: "50vw", maxWidth: "90vw", marginTop: "5vh" }}>
+    <Box
+      sx={{
+        marginTop: "5vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ minWidth: "50vw", maxWidth: "90vw" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography component={"span"} variant="h5">
             Employee Details
@@ -356,7 +363,7 @@ function EmployeeDetailPage() {
         onClose={() => setShowSnackbar(false)}
         message={snackbarMessage}
       />
-    </>
+    </Box>
   );
 }
 

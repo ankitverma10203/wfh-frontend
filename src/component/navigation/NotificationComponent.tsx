@@ -22,7 +22,7 @@ function NotificationComponent() {
   const { user, getAccessTokenSilently } = useAuth0();
   const [messages, setMessages] = useState<EmployeeNotificationData[]>([]);
   const [notificationCount, setNotificationCount] = useState<number>(
-    parseInt(Cookies.get("notificationCount") || messages.length.toString())
+    parseInt(Cookies.get("notificationCount") || "1")
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showFullNotification, setShowFullNotification] =
@@ -107,7 +107,6 @@ function NotificationComponent() {
     <>
       <IconButton
         aria-label="NotificationsActive"
-        color="default"
         onClick={handleClick}
         sx={{ margin: "0 10px" }}
       >

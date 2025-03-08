@@ -11,8 +11,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import NavDrawer from "./NavDrawer";
 import UserInfo from "./UserInfo";
+import LightModeTwoToneIcon from "@mui/icons-material/LightModeTwoTone";
+import NightlightTwoToneIcon from "@mui/icons-material/NightlightTwoTone";
 
-function NavBar() {
+function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -83,10 +85,25 @@ function NavBar() {
           </Typography>
           {!isMediumScreen && (
             <Box sx={{ flexGrow: 1 }}>
-              <NavLinksComponent />
+              <NavLinksComponent
+                highlightColor={theme.palette.secondary.main}
+                hoverColor={theme.palette.secondary.light}
+              />
             </Box>
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+            <IconButton
+              aria-label="theme-mode"
+              onClick={props.toggleDarkMode}
+              size="large"
+            >
+              {props.darkMode ? (
+                <LightModeTwoToneIcon />
+              ) : (
+                <NightlightTwoToneIcon />
+              )}
+            </IconButton>
+
             <NotificationComponent />
 
             <Box>
@@ -94,7 +111,7 @@ function NavBar() {
                 aria-label="AccountCircleRounded"
                 color="default"
                 onClick={handleClick}
-                size="small"
+                size="large"
                 sx={{ ml: 2 }}
               >
                 <Avatar

@@ -33,8 +33,6 @@ function NavDrawer(props: {
       onClose={() => props.toggleDrawer(false)}
       PaperProps={{
         sx: {
-          backgroundColor: theme.palette.primary.main,
-          color: "white",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -42,10 +40,7 @@ function NavDrawer(props: {
         },
       }}
     >
-      <IconButton
-        sx={{ color: "white" }}
-        onClick={() => props.toggleDrawer(false)}
-      >
+      <IconButton onClick={() => props.toggleDrawer(false)}>
         <ArrowBackIcon />
       </IconButton>
 
@@ -76,20 +71,23 @@ function NavDrawer(props: {
         sx={{
           margin: "10px",
           width: "100%",
-          backgroundColor: "lightblue",
+          backgroundColor: theme.palette.primary.light,
           opacity: "30%",
         }}
       />
       <Box
         sx={{ marginRight: "35px", display: "flex", flexDirection: "column" }}
       >
-        <NavLinksComponent />
+        <NavLinksComponent
+          highlightColor={theme.palette.secondary.dark}
+          hoverColor={theme.palette.secondary.dark}
+        />
       </Box>
       <Divider
         sx={{
           margin: "10px",
           width: "100%",
-          backgroundColor: "lightblue",
+          backgroundColor: theme.palette.primary.light,
           opacity: "30%",
         }}
       />
@@ -101,7 +99,6 @@ function NavDrawer(props: {
             },
           })
         }
-        sx={{ color: "white" }}
       >
         <Logout />
         <Typography>Logout</Typography>
