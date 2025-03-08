@@ -89,7 +89,7 @@ function NavBar() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h3" component="span" sx={{marginRight: 3}}>
+          <Typography variant="h3" component="span" sx={{ marginRight: 3 }}>
             WFH
           </Typography>
           {!isMediumScreen && (
@@ -99,7 +99,6 @@ function NavBar() {
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
             <NotificationComponent />
-            {!isSmallScreen && <Typography sx={{whiteSpace: "nowrap"}}>{name}</Typography>}
 
             <Box>
               <IconButton
@@ -213,7 +212,12 @@ function NavBar() {
           <Typography sx={{ fontWeight: "" }}>{user?.email}</Typography>
         </Box>
         <Divider
-          sx={{ margin: "10px", width: "100%", backgroundColor: "lightblue", opacity: "30%" }}
+          sx={{
+            margin: "10px",
+            width: "100%",
+            backgroundColor: "lightblue",
+            opacity: "30%",
+          }}
         />
         <Box
           sx={{ marginRight: "35px", display: "flex", flexDirection: "column" }}
@@ -221,10 +225,15 @@ function NavBar() {
           <NavLinksComponent />
         </Box>
         <Divider
-          sx={{ margin: "10px", width: "100%", backgroundColor: "lightblue", opacity: "30%"  }}
+          sx={{
+            margin: "10px",
+            width: "100%",
+            backgroundColor: "lightblue",
+            opacity: "30%",
+          }}
         />
-        <IconButton onClick={() => handleLogout} sx={{ color: "white" }}>
-          <Logout fontSize="small" />
+        <IconButton onClick={() => handleLogout} sx={{ color: "white" }} >
+          <Logout />
           <Typography>Logout</Typography>
         </IconButton>
       </Drawer>
