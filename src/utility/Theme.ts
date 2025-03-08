@@ -9,7 +9,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
         contrastText: "white"
       },
       secondary: {
-        main: darkMode ? "#f48fb1" : "#07fd97",
+        main: darkMode ? "#f48fb1" : "#60febd",
         light: darkMode ? "#fdd1e0" : "#b0fbdc",
         dark: darkMode ? "#f48fb1" : "#05a060"
       },

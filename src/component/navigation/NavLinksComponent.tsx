@@ -1,4 +1,4 @@
-import { Box, Link, Typography, useTheme } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
@@ -20,7 +20,6 @@ function NavLinksComponent(prop: {
   const [role, setRole] = useState<RoleOptions>(
     (Cookies.get("role") as RoleOptions) || RoleOptions.EMPLOYEE
   );
-  const theme = useTheme();
 
   const fetchEmployeeDetail = async () => {
     const token = await getAccessTokenSilently();
@@ -65,9 +64,7 @@ function NavLinksComponent(prop: {
           key={navLink.name}
           href={navLink.link}
           color={
-            location.pathname === navLink.link
-              ? prop.highlightColor
-              : "inherit"
+            location.pathname === navLink.link ? prop.highlightColor : "inherit"
           }
           underline="none"
           sx={{
