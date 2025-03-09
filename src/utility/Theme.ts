@@ -14,7 +14,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
         dark: darkMode ? "#f48fb1" : "#05a060",
       },
       background: {
-        default: darkMode ? "#383b40" : "#f5f5f5",
+        default: darkMode ? "#383b40" : "#eeeeee",
         paper: darkMode ? "#24292e" : "#f5f5f5",
       },
       text: {
@@ -45,17 +45,17 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       },
       h3: {
         fontSize: "1.5rem",
-        fontWeight: 600,
+        fontWeight: 500,
         color: darkMode ? "#ffffff" : "#333",
       },
       h5: {
         fontSize: "1.3rem",
-        fontWeight: 100,
+        fontWeight: 400,
         color: darkMode ? "#ffffff" : "#333",
       },
       h6: {
         fontSize: "1.1rem",
-        fontWeight: 100,
+        fontWeight: 300,
         color: darkMode ? "#ffffff" : "#333",
       },
       body1: {
