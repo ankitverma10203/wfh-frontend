@@ -22,7 +22,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
         secondary: darkMode ? "#f5f5f5" : "#757575",
       },
       success: {
-        main: darkMode ? "#60febd" : "#05a060",
+        main: darkMode ? "#2cc385" : "#05a060",
       },
       error: {
         main: darkMode ? "#ea5757" : "#cc0000",
