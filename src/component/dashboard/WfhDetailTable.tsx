@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { WfhDetailData } from "../../Types";
 import { getWfhDetail } from "../../service/WfhDetailService";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Refresh } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -18,6 +18,7 @@ function WfhDetailTable() {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { getAccessTokenSilently } = useAuth0();
+  const theme = useTheme();
 
   useEffect(() => {
     fetchWfhDetail();
@@ -72,16 +73,16 @@ function WfhDetailTable() {
       flex: 1,
       minWidth: 150,
       renderCell: (params) => {
-        let color = "red";
+        let color = theme.palette.error.main;
         switch (params.value) {
           case WfhRequestStatus.APPROVED:
-            color = "green";
+            color = theme.palette.success.main;
             break;
           case WfhRequestStatus.PENDING_APPROVAL:
             color = "rgb(204, 153, 0)";
             break;
           default:
-            color = "red";
+            color = theme.palette.error.main;
         }
 
         return <span style={{ color }}>{params.value}</span>;

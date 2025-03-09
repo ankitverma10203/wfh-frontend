@@ -5,7 +5,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
-        main: darkMode ? "#5cb1fe" : "#1976d2",
+        main: darkMode ? "#f48fb1" : "#0b6ac8",
         contrastText: "white",
       },
       secondary: {
@@ -20,6 +20,15 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       text: {
         primary: darkMode ? "#ffffff" : "#333",
         secondary: darkMode ? "#f5f5f5" : "#757575",
+      },
+      success: {
+        main: darkMode ? "#2cc385" : "#05a060",
+      },
+      error: {
+        main: darkMode ? "#ea5757" : "#cc0000",
+      },
+      warning: {
+        main: "rgb(204, 153, 0)",
       },
     },
     typography: {
