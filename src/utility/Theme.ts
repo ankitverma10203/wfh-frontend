@@ -5,7 +5,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
-        main: darkMode ? "#5cb1fe" : "#1976d2",
+        main: darkMode ? "#f48fb1" : "#0b6ac8",
         contrastText: "white",
       },
       secondary: {
