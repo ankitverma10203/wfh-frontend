@@ -20,8 +20,17 @@ import {
   fetchAllEmployeesData,
 } from "../../service/EmployeeDetailService";
 import { EmployeeDetailData } from "../../Types";
+import DraggableDialog from "../common/DraggableDialog";
 
 function EmployeeDetailPage() {
+  const defaultEmployeeUpdateData = {
+    id: "",
+    name: "",
+    role: RoleOptions.EMPLOYEE,
+    email: "",
+    managerId: "",
+    employeeStatus: EmployeeStatus.PENDING_APPROVAL,
+  };
   const [allEmployeesData, setAllEmployeeData] = useState<EmployeeDetailData[]>(
     []
   );
@@ -30,8 +39,6 @@ function EmployeeDetailPage() {
   );
   const [adminDetails, setAdminDetails] = useState<EmployeeDetailData[]>([]);
   const { user, getAccessTokenSilently } = useAuth0();
-  const [isEmpDetailUpdtSuccessful, setIsEmpDetailUpdtSuccessful] =
-    useState<boolean>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [employeeDetailGettingUpdated, setEmpDetailGettingUpdated] =
     useState<String | null>(null);
@@ -39,6 +46,9 @@ function EmployeeDetailPage() {
   const [prevEmployeeDetail, setPrevEmployeeDetail] =
     useState<EmployeeDetailData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [employeeUpdateData, setEmployeeUpdateData] =
+    useState<EmployeeDetailData>(defaultEmployeeUpdateData);
 
   useEffect(() => {
     loadData();
@@ -92,22 +102,17 @@ function EmployeeDetailPage() {
     setAllEmployeeData(newEmployeeData);
   }
 
-  const updateEmployeeInfo = async (
-    employeeDetail: EmployeeDetailData,
-    employeeStatus: EmployeeStatus
-  ) => {
+  const updateEmployeeInfo = async (employeeDetail: EmployeeDetailData) => {
     if (employeeDetail.managerId === "0") {
       employeeDetail.managerId = user?.sub || "0";
     }
-    employeeDetail.employeeStatus = employeeStatus;
     const token = await getAccessTokenSilently();
     const isEmployeeDetailUpdateSuccessful: boolean = await updateEmployeeData(
       employeeDetail,
       token
     );
-    setIsEmpDetailUpdtSuccessful(isEmployeeDetailUpdateSuccessful);
     setSnackbarMessage(
-      isEmpDetailUpdtSuccessful
+      isEmployeeDetailUpdateSuccessful
         ? "Employee Details updated successfully"
         : "Failed to update the Employee Details"
     );
@@ -123,7 +128,7 @@ function EmployeeDetailPage() {
 
   function handleUpdateOrEdit(row: EmployeeDetailData): void {
     employeeDetailGettingUpdated && employeeDetailGettingUpdated === row.id
-      ? updateEmployeeInfo(row, EmployeeStatus.ACTIVE)
+      ? handleConfirmChoice(row)
       : !employeeDetailGettingUpdated
       ? handleEmployeeDetailEdit(row)
       : (() => {
@@ -146,6 +151,21 @@ function EmployeeDetailPage() {
       setPrevEmployeeDetail(null);
     }
   }
+
+  function handleConfirmChoice(row: EmployeeDetailData) {
+    setEmployeeUpdateData(row);
+    setShowDialog(true);
+  }
+
+  const toggleShowDialog = (confirmation: boolean) => {
+    if (confirmation) {
+      updateEmployeeInfo(employeeUpdateData);
+    } else {
+      handleDiscardChange(employeeUpdateData);
+    }
+    setEmployeeUpdateData(defaultEmployeeUpdateData);
+    setShowDialog(false);
+  };
 
   const columns: GridColDef<(typeof allEmployeesData)[number]>[] = [
     {
@@ -210,8 +230,8 @@ function EmployeeDetailPage() {
           employeeDetailGettingUpdated === params.row.id ? (
           <Select
             required
-            id="status"
-            name="status"
+            id="employeeStatus"
+            name="employeeStatus"
             value={params.value}
             sx={getStylingForSelectInsideAtableCell()}
             onChange={(e) => {
@@ -276,8 +296,12 @@ function EmployeeDetailPage() {
         return (
           <Button
             variant="outlined"
-            color={employeeDetailGettingUpdated &&
-            employeeDetailGettingUpdated === params.row.id ? "success" : "primary"}
+            color={
+              employeeDetailGettingUpdated &&
+              employeeDetailGettingUpdated === params.row.id
+                ? "success"
+                : "primary"
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() => handleUpdateOrEdit(params.row)}
           >
@@ -363,6 +387,12 @@ function EmployeeDetailPage() {
         autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
         message={snackbarMessage}
+      />
+      <DraggableDialog
+        message="Do you want to proceed with the Update?"
+        showDialog={showDialog}
+        title="Confirmation"
+        toggleShowDialog={toggleShowDialog}
       />
     </Box>
   );
