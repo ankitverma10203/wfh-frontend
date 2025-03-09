@@ -14,6 +14,8 @@ import Cookies from "js-cookie";
 import { useState, useMemo, useEffect } from "react";
 import wfhTheme from "./utility/Theme";
 import React from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -33,6 +35,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <BrowserRouter>
             <Box
               sx={{
@@ -72,6 +75,7 @@ function App() {
               </Box>
             </Box>
           </BrowserRouter>
+        </LocalizationProvider>
       </ThemeProvider>
     </>
   );

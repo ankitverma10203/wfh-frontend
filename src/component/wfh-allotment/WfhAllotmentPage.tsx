@@ -15,6 +15,7 @@ import {
   fetchWfhRefQuantityData,
   updateWfhRefQuantityData,
 } from "../../service/WfhRefQuantityService";
+import DraggableDialog from "../common/DraggableDialog";
 
 function WfhAllotmentPage() {
   type WfhReqQuantityDataType = {
@@ -27,6 +28,7 @@ function WfhAllotmentPage() {
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarMsg, setSnackbarMsg] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
 
   useEffect(() => {
     fetchWfhRefQuantityDetail();
@@ -146,6 +148,15 @@ function WfhAllotmentPage() {
     fetchWfhRefQuantityDetail();
   }
 
+  const toggleShowDialog = (confirmation: boolean) => {
+    if (confirmation) {
+      handleUpdate();
+    } else {
+      handleDecline();
+    }
+    setShowDialog(false);
+  };
+
   return (
     <Box
       sx={{
@@ -206,7 +217,7 @@ function WfhAllotmentPage() {
                   height: "80%",
                   margin: "10px 5px 10px 0",
                 }}
-                onClick={() => handleUpdate()}
+                onClick={() => setShowDialog(true)}
                 hidden={!isEditing}
               >
                 Update
@@ -232,6 +243,12 @@ function WfhAllotmentPage() {
         autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
         message={snackbarMsg}
+      />
+      <DraggableDialog
+        message="Do you want to proceed with the Update?"
+        showDialog={showDialog}
+        title="Confirmation"
+        toggleShowDialog={toggleShowDialog}
       />
     </Box>
   );

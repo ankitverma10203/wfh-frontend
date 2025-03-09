@@ -15,9 +15,10 @@ import {
   WfhTypeDescription,
 } from "../../Constants";
 import { requestWfh } from "../../service/WfhRequestService";
-import { format } from "date-fns/format";
 import { useAuth0 } from "@auth0/auth0-react";
 import wfhEventEmitter from "../../utility/EventEmitter";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 function WfhRequestView() {
   const defaultWfhRequest: WfhRequest = {
@@ -31,10 +32,18 @@ function WfhRequestView() {
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleRequestTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
     setWfhRequest({
       ...wfhRequest,
       [e.target.name]: e.target.value,
+      requestedAt: new Date(),
+    });
+  };
+
+  const handleDateChange = (date: Dayjs | null) => {
+    setWfhRequest({
+      ...wfhRequest,
+      requestedWfhDate: date?.toDate() || new Date(),
       requestedAt: new Date(),
     });
   };
@@ -106,7 +115,7 @@ function WfhRequestView() {
               select
               name="wfhType"
               value={wfhRequest.wfhType}
-              onChange={handleChange}
+              onChange={handleRequestTypeChange}
               sx={{ minWidth: "fit-content" }}
             >
               {Object.values(WfhType).map((type) => (
@@ -116,19 +125,29 @@ function WfhRequestView() {
               ))}
             </TextField>
 
-            <TextField
-              required
-              id="wfhRequestDate"
-              label="WFH Request Date"
-              type="date"
-              name="requestedWfhDate"
-              defaultValue={format(new Date(), "yyyy-MM-dd")}
-              inputProps={{
-                min: format(new Date(), "yyyy-MM-dd"),
+            <Box
+              sx={{
+                maxWidth: { lg: "160px" },
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
-              onChange={handleChange}
-              sx={{ minWidth: "fit-content" }}
-            />
+            >
+              <DatePicker
+                label="WFH Request Date"
+                name="requestedWfhDate"
+                defaultValue={dayjs(new Date())}
+                minDate={dayjs(new Date())}
+                onChange={handleDateChange}
+                format="YYYY/MM/DD"
+                sx={{ width: "100%" }}
+                slotProps={{
+                  textField: {
+                    required: true,
+                  },
+                }}
+              />
+            </Box>
 
             <Button
               variant="outlined"
