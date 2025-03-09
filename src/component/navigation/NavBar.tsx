@@ -5,24 +5,16 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import NavLinksComponent from "./NavLinksComponent";
 import NotificationComponent from "./NotificationComponent";
 import { useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  useMediaQuery,
-} from "@mui/material";
+import { Avatar, Box, IconButton, useMediaQuery } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Logout } from "@mui/icons-material";
 import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
+import NavDrawer from "./NavDrawer";
+import UserInfo from "./UserInfo";
+import LightModeTwoToneIcon from "@mui/icons-material/LightModeTwoTone";
+import NightlightTwoToneIcon from "@mui/icons-material/NightlightTwoTone";
 
-function NavBar() {
+function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -88,15 +80,26 @@ function NavBar() {
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h3" component="span" sx={{ marginRight: 3 }}>
+          <Typography variant="h1" component="span" sx={{ marginRight: 2 }}>
             WFH
           </Typography>
           {!isMediumScreen && (
             <Box sx={{ flexGrow: 1 }}>
-              <NavLinksComponent />
+              <NavLinksComponent
+                highlightColor={theme.palette.secondary.main}
+                hoverColor={theme.palette.secondary.light}
+              />
             </Box>
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
+            <IconButton aria-label="theme-mode" onClick={props.toggleDarkMode}>
+              {props.darkMode ? (
+                <LightModeTwoToneIcon fontSize="medium" />
+              ) : (
+                <NightlightTwoToneIcon fontSize="medium" />
+              )}
+            </IconButton>
+
             <NotificationComponent />
 
             <Box>
@@ -104,138 +107,36 @@ function NavBar() {
                 aria-label="AccountCircleRounded"
                 color="default"
                 onClick={handleClick}
-                size="small"
-                sx={{ ml: 2 }}
+                size="large"
               >
-                <Avatar sx={{ width: 32, height: 32 }} src={picture} />
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  src={picture}
+                  alt="User Image"
+                  slotProps={{ img: { draggable: false } }}
+                />
               </IconButton>
 
-              <Menu
+              <UserInfo
                 anchorEl={anchorEl}
-                id="account-menu"
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <MenuItem
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                  disableRipple
-                >
-                  <Avatar sx={{ width: 100, height: 100 }} src={picture} />
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography>
-                    <b>Name:</b> {name}
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography>
-                    <b>Email:</b> {user?.email}
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={handleLogout}
-                  sx={{
-                    display: "flex",
-                    direction: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                    <Typography>Logout</Typography>
-                  </ListItemIcon>
-                </MenuItem>
-              </Menu>
+                handleClose={handleClose}
+                name={name}
+                picture={picture}
+                email={user?.email || ""}
+                handleLogout={handleLogout}
+              />
             </Box>
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => toggleDrawer(false)}
-        PaperProps={{
-          sx: {
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "20px",
-          },
-        }}
-      >
-        <IconButton sx={{ color: "white" }} onClick={() => toggleDrawer(false)}>
-          <ArrowBackIcon />
-        </IconButton>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            aria-label="AccountCircleRounded"
-            color="default"
-            size="small"
-            sx={{ ml: 2 }}
-          >
-            <Avatar sx={{ width: 100, height: 100 }} src={picture} />
-          </IconButton>
-          <Typography>{name}</Typography>
-          <Typography sx={{ fontWeight: "" }}>{user?.email}</Typography>
-        </Box>
-        <Divider
-          sx={{
-            margin: "10px",
-            width: "100%",
-            backgroundColor: "lightblue",
-            opacity: "30%",
-          }}
-        />
-        <Box
-          sx={{ marginRight: "35px", display: "flex", flexDirection: "column" }}
-        >
-          <NavLinksComponent />
-        </Box>
-        <Divider
-          sx={{
-            margin: "10px",
-            width: "100%",
-            backgroundColor: "lightblue",
-            opacity: "30%",
-          }}
-        />
-        <IconButton onClick={() => handleLogout} sx={{ color: "white" }} >
-          <Logout />
-          <Typography>Logout</Typography>
-        </IconButton>
-      </Drawer>
+      <NavDrawer
+        drawerOpen={drawerOpen}
+        toggleDrawer={toggleDrawer}
+        handleLogout={handleLogout}
+        name={name}
+        email={user?.email || ""}
+        picture={picture}
+      />
     </>
   );
 }
