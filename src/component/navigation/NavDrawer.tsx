@@ -71,7 +71,7 @@ function NavDrawer(props: {
         sx={{
           margin: "10px",
           width: "100%",
-          backgroundColor: theme.palette.primary.light,
+          backgroundColor: theme.palette.secondary.dark,
           opacity: "30%",
         }}
       />
@@ -87,7 +87,7 @@ function NavDrawer(props: {
         sx={{
           margin: "10px",
           width: "100%",
-          backgroundColor: theme.palette.primary.light,
+          backgroundColor: theme.palette.secondary.dark,
           opacity: "30%",
         }}
       />

@@ -6,15 +6,16 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       mode: darkMode ? "dark" : "light",
       primary: {
         main: darkMode ? "#5cb1fe" : "#1976d2",
-        contrastText: "white"
+        contrastText: "white",
       },
       secondary: {
         main: darkMode ? "#f48fb1" : "#60febd",
         light: darkMode ? "#fdd1e0" : "#b0fbdc",
-        dark: darkMode ? "#f48fb1" : "#05a060"
+        dark: darkMode ? "#f48fb1" : "#05a060",
       },
       background: {
-        default: darkMode ? "#131212" : "#f5f5f5",
+        default: darkMode ? "#383b40" : "#f5f5f5",
+        paper: darkMode ? "#24292e" : "#f5f5f5",
       },
       text: {
         primary: darkMode ? "#ffffff" : "#333",
