@@ -201,7 +201,6 @@ function WfhAllotmentPage() {
           {!isEditing ? (
             <Button
               variant="outlined"
-              color="success"
               sx={{ width: "100%", height: "80%", margin: "10px 5px 10px 0" }}
               onClick={() => handleEdit()}
             >

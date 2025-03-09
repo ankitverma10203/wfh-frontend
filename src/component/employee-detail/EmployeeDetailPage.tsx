@@ -276,7 +276,8 @@ function EmployeeDetailPage() {
         return (
           <Button
             variant="outlined"
-            color="success"
+            color={employeeDetailGettingUpdated &&
+            employeeDetailGettingUpdated === params.row.id ? "success" : "primary"}
             sx={{ width: "100%", height: "80%" }}
             onClick={() => handleUpdateOrEdit(params.row)}
           >
