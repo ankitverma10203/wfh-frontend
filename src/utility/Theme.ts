@@ -21,6 +21,15 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
         primary: darkMode ? "#ffffff" : "#333",
         secondary: darkMode ? "#f5f5f5" : "#757575",
       },
+      success: {
+        main: darkMode ? "#60febd" : "#05a060",
+      },
+      error: {
+        main: darkMode ? "#ea5757" : "#cc0000",
+      },
+      warning: {
+        main: "rgb(204, 153, 0)",
+      },
     },
     typography: {
       fontFamily: "Roboto, Arial, sans-serif",
