@@ -46,6 +46,7 @@ function UserDashboard() {
         <Box
           sx={{
             display: "flex",
+            justifyContent: "center",
             flexDirection: {
               lg: "row",
               md: "row",
