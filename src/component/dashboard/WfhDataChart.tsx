@@ -102,7 +102,7 @@ function WfhBalanceChart() {
       legend: {
         display: true,
         position: "bottom",
-        labels: { color: theme.typography.h6.color, boxWidth: 12 },
+        labels: { color: theme.palette.text.primary, boxWidth: 12 },
       },
     },
   };

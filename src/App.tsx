@@ -15,7 +15,7 @@ import { useState, useMemo, useEffect } from "react";
 import wfhTheme from "./utility/Theme";
 import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(
