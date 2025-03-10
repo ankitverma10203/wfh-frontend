@@ -30,7 +30,6 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       warning: {
         main: "rgb(204, 153, 0)",
       },
-      // divider: darkMode ? "#fff" : "rgba(0, 0, 0, 1)",
     },
     typography: {
       fontFamily: "Roboto, Arial, sans-serif",
