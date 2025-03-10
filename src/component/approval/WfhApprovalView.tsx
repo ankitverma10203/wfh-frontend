@@ -14,8 +14,12 @@ import {
 } from "../../Constants";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import wfhEventEmitter from "../../utility/EventEmitter";
+import DraggableDialog from "../common/DraggableDialog";
 
 function WfhApprovalView() {
+  const defaultEmployeeWfhStatus = WfhRequestStatus.PENDING_APPROVAL;
+  const defaultEmployeeUpdateId = 0;
+
   const [pendingWfhRequestData, setPendingWfhRequestData] = useState<
     EmployeeWfhDetailData[]
   >([]);
@@ -24,6 +28,12 @@ function WfhApprovalView() {
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [employeeUpdateId, setEmployeeUpdateId] = useState<number>(
+    defaultEmployeeUpdateId
+  );
+  const [employeeUpdateWfhStatus, setEmployeeUpdateWfhStatus] =
+    useState<WfhRequestStatus>(defaultEmployeeWfhStatus);
 
   useEffect(() => {
     loadData();
@@ -54,6 +64,21 @@ function WfhApprovalView() {
     setWfhReqStatus(wfhRequestStatus);
     setShowSnackbar(true);
     loadData();
+  };
+
+  function handleConfirmChoice(id: number, status: WfhRequestStatus) {
+    setEmployeeUpdateId(id);
+    setEmployeeUpdateWfhStatus(status);
+    setShowDialog(true);
+  }
+
+  const toggleShowDialog = (confirmation: boolean) => {
+    if (confirmation) {
+      handleWfhRequestApproval(employeeUpdateId, employeeUpdateWfhStatus);
+    }
+    setEmployeeUpdateId(defaultEmployeeUpdateId);
+    setEmployeeUpdateWfhStatus(defaultEmployeeWfhStatus);
+    setShowDialog(false);
   };
 
   useEffect(() => {
@@ -129,7 +154,7 @@ function WfhApprovalView() {
             color="success"
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
-              handleWfhRequestApproval(params.row.id, WfhRequestStatus.APPROVED)
+              handleConfirmChoice(params.row.id, WfhRequestStatus.APPROVED)
             }
           >
             Approve
@@ -151,7 +176,7 @@ function WfhApprovalView() {
             color="error"
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
-              handleWfhRequestApproval(params.row.id, WfhRequestStatus.REJECTED)
+              handleConfirmChoice(params.row.id, WfhRequestStatus.REJECTED)
             }
           >
             Reject
@@ -202,6 +227,12 @@ function WfhApprovalView() {
         autoHideDuration={6000}
         onClose={() => setShowSnackbar(false)}
         message={`WFH Request Status: ${wfhReqStatus}`}
+      />
+      <DraggableDialog
+        message="Do you want to proceed with the Update?"
+        showDialog={showDialog}
+        title="Confirmation"
+        toggleShowDialog={toggleShowDialog}
       />
     </>
   );

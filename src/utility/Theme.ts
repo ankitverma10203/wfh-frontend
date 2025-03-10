@@ -14,8 +14,8 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
         dark: darkMode ? "#f48fb1" : "#05a060",
       },
       background: {
-        default: darkMode ? "#383b40" : "#eeeeee",
-        paper: darkMode ? "#24292e" : "#f5f5f5",
+        default: darkMode ? "#383b40" : "#f2f2f2",
+        paper: darkMode ? "#24292e" : "#fff",
       },
       text: {
         primary: darkMode ? "#ffffff" : "#333",
@@ -30,6 +30,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       warning: {
         main: "rgb(204, 153, 0)",
       },
+      // divider: darkMode ? "#fff" : "rgba(0, 0, 0, 1)",
     },
     typography: {
       fontFamily: "Roboto, Arial, sans-serif",

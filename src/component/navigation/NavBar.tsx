@@ -11,8 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import NavDrawer from "./NavDrawer";
 import UserInfo from "./UserInfo";
-import LightModeTwoToneIcon from "@mui/icons-material/LightModeTwoTone";
-import NightlightTwoToneIcon from "@mui/icons-material/NightlightTwoTone";
+import DarkModeToggleSwitch from "./DarkModeToggleSwitch";
 
 function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
   const theme = useTheme();
@@ -92,13 +91,10 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
             </Box>
           )}
           <Box sx={{ ml: "auto", display: "flex", alignItems: "center" }}>
-            <IconButton aria-label="theme-mode" onClick={props.toggleDarkMode}>
-              {props.darkMode ? (
-                <LightModeTwoToneIcon fontSize="medium" />
-              ) : (
-                <NightlightTwoToneIcon fontSize="medium" />
-              )}
-            </IconButton>
+            <DarkModeToggleSwitch
+              darkMode={props.darkMode}
+              toggleDarkMode={props.toggleDarkMode}
+            />
 
             <NotificationComponent />
 

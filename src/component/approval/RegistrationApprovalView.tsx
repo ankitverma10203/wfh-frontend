@@ -25,8 +25,19 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import wfhEventEmitter from "../../utility/EventEmitter";
+import DraggableDialog from "../common/DraggableDialog";
 
 function RegistrationApprovalView() {
+  const defaultEmployeeUpdateData = {
+    id: "",
+    name: "",
+    role: RoleOptions.EMPLOYEE,
+    email: "",
+    managerId: "",
+    employeeStatus: EmployeeStatus.PENDING_APPROVAL,
+  };
+  const defaultEmployeeStatus = EmployeeStatus.ACTIVE;
+
   const [pendingEmployeeRegistrationData, setPendingEmployeeRegistrationData] =
     useState<EmployeeDetailData[]>([]);
   const [managerDetails, setManagerDetails] = useState<EmployeeDetailData[]>(
@@ -38,6 +49,11 @@ function RegistrationApprovalView() {
     useState<boolean>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [employeeUpdateData, setEmployeeUpdateData] =
+    useState<EmployeeDetailData>(defaultEmployeeUpdateData);
+  const [employeeUpdateStatus, setEmployeeUpdateStatus] =
+    useState<EmployeeStatus>(defaultEmployeeStatus);
 
   useEffect(() => {
     loadData();
@@ -110,6 +126,24 @@ function RegistrationApprovalView() {
     setIsEmpDetailUpdtSuccessful(isEmployeeDetailUpdateSuccessful);
     setShowSnackbar(true);
     loadData();
+  };
+
+  function handleConfirmChoice(
+    row: EmployeeDetailData,
+    status: EmployeeStatus
+  ) {
+    setEmployeeUpdateData(row);
+    setEmployeeUpdateStatus(status);
+    setShowDialog(true);
+  }
+
+  const toggleShowDialog = (confirmation: boolean) => {
+    if (confirmation) {
+      updateEmployeeInfo(employeeUpdateData, employeeUpdateStatus);
+    }
+    setEmployeeUpdateData(defaultEmployeeUpdateData);
+    setEmployeeUpdateStatus(defaultEmployeeStatus);
+    setShowDialog(false);
   };
 
   useEffect(() => {
@@ -222,7 +256,7 @@ function RegistrationApprovalView() {
             color="success"
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
-              updateEmployeeInfo(params.row, EmployeeStatus.ACTIVE)
+              handleConfirmChoice(params.row, EmployeeStatus.ACTIVE)
             }
           >
             Approve
@@ -244,7 +278,7 @@ function RegistrationApprovalView() {
             color="error"
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
-              updateEmployeeInfo(params.row, EmployeeStatus.INACTIVE)
+              handleConfirmChoice(params.row, EmployeeStatus.INACTIVE)
             }
           >
             Reject
@@ -299,6 +333,12 @@ function RegistrationApprovalView() {
             ? "Employee Details updated successfully"
             : "Failed to update the Employee Details"
         }
+      />
+      <DraggableDialog
+        message="Do you want to proceed with the Update?"
+        showDialog={showDialog}
+        title="Confirmation"
+        toggleShowDialog={toggleShowDialog}
       />
     </>
   );
