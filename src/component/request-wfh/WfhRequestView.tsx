@@ -5,6 +5,7 @@ import {
   Snackbar,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { WfhRequest, WfhResponse } from "../../Types";
@@ -31,6 +32,7 @@ function WfhRequestView() {
   const { getAccessTokenSilently } = useAuth0();
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+  const theme = useTheme();
 
   const handleRequestTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
     setWfhRequest({
@@ -98,7 +100,7 @@ function WfhRequestView() {
               alignItems: {
                 lg: "center",
               },
-              border: "1px solid lightgrey",
+              border: "1px solid",
               borderRadius: "5px",
               width: {
                 lg: "fit-content",
@@ -106,6 +108,7 @@ function WfhRequestView() {
                 sm: "fit-content",
                 xs: "100%",
               },
+              borderColor: theme.palette.mode === "dark" ? "gray" : "lightgray",
             }}
           >
             <TextField
