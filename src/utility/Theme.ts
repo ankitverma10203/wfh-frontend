@@ -30,7 +30,6 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       warning: {
         main: "rgb(204, 153, 0)",
       },
-      // divider: darkMode ? "#fff" : "rgba(0, 0, 0, 1)",
     },
     typography: {
       fontFamily: "Roboto, Arial, sans-serif",
@@ -56,7 +55,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       },
       h6: {
         fontSize: "1.1rem",
-        fontWeight: 300,
+        fontWeight: 100,
         color: darkMode ? "#ffffff" : "#333",
       },
       body1: {
@@ -66,6 +65,15 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
       body2: {
         fontSize: "0.875rem",
         color: darkMode ? "#fff" : "#333",
+      },
+    },
+    components: {
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            margin: "0.2rem",
+          },
+        },
       },
     },
   };
