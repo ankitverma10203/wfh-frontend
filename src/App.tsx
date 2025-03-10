@@ -40,7 +40,7 @@ function App() {
             <Box
               sx={{
                 backgroundColor: theme.palette.background.paper,
-                width: "100%",
+                width: "100vw",
                 minHeight: "100vh",
               }}
             >
