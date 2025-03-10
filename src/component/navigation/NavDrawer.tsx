@@ -99,6 +99,9 @@ function NavDrawer(props: {
             },
           })
         }
+        sx={{
+          borderRadius: "3rem",
+        }}
       >
         <Logout />
         <Typography>Logout</Typography>
