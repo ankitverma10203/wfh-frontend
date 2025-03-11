@@ -7,6 +7,7 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { MouseEvent } from "react";
+import { RoleOptions } from "../../Constants";
 
 function UserInfo(props: {
   anchorEl: null | HTMLElement;
@@ -17,6 +18,7 @@ function UserInfo(props: {
   name: string;
   picture: string;
   email: string;
+  role: RoleOptions;
 }) {
   return (
     <Menu
@@ -35,7 +37,7 @@ function UserInfo(props: {
           display: "flex",
           direction: "column",
           justifyContent: "center",
-          padding: 2
+          padding: 2,
         }}
         disableRipple
       >
@@ -68,6 +70,18 @@ function UserInfo(props: {
       >
         <Typography>
           <b>Email:</b> {props.email}
+        </Typography>
+      </MenuItem>
+      <MenuItem
+        disableRipple
+        sx={{
+          display: "flex",
+          direction: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Typography>
+          <b>Role:</b> {props.role}
         </Typography>
       </MenuItem>
       <MenuItem
