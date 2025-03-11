@@ -3,12 +3,11 @@ import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getEmployeeData } from "../../service/EmployeeDetailService";
 import NavigationIcons from "./NavigationIcons";
 import React from "react";
 
-function NavLinksComponent(prop: {
+function NavLinksComponent(props: {
+  role: RoleOptions;
   highlightColor: string;
   hoverColor: string;
 }) {
@@ -16,26 +15,6 @@ function NavLinksComponent(prop: {
   const [navLinks, setNavLinks] = useState<any[]>(
     JSON.parse(Cookies.get("navLinks") || "[]") || []
   );
-  const { getAccessTokenSilently } = useAuth0();
-  const [role, setRole] = useState<RoleOptions>(
-    (Cookies.get("role") as RoleOptions) || RoleOptions.EMPLOYEE
-  );
-
-  const fetchEmployeeDetail = async () => {
-    const token = await getAccessTokenSilently();
-    const employeeDetails = await getEmployeeData(token);
-    if (employeeDetails.role !== role) {
-      setRole(employeeDetails.role);
-    }
-  };
-
-  useEffect(() => {
-    fetchEmployeeDetail();
-  }, []);
-
-  useEffect(() => {
-    Cookies.set("role", role);
-  }, [role]);
 
   const getApplicableNavLinks = useCallback(
     (role: RoleOptions) => {
@@ -50,12 +29,12 @@ function NavLinksComponent(prop: {
         Cookies.set("navLinks", JSON.stringify(applicableNavLinks));
       }
     },
-    [role]
+    [props.role]
   );
 
   useEffect(() => {
-    getApplicableNavLinks(role);
-  }, [role]);
+    getApplicableNavLinks(props.role);
+  }, [props.role]);
 
   return (
     <>
@@ -64,7 +43,9 @@ function NavLinksComponent(prop: {
           key={navLink.name}
           href={navLink.link}
           color={
-            location.pathname === navLink.link ? prop.highlightColor : "inherit"
+            location.pathname === navLink.link
+              ? props.highlightColor
+              : "inherit"
           }
           underline="none"
           sx={{
@@ -72,7 +53,7 @@ function NavLinksComponent(prop: {
             fontSize: "large",
             whiteSpace: "nowrap",
             "&:hover": {
-              color: prop.hoverColor,
+              color: props.hoverColor,
             },
           }}
         >

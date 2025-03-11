@@ -12,15 +12,20 @@ import Cookies from "js-cookie";
 import NavDrawer from "./NavDrawer";
 import UserInfo from "./UserInfo";
 import DarkModeToggleSwitch from "./DarkModeToggleSwitch";
+import { RoleOptions } from "../../Constants";
+import { getEmployeeData } from "../../service/EmployeeDetailService";
 
 function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { user, logout } = useAuth0();
+  const { user, logout, getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState<string>(Cookies.get("name") || "");
   const [picture, setPicture] = useState<string>(Cookies.get("picture") || "");
+  const [role, setRole] = useState<RoleOptions>(
+    (Cookies.get("role") as RoleOptions) || RoleOptions.EMPLOYEE
+  );
 
   function handleClose(
     _event: {},
@@ -39,6 +44,22 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
       },
     });
   }
+
+  const fetchEmployeeDetail = async () => {
+    const token = await getAccessTokenSilently();
+    const employeeDetails = await getEmployeeData(token);
+    if (employeeDetails.role !== role) {
+      setRole(employeeDetails.role);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployeeDetail();
+  }, []);
+
+  useEffect(() => {
+    Cookies.set("role", role);
+  }, [role]);
 
   function handleClick(
     event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
@@ -85,6 +106,7 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
           {!isMediumScreen && (
             <Box sx={{ flexGrow: 1 }}>
               <NavLinksComponent
+                role={role}
                 highlightColor={theme.palette.secondary.main}
                 hoverColor={theme.palette.secondary.light}
               />
@@ -119,6 +141,7 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
                 name={name}
                 picture={picture}
                 email={user?.email || ""}
+                role={role}
                 handleLogout={handleLogout}
               />
             </Box>
@@ -132,6 +155,7 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
         name={name}
         email={user?.email || ""}
         picture={picture}
+        role={role}
       />
     </>
   );

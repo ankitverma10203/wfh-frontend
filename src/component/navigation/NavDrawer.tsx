@@ -12,6 +12,7 @@ import NavLinksComponent from "./NavLinksComponent";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAuth0 } from "@auth0/auth0-react";
 import { MouseEvent } from "react";
+import { RoleOptions } from "../../Constants";
 
 function NavDrawer(props: {
   drawerOpen: boolean;
@@ -22,6 +23,7 @@ function NavDrawer(props: {
   picture: string;
   name: string;
   email: string;
+  role: RoleOptions;
 }) {
   const theme = useTheme();
   const { logout } = useAuth0();
@@ -79,6 +81,7 @@ function NavDrawer(props: {
         sx={{ marginRight: "35px", display: "flex", flexDirection: "column" }}
       >
         <NavLinksComponent
+          role={props.role}
           highlightColor={theme.palette.secondary.dark}
           hoverColor={theme.palette.secondary.dark}
         />
