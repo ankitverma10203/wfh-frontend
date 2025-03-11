@@ -1,6 +1,7 @@
 import {
   EmployeeStatus,
   LoginStatus,
+  NotificationType,
   RoleOptions,
   WfhRequestStatus,
   WfhType,
@@ -92,6 +93,7 @@ export type EmployeeWfhDetailData = {
 
 export type EmployeeNotificationData = {
   notificationId: number;
+  notificationType: NotificationType;
   message: string;
   createdTimestamp: string;
 };
