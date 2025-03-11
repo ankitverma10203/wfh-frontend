@@ -46,7 +46,14 @@ function App() {
             >
               <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-              <Box sx={{ marginBottom: "5vh" }}>
+              <Box
+                sx={{
+                  marginBottom: "5vh",
+                  display: "flex",
+                  direction: "column",
+                  justifyContent: "center",
+                }}
+              >
                 <Routes>
                   <Route path="/" element={<LoginForm />} />
                   <Route path="/callback" element={<Callback />} />
