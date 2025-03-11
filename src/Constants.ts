@@ -47,10 +47,10 @@ export enum EmployeeStatus {
 }
 
 export enum NAV_LINK_NAME {
-  DASHBOARD="Dashboard",
-  APPROVALS="Approvals",
-  EMPLOYEE_DETAILS="Employee Details",
-  WFH_ALLOCATION="WFH Allocation"
+  DASHBOARD = "Dashboard",
+  APPROVALS = "Approvals",
+  EMPLOYEE_DETAILS = "Employee Details",
+  WFH_ALLOCATION = "WFH Allocation",
 }
 
 export const NAV_LINKS: NavLink[] = [
@@ -78,3 +78,17 @@ export const NAV_LINKS: NavLink[] = [
 
 export const APPROVAL_NOTIFICATION_EVENT_NAME = "approval-notification-event";
 export const WFH_REQUEST_EVENT_NAME = "wfh-request-event";
+
+export enum NotificationType {
+  APPROVAL_REQUEST_REGISTRATION = "APPROVAL_REQUEST_REGISTRATION",
+  APPROVAL_REQUEST_WFH = "APPROVAL_REQUEST_WFH",
+  UPDATE_EMPLOYEE_DETAIL = "UPDATE_EMPLOYEE_DETAIL",
+  UPDATE_WFH_REQUEST = "UPDATE_WFH_REQUEST",
+}
+
+export const NotificationLinks = {
+  [NotificationType.APPROVAL_REQUEST_REGISTRATION]: NAV_LINK_NAME.APPROVALS,
+  [NotificationType.APPROVAL_REQUEST_WFH]: NAV_LINK_NAME.APPROVALS,
+  [NotificationType.UPDATE_EMPLOYEE_DETAIL]: NAV_LINK_NAME.DASHBOARD,
+  [NotificationType.UPDATE_WFH_REQUEST]: NAV_LINK_NAME.DASHBOARD,
+};

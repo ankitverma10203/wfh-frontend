@@ -67,7 +67,8 @@ function NavDrawer(props: {
           />
         </IconButton>
         <Typography>{props.name}</Typography>
-        <Typography sx={{ fontWeight: "" }}>{props.email}</Typography>
+        <Typography>{props.email}</Typography>
+        <Typography>Role: {props.role}</Typography>
       </Box>
       <Divider
         sx={{

@@ -16,7 +16,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Cookies from "js-cookie";
 import { EmployeeNotificationData } from "../../Types";
 import wfhEventEmitter from "../../utility/EventEmitter";
-import { APPROVAL_NOTIFICATION_EVENT_NAME } from "../../Constants";
+import {
+  APPROVAL_NOTIFICATION_EVENT_NAME,
+  NAV_LINKS,
+  NotificationLinks,
+  NotificationType,
+} from "../../Constants";
+import { useNavigate } from "react-router-dom";
 
 function NotificationComponent() {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -27,6 +33,7 @@ function NotificationComponent() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showFullNotification, setShowFullNotification] =
     useState<boolean>(false);
+  const navigate = useNavigate();
 
   function handleClose(
     _event: {},
@@ -90,7 +97,7 @@ function NotificationComponent() {
     }
   }, [user?.sub, messages]);
 
-  async function onClear(notificationIds: number[]): Promise<void> {
+  async function clearNotification(notificationIds: number[]): Promise<void> {
     const updatedMessages = messages.filter(
       (msg) => !notificationIds.includes(msg.notificationId)
     );
@@ -103,12 +110,23 @@ function NotificationComponent() {
     setShowFullNotification(!showFullNotification);
   }
 
+  function navigateToPage(
+    notificationId: number,
+    notificationType: NotificationType
+  ): void {
+    if (notificationId) {
+      const link = NAV_LINKS.filter(
+        (navLink) => navLink.name === NotificationLinks[notificationType]
+      )[0]?.link;
+      navigate(link);
+      clearNotification([notificationId]);
+      setAnchorEl(null);
+    }
+  }
+
   return (
     <>
-      <IconButton
-        aria-label="NotificationsActive"
-        onClick={handleClick}
-      >
+      <IconButton aria-label="NotificationsActive" onClick={handleClick}>
         <Badge badgeContent={notificationCount} color="secondary">
           <NotificationsTwoTone
             fontSize="large"
@@ -155,7 +173,9 @@ function NotificationComponent() {
                 minWidth: "60px",
                 whiteSpace: "nowrap",
               }}
-              onClick={() => onClear(messages.map((msg) => msg.notificationId))}
+              onClick={() =>
+                clearNotification(messages.map((msg) => msg.notificationId))
+              }
             >
               Clear All
             </Button>
@@ -169,6 +189,9 @@ function NotificationComponent() {
               justifyContent: "space-between",
               alignItems: "flex-start",
             }}
+            onClick={() =>
+              navigateToPage(message.notificationId, message.notificationType)
+            }
           >
             <Typography
               sx={
@@ -196,7 +219,7 @@ function NotificationComponent() {
                 minWidth: "60px",
                 marginLeft: "8px",
               }}
-              onClick={() => onClear([message.notificationId])}
+              onClick={() => clearNotification([message.notificationId])}
             >
               Clear
             </Button>
