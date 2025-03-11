@@ -177,26 +177,29 @@ function WfhAllotmentPage() {
             <Refresh />
           </IconButton>
         </Box>
-        <DataGrid
-          rows={rowData}
-          columns={columns}
-          loading={isLoading}
-          slotProps={{
-            loadingOverlay: {
-              variant: "skeleton",
-              noRowsVariant: "skeleton",
-            },
-          }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
+        <Box>
+          <DataGrid
+            rows={rowData}
+            columns={columns}
+            loading={isLoading}
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
               },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          disableRowSelectionOnClick
-        />
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            disableRowSelectionOnClick
+          />
+        </Box>
+
         <Box sx={{ display: "flex", flexDirection: "row" }}>
           {!isEditing ? (
             <Button
