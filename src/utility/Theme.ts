@@ -69,7 +69,7 @@ const wfhTheme = (darkMode: boolean): ThemeOptions => {
     },
     breakpoints: {
       unit: "rem",
-      values: { xs: 0, sm: 35, md: 58, lg: 70, xl: 90 },
+      values: { xs: 0, sm: 42, md: 70, lg: 80, xl: 90 },
     },
     components: {
       MuiIconButton: {
