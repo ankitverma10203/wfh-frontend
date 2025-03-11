@@ -111,7 +111,7 @@ function WfhBalanceChart() {
     <>
       <Box
         sx={{
-          margin: "5px",
+          margin: "0.5rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

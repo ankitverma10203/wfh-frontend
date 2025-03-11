@@ -11,14 +11,21 @@ function UserDashboard() {
           display: "flex",
           maxWidth: "98vw",
           flexDirection: {
+            xl: "row",
             lg: "row",
             md: "column",
             sm: "column",
             xs: "column",
           },
-          alignItems: { lg: "start", md: "center", sm: "center", xs: "center" },
+          alignItems: {
+            xl: "start",
+            lg: "start",
+            md: "center",
+            sm: "center",
+            xs: "center",
+          },
           justifyContent: "space-evenly",
-          paddingTop: "30px",
+          paddingTop: "2rem",
         }}
       >
         <Box
@@ -31,8 +38,9 @@ function UserDashboard() {
               xs: "column",
             },
             justifyContent: "space-evenly",
-            margin: "10px",
+            margin: "2rem",
             width: {
+              xl: "fit-content",
               lg: "40vw",
               md: "80vw",
               sm: "80vw",
@@ -53,8 +61,9 @@ function UserDashboard() {
               sm: "row",
               xs: "column",
             },
-            margin: "10px",
+            margin: "2rem",
             width: {
+              xl: "fit-content",
               lg: "60vw",
               md: "90vw",
               sm: "90vw",

@@ -63,13 +63,15 @@ function WfhRequestView() {
     <>
       <Box
         sx={{
-          margin: "5px",
+          margin: "0.5rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Typography variant="h5">Request WFH</Typography>
+        <Typography component={"span"} variant="h5">
+          Request WFH
+        </Typography>
         <Box
           sx={{
             height: "100%",
@@ -86,7 +88,7 @@ function WfhRequestView() {
           }}
         >
           <Box
-            my={1}
+            my={2.5}
             gap={2}
             p={3}
             sx={{
