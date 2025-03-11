@@ -114,7 +114,7 @@ function WfhRequestView() {
             <TextField
               required
               id="wfhType"
-              label="WFH Type:"
+              label="WFH Type"
               select
               name="wfhType"
               value={wfhRequest.wfhType}
