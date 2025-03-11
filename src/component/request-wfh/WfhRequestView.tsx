@@ -130,7 +130,7 @@ function WfhRequestView() {
 
             <Box
               sx={{
-                maxWidth: { lg: "160px" },
+                maxWidth: { lg: "11rem" },
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
