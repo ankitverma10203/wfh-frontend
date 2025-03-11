@@ -108,7 +108,7 @@ function WfhDetailTable() {
     <>
       <Box
         sx={{
-          margin: "5px",
+          margin: "0.5rem",
           maxWidth: { lg: "55vw", md: "90vw", sm: "90vw", xs: "90vw" },
         }}
       >
