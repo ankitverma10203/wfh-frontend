@@ -155,6 +155,7 @@ function NavBar(props: { darkMode: boolean; toggleDarkMode: () => void }) {
         name={name}
         email={user?.email || ""}
         picture={picture}
+        role={role}
       />
     </>
   );
