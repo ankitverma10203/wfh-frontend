@@ -118,9 +118,12 @@ function NotificationComponent() {
       const link = NAV_LINKS.filter(
         (navLink) => navLink.name === NotificationLinks[notificationType]
       )[0]?.link;
-      navigate(link);
-      clearNotification([notificationId]);
-      setAnchorEl(null);
+
+      if (link) {
+        navigate(link);
+        clearNotification([notificationId]);
+        setAnchorEl(null);
+      }
     }
   }
 

@@ -18,7 +18,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(
-    Cookies.get("darkMode") === "true"
+    Cookies.get("darkMode")
+      ? Cookies.get("darkMode") === "true"
+      : window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
   );
 
   const theme = useMemo(() => createTheme(wfhTheme(darkMode)), [darkMode]);
