@@ -24,12 +24,12 @@ function DarkModeToggleSwitch(props: {
         <NightlightTwoToneIcon
           fontSize="medium"
           color={props.darkMode ? "secondary" : "disabled"}
-          sx={{ margin: "0 0.2rem 0 0" }}
+          sx={{ margin: "0 0.2rem 0 0", transition: "color 0.7s ease" }}
         />
         <LightModeTwoToneIcon
           fontSize="medium"
           color={props.darkMode ? "disabled" : "secondary"}
-          sx={{ margin: "0 0 0 0.2rem" }}
+          sx={{ margin: "0 0 0 0.2rem", transition: "color 0.7s ease" }}
         />
       </IconButton>
     </Box>

@@ -40,24 +40,28 @@ function NavLinksComponent(props: {
     <>
       {navLinks.map((navLink) => (
         <Box
-        key={navLink.name}
-        component={RouterLink}
-        to={navLink.link}
-        sx={{
-          margin: 1,
-          fontSize: "large",
-          whiteSpace: "nowrap",
-          color: location.pathname === navLink.link ? props.highlightColor : "inherit",
-          textDecoration: "none",
-          "&:hover": {
-            color: props.hoverColor,
-          },
-        }}
-      >
+          key={navLink.name}
+          component={RouterLink}
+          to={navLink.link}
+          sx={{
+            margin: 1,
+            fontSize: "large",
+            whiteSpace: "nowrap",
+            color:
+              location.pathname === navLink.link
+                ? props.highlightColor
+                : "inherit",
+            textDecoration: "none",
+            "&:hover": {
+              color: props.hoverColor,
+            },
+          }}
+        >
           <Box
             sx={{
               display: "inline-flex",
               flexDirection: "row",
+              transition: "color 0.5s ease",
             }}
           >
             <NavigationIcons navLinkName={navLink.name} />
