@@ -105,6 +105,7 @@ function NavDrawer(props: {
         }
         sx={{
           borderRadius: "3rem",
+          marginBottom: "10vh"
         }}
       >
         <Logout />
