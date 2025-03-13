@@ -50,6 +50,7 @@ function App() {
                 backgroundColor: theme.palette.background.paper,
                 width: "100%",
                 minHeight: "100vh",
+                transition: "background-color 0.5s ease",
               }}
             >
               <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
