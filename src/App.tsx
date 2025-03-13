@@ -1,20 +1,26 @@
 import "./App.css";
-import LoginForm from "./component/authentication/LoginForm";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import UserDashboard from "./component/dashboard/UserDashboard";
-import ApprovalPage from "./component/approval/ApprovalPage";
 import { AuthenticationGuard } from "./component/authentication/AuthenticationGuard";
-import Callback from "./component/authentication/Callback";
 import NavBar from "./component/navigation/NavBar";
-import EmployeeDetailPage from "./component/employee-detail/EmployeeDetailPage";
-import WfhAllotmentPage from "./component/wfh-allotment/WfhAllotmentPage";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Cookies from "js-cookie";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense, lazy } from "react";
 import wfhTheme from "./utility/Theme";
 import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import PageLoader from "./component/authentication/PageLoader";
+
+const LoginForm = lazy(() => import("./component/authentication/LoginForm"));
+const Callback = lazy(() => import("./component/authentication/Callback"));
+const UserDashboard = lazy(() => import("./component/dashboard/UserDashboard"));
+const ApprovalPage = lazy(() => import("./component/approval/ApprovalPage"));
+const EmployeeDetailPage = lazy(
+  () => import("./component/employee-detail/EmployeeDetailPage")
+);
+const WfhAllotmentPage = lazy(
+  () => import("./component/wfh-allotment/WfhAllotmentPage")
+);
 
 function App() {
   const [darkMode, setDarkMode] = useState<boolean>(
@@ -58,34 +64,38 @@ function App() {
                       justifyContent: "center",
                     }}
                   >
-                    <Routes>
-                      <Route path="/" element={<LoginForm />} />
-                      <Route path="/callback" element={<Callback />} />
-                      <Route
-                        path="/dashboard"
-                        element={
-                          <AuthenticationGuard component={UserDashboard} />
-                        }
-                      />
-                      <Route
-                        path="/approval"
-                        element={
-                          <AuthenticationGuard component={ApprovalPage} />
-                        }
-                      />
-                      <Route
-                        path="/employeeDetails"
-                        element={
-                          <AuthenticationGuard component={EmployeeDetailPage} />
-                        }
-                      />
-                      <Route
-                        path="/wfhAllocation"
-                        element={
-                          <AuthenticationGuard component={WfhAllotmentPage} />
-                        }
-                      />
-                    </Routes>
+                    <Suspense fallback={<PageLoader />}>
+                      <Routes>
+                        <Route path="/" element={<LoginForm />} />
+                        <Route path="/callback" element={<Callback />} />
+                        <Route
+                          path="/dashboard"
+                          element={
+                            <AuthenticationGuard component={UserDashboard} />
+                          }
+                        />
+                        <Route
+                          path="/approval"
+                          element={
+                            <AuthenticationGuard component={ApprovalPage} />
+                          }
+                        />
+                        <Route
+                          path="/employeeDetails"
+                          element={
+                            <AuthenticationGuard
+                              component={EmployeeDetailPage}
+                            />
+                          }
+                        />
+                        <Route
+                          path="/wfhAllocation"
+                          element={
+                            <AuthenticationGuard component={WfhAllotmentPage} />
+                          }
+                        />
+                      </Routes>
+                    </Suspense>
                   </Box>
                 ),
                 []
