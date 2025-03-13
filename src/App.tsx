@@ -48,39 +48,48 @@ function App() {
             >
               <NavBar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-              <Box
-                sx={{
-                  marginBottom: "5vh",
-                  display: "flex",
-                  direction: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <Routes>
-                  <Route path="/" element={<LoginForm />} />
-                  <Route path="/callback" element={<Callback />} />
-                  <Route
-                    path="/dashboard"
-                    element={<AuthenticationGuard component={UserDashboard} />}
-                  />
-                  <Route
-                    path="/approval"
-                    element={<AuthenticationGuard component={ApprovalPage} />}
-                  />
-                  <Route
-                    path="/employeeDetails"
-                    element={
-                      <AuthenticationGuard component={EmployeeDetailPage} />
-                    }
-                  />
-                  <Route
-                    path="/wfhAllocation"
-                    element={
-                      <AuthenticationGuard component={WfhAllotmentPage} />
-                    }
-                  />
-                </Routes>
-              </Box>
+              {useMemo(
+                () => (
+                  <Box
+                    sx={{
+                      marginBottom: "5vh",
+                      display: "flex",
+                      direction: "column",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Routes>
+                      <Route path="/" element={<LoginForm />} />
+                      <Route path="/callback" element={<Callback />} />
+                      <Route
+                        path="/dashboard"
+                        element={
+                          <AuthenticationGuard component={UserDashboard} />
+                        }
+                      />
+                      <Route
+                        path="/approval"
+                        element={
+                          <AuthenticationGuard component={ApprovalPage} />
+                        }
+                      />
+                      <Route
+                        path="/employeeDetails"
+                        element={
+                          <AuthenticationGuard component={EmployeeDetailPage} />
+                        }
+                      />
+                      <Route
+                        path="/wfhAllocation"
+                        element={
+                          <AuthenticationGuard component={WfhAllotmentPage} />
+                        }
+                      />
+                    </Routes>
+                  </Box>
+                ),
+                []
+              )}
             </Box>
           </BrowserRouter>
         </LocalizationProvider>

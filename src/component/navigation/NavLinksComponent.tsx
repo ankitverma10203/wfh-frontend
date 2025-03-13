@@ -1,8 +1,8 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { NAV_LINKS, RoleOptions } from "../../Constants";
 import { useState, useCallback, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link as RouterLink } from "react-router-dom";
 import NavigationIcons from "./NavigationIcons";
 import React from "react";
 
@@ -39,24 +39,21 @@ function NavLinksComponent(props: {
   return (
     <>
       {navLinks.map((navLink) => (
-        <Link
-          key={navLink.name}
-          href={navLink.link}
-          color={
-            location.pathname === navLink.link
-              ? props.highlightColor
-              : "inherit"
-          }
-          underline="none"
-          sx={{
-            margin: 1,
-            fontSize: "large",
-            whiteSpace: "nowrap",
-            "&:hover": {
-              color: props.hoverColor,
-            },
-          }}
-        >
+        <Box
+        key={navLink.name}
+        component={RouterLink}
+        to={navLink.link}
+        sx={{
+          margin: 1,
+          fontSize: "large",
+          whiteSpace: "nowrap",
+          color: location.pathname === navLink.link ? props.highlightColor : "inherit",
+          textDecoration: "none",
+          "&:hover": {
+            color: props.hoverColor,
+          },
+        }}
+      >
           <Box
             sx={{
               display: "inline-flex",
@@ -68,7 +65,7 @@ function NavLinksComponent(props: {
               {navLink.name}
             </Typography>
           </Box>
-        </Link>
+        </Box>
       ))}
     </>
   );
