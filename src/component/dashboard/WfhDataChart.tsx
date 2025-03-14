@@ -120,7 +120,7 @@ function WfhBalanceChart() {
         <Typography component={"span"} variant="h5">
           WFH Balance
         </Typography>
-        <IconButton onClick={fetchWfhBalance}>
+        <IconButton aria-label="refresh" onClick={fetchWfhBalance}>
           <Refresh />
         </IconButton>
         <Box

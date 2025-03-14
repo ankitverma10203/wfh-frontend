@@ -104,6 +104,8 @@ function WfhAllotmentPage() {
       renderCell: (params) => {
         return (
           <OutlinedInput
+            id="wfh-quantity"
+            aria-label="wfh quantity"
             sx={getStylingForSelectInsideAtableCell()}
             disabled={!isEditing}
             value={params.value}
@@ -173,7 +175,7 @@ function WfhAllotmentPage() {
           <Typography component={"span"} variant="h5">
             WFH Quantity Reference
           </Typography>
-          <IconButton onClick={fetchWfhRefQuantityDetail}>
+          <IconButton aria-label="refresh" onClick={fetchWfhRefQuantityDetail}>
             <Refresh />
           </IconButton>
         </Box>

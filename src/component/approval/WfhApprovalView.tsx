@@ -193,7 +193,7 @@ function WfhApprovalView() {
           <Typography component={"span"} variant="h5">
             Pending WFH Requests
           </Typography>
-          <IconButton onClick={loadData}>
+          <IconButton aria-label="refresh" onClick={loadData}>
             <Refresh />
           </IconButton>
         </Box>

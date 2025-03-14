@@ -295,7 +295,7 @@ function RegistrationApprovalView() {
           <Typography component={"span"} variant="h5">
             Pending Registrations
           </Typography>
-          <IconButton onClick={loadData}>
+          <IconButton aria-label="refresh" onClick={loadData}>
             <Refresh />
           </IconButton>
         </Box>
