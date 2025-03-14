@@ -116,7 +116,7 @@ function WfhDetailTable() {
           <Typography component={"span"} variant="h5">
             Track WFH Request
           </Typography>
-          <IconButton onClick={fetchWfhDetail}>
+          <IconButton aria-label="refresh" onClick={fetchWfhDetail}>
             <Refresh />
           </IconButton>
         </Box>

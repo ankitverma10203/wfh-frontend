@@ -1,13 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./src/assets/WFH Favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="This is a Work From Home Request Tracker where you can Request for the Work From Home and Managers can apporve or reject the Request"
+    />
+    <meta
+      name="keywords"
+      content="work from home, remote work, WFH policies, employee management, productivity tools"
+    />
+    <meta name="author" content="Ankit Verma" />
     <title>WFH Tracker</title>
   </head>
   <body>
     <div id="root"></div>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org/",
+        "@type": "WebSite",
+        "name": "Work From Home Tracker",
+        "image": ["./src/assets.WFH Favicon.png"],
+        "description": "This is a Work From Home Request Tracker where you can Request for the Work From Home and Managers can apporve or reject the Request",
+        "keywords": "work from home, remote work, WFH policies, employee management, productivity tools",
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
