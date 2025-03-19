@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { ChangeEvent, useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
 import { WfhRequest, WfhResponse } from "../../Types";
 import {
   WFH_REQUEST_EVENT_NAME,
@@ -158,9 +159,10 @@ function WfhRequestView() {
               variant="outlined"
               type="submit"
               onClick={handleWfhRequest}
+              startIcon={<SendIcon />}
               sx={{
                 whiteSpace: "nowrap",
-                padding: "5px",
+                padding: "0.5rem",
                 minWidth: "fit-content",
               }}
             >

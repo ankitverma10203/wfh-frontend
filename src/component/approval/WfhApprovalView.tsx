@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { EmployeeWfhDetailData } from "../../Types";
 import { Refresh } from "@mui/icons-material";
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
 import { Box, Typography, IconButton, Button, Snackbar } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -152,6 +154,7 @@ function WfhApprovalView() {
           <Button
             variant="outlined"
             color="success"
+            startIcon={<DoneTwoToneIcon />}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row.id, WfhRequestStatus.APPROVED)
@@ -174,6 +177,7 @@ function WfhApprovalView() {
           <Button
             variant="outlined"
             color="error"
+            startIcon={<ClearTwoToneIcon />}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row.id, WfhRequestStatus.REJECTED)

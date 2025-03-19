@@ -1,5 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Refresh } from "@mui/icons-material";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
+import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import {
   SelectChangeEvent,
   Select,
@@ -302,6 +305,14 @@ function EmployeeDetailPage() {
                 ? "success"
                 : "primary"
             }
+            startIcon={
+              employeeDetailGettingUpdated &&
+              employeeDetailGettingUpdated === params.row.id ? (
+                <DoneTwoToneIcon />
+              ) : (
+                <EditTwoToneIcon />
+              )
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() => handleUpdateOrEdit(params.row)}
           >
@@ -325,6 +336,7 @@ function EmployeeDetailPage() {
           <Button
             variant="outlined"
             color="error"
+            startIcon={<ClearTwoToneIcon />}
             sx={{ width: "100%", height: "80%" }}
             onClick={() => handleDiscardChange(params.row)}
             disabled={

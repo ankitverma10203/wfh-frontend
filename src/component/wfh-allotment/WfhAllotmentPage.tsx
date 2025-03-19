@@ -1,5 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Refresh } from "@mui/icons-material";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
+import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import {
   Box,
   Typography,
@@ -213,6 +216,7 @@ function WfhAllotmentPage() {
           {!isEditing ? (
             <Button
               variant="outlined"
+              startIcon={<EditTwoToneIcon />}
               sx={{ width: "100%", height: "80%", margin: "10px 5px 10px 0" }}
               onClick={() => handleEdit()}
             >
@@ -223,6 +227,7 @@ function WfhAllotmentPage() {
               <Button
                 variant="outlined"
                 color="success"
+                startIcon={<DoneTwoToneIcon />}
                 sx={{
                   width: "100%",
                   height: "80%",
@@ -236,6 +241,7 @@ function WfhAllotmentPage() {
               <Button
                 variant="outlined"
                 color="error"
+                startIcon={<ClearTwoToneIcon />}
                 sx={{
                   width: "100%",
                   height: "80%",
