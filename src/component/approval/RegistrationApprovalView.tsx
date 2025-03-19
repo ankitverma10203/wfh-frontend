@@ -17,6 +17,8 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
+import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
+import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
 import {
   APPROVAL_NOTIFICATION_EVENT_NAME,
   EmployeeStatus,
@@ -254,6 +256,7 @@ function RegistrationApprovalView() {
           <Button
             variant="outlined"
             color="success"
+            startIcon={<DoneTwoToneIcon />}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.ACTIVE)
@@ -276,6 +279,7 @@ function RegistrationApprovalView() {
           <Button
             variant="outlined"
             color="error"
+            startIcon={<ClearTwoToneIcon />}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.INACTIVE)
