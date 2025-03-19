@@ -217,7 +217,7 @@ function WfhAllotmentPage() {
             <Button
               variant="outlined"
               startIcon={<EditTwoToneIcon />}
-              sx={{ width: "100%", height: "80%", margin: "10px 5px 10px 0" }}
+              sx={{ width: "100%", height: "80%", margin: "10px 0 10px 0" }}
               onClick={() => handleEdit()}
             >
               Edit
