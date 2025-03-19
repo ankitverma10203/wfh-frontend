@@ -16,10 +16,7 @@ export async function fetchWfhRefQuantityData(
     })
     .catch((err) => {
       console.error(err);
-      return {
-        successFlg: false,
-        status: "FAILED",
-      };
+      return new Map();
     });
 }
 
@@ -27,7 +24,6 @@ export async function updateWfhRefQuantityData(
   wfhRefQuantityData: Map<WfhType, number>,
   token: string
 ): Promise<boolean> {
-    console.log("wfhRefQuantity: ", wfhRefQuantityData);
   return await axios
     .post(apiUrl + "/wfh/updateWfhRefQuantity", Object.fromEntries(wfhRefQuantityData), {
       headers: { Authorization: `Bearer ${token}` },

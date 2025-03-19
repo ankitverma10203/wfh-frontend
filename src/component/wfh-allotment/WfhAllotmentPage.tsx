@@ -39,12 +39,19 @@ function WfhAllotmentPage() {
   const fetchWfhRefQuantityDetail = async () => {
     const token = await getAccessTokenSilently();
     setIsLoading(true);
-    const wfhRefQuantityData = await fetchWfhRefQuantityData(token);
+    const wfhRefQuantityData: Map<WfhType, number> = new Map(
+      Object.entries(await fetchWfhRefQuantityData(token)).map(
+        ([key, value]) => [key as WfhType, value as number]
+      )
+    );
     setIsLoading(false);
 
     const rowDataObject: WfhReqQuantityDataType[] = [];
-    for (const [key, value] of Object.entries(wfhRefQuantityData)) {
-      rowDataObject.push({ id: key as WfhType, value: value });
+    for (const [key] of Object.entries(WfhType)) {
+      rowDataObject.push({
+        id: key as WfhType,
+        value: wfhRefQuantityData.get(key as WfhType) || 0,
+      });
     }
     setRowData(rowDataObject);
   };
