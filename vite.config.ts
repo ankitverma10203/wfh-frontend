@@ -10,5 +10,10 @@ export default defineConfig({
       algorithm: "brotliCompress",
       ext: ".br",
     }),
+    // backup compression
+    compression({
+      algorithm: "gzip",
+      ext: ".gz",
+    }),
   ],
 });
