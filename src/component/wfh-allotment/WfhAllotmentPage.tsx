@@ -10,6 +10,7 @@ import {
   Button,
   OutlinedInput,
   Snackbar,
+  CircularProgress,
 } from "@mui/material";
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect, ChangeEvent } from "react";
@@ -26,12 +27,13 @@ function WfhAllotmentPage() {
     value: number;
   };
 
-  const [isEditing, setIsEditing] = useState<boolean>();
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [rowData, setRowData] = useState<WfhReqQuantityDataType[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const [snackbarMsg, setSnackbarMsg] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   useEffect(() => {
     fetchWfhRefQuantityDetail();
@@ -132,11 +134,13 @@ function WfhAllotmentPage() {
       rowData.forEach((data) => {
         wfhRefQuantity.set(data.id as WfhType, data.value);
       });
+      setIsUpdating(true);
       const token = await getAccessTokenSilently();
       const updateRespone = await updateWfhRefQuantityData(
         wfhRefQuantity,
         token
       );
+      setIsUpdating(false);
       setSnackbarMsg(
         updateRespone
           ? "WFH Allocation Updated Successfully"
@@ -227,7 +231,14 @@ function WfhAllotmentPage() {
               <Button
                 variant="outlined"
                 color="success"
-                startIcon={<DoneTwoToneIcon />}
+                startIcon={
+                  isUpdating ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <DoneTwoToneIcon />
+                  )
+                }
+                disabled={isUpdating}
                 sx={{
                   width: "100%",
                   height: "80%",
@@ -236,12 +247,13 @@ function WfhAllotmentPage() {
                 onClick={() => setShowDialog(true)}
                 hidden={!isEditing}
               >
-                Update
+                {isUpdating ? "Updating..." : "Update"}
               </Button>
               <Button
                 variant="outlined"
                 color="error"
                 startIcon={<ClearTwoToneIcon />}
+                disabled={isUpdating}
                 sx={{
                   width: "100%",
                   height: "80%",
