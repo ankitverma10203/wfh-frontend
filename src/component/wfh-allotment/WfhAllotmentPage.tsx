@@ -253,6 +253,7 @@ function WfhAllotmentPage() {
                 variant="outlined"
                 color="error"
                 startIcon={<ClearTwoToneIcon />}
+                disabled={isUpdating}
                 sx={{
                   width: "100%",
                   height: "80%",
