@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   MenuItem,
   Snackbar,
   TextField,
@@ -34,6 +35,7 @@ function WfhRequestView() {
   const [wfhReqStatus, setWfhReqStatus] = useState<WfhRequestStatus>();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const theme = useTheme();
+  const [isSubmittingWfhReq, setIsSubmittingWfhReq] = useState<boolean>(false);
 
   const handleRequestTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
     setWfhRequest({
@@ -52,8 +54,10 @@ function WfhRequestView() {
   };
 
   const handleWfhRequest = async () => {
+    setIsSubmittingWfhReq(true);
     const token = await getAccessTokenSilently();
     const wfhResponse: WfhResponse = await requestWfh(wfhRequest, token);
+    setIsSubmittingWfhReq(false);
     setWfhReqStatus(wfhResponse.status);
     setShowSnackbar(true);
     setWfhRequest(defaultWfhRequest);
@@ -159,14 +163,21 @@ function WfhRequestView() {
               variant="outlined"
               type="submit"
               onClick={handleWfhRequest}
-              startIcon={<SendIcon />}
+              startIcon={
+                isSubmittingWfhReq ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <SendIcon />
+                )
+              }
+              disabled={isSubmittingWfhReq}
               sx={{
                 whiteSpace: "nowrap",
                 padding: "0.5rem",
                 minWidth: "fit-content",
               }}
             >
-              Submit
+              {isSubmittingWfhReq ? "Submitting..." : "Submit"}
             </Button>
           </Box>
         </Box>
