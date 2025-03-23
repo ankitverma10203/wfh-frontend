@@ -267,15 +267,24 @@ function RegistrationApprovalView() {
             variant="outlined"
             color="success"
             startIcon={
-              isApproving ? <CircularProgress size={20} /> : <DoneTwoToneIcon />
+              employeeUpdateData.id === params.row.id && isApproving ? (
+                <CircularProgress size={20} />
+              ) : (
+                <DoneTwoToneIcon />
+              )
             }
-            disabled={isApproving || isRejecting}
+            disabled={
+              employeeUpdateData.id === params.row.id &&
+              (isApproving || isRejecting)
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.ACTIVE)
             }
           >
-            {isApproving ? "Approving..." : "Approve"}
+            {employeeUpdateData.id === params.row.id && isApproving
+              ? "Approving..."
+              : "Approve"}
           </Button>
         );
       },
@@ -293,19 +302,24 @@ function RegistrationApprovalView() {
             variant="outlined"
             color="error"
             startIcon={
-              isRejecting ? (
+              employeeUpdateData.id === params.row.id && isRejecting ? (
                 <CircularProgress size={20} />
               ) : (
                 <ClearTwoToneIcon />
               )
             }
-            disabled={isApproving || isRejecting}
+            disabled={
+              employeeUpdateData.id === params.row.id &&
+              (isApproving || isRejecting)
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.INACTIVE)
             }
           >
-            {isRejecting ? "Rejecting..." : "Reject"}
+            {employeeUpdateData.id === params.row.id && isRejecting
+              ? "Rejecting..."
+              : "Reject"}
           </Button>
         );
       },
