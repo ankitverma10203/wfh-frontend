@@ -13,7 +13,7 @@ import PageLoader from "./component/authentication/PageLoader";
 
 const LoginForm = lazy(() => import("./component/authentication/LoginForm"));
 const Callback = lazy(() => import("./component/authentication/Callback"));
-const UserDashboard = lazy(() => import("./component/dashboard/UserDashboard"));
+const UserDashboard = lazy(() => import("./component/dashboard/UserDashboardPage"));
 const ApprovalPage = lazy(() => import("./component/approval/ApprovalPage"));
 const EmployeeDetailPage = lazy(
   () => import("./component/employee-detail/EmployeeDetailPage")
