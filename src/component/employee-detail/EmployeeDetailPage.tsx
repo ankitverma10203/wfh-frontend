@@ -163,6 +163,7 @@ function EmployeeDetailPage() {
   }
 
   const toggleShowDialog = async (confirmation: boolean) => {
+    setShowDialog(false);
     if (confirmation) {
       await updateEmployeeInfo(employeeUpdateData);
     } else {
@@ -170,7 +171,6 @@ function EmployeeDetailPage() {
     }
     setEmpDetailGettingUpdated(null);
     setEmployeeUpdateData(defaultEmployeeUpdateData);
-    setShowDialog(false);
   };
 
   const columns: GridColDef<(typeof allEmployeesData)[number]>[] = [
@@ -383,7 +383,7 @@ function EmployeeDetailPage() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
           <DataGrid
             rows={allEmployeesData}
             columns={columns}

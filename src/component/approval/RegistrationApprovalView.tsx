@@ -150,12 +150,12 @@ function RegistrationApprovalView() {
   }
 
   const toggleShowDialog = async (confirmation: boolean) => {
+    setShowDialog(false);
     if (confirmation) {
       await updateEmployeeInfo(employeeUpdateData, employeeUpdateStatus);
     }
     setEmployeeUpdateData(defaultEmployeeUpdateData);
     setEmployeeUpdateStatus(defaultEmployeeStatus);
-    setShowDialog(false);
   };
 
   useEffect(() => {
@@ -324,7 +324,7 @@ function RegistrationApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
           <DataGrid
             rows={pendingEmployeeRegistrationData}
             columns={columns}

@@ -165,12 +165,12 @@ function WfhAllotmentPage() {
   }
 
   const toggleShowDialog = (confirmation: boolean) => {
+    setShowDialog(false);
     if (confirmation) {
       handleUpdate();
     } else {
       handleDecline();
     }
-    setShowDialog(false);
   };
 
   return (
@@ -193,7 +193,7 @@ function WfhAllotmentPage() {
             <Refresh />
           </IconButton>
         </Box>
-        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
           <DataGrid
             rows={rowData}
             columns={columns}

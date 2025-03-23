@@ -90,12 +90,12 @@ function WfhApprovalView() {
   }
 
   const toggleShowDialog = async (confirmation: boolean) => {
+    setShowDialog(false);
     if (confirmation) {
       await handleWfhRequestApproval(employeeUpdateId, employeeUpdateWfhStatus);
     }
     setEmployeeUpdateId(defaultEmployeeUpdateId);
     setEmployeeUpdateWfhStatus(defaultEmployeeWfhStatus);
-    setShowDialog(false);
   };
 
   useEffect(() => {
@@ -239,7 +239,7 @@ function WfhApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
           <DataGrid
             rows={pendingWfhRequestData}
             columns={columns}
