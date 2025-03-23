@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { EmployeeWfhDetailData } from "../../Types";
 import { Refresh } from "@mui/icons-material";
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone';
-import { Box, Typography, IconButton, Button, Snackbar } from "@mui/material";
+import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
+import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  Snackbar,
+  CircularProgress,
+} from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   fetchPendingWfhData,
@@ -36,6 +43,8 @@ function WfhApprovalView() {
   );
   const [employeeUpdateWfhStatus, setEmployeeUpdateWfhStatus] =
     useState<WfhRequestStatus>(defaultEmployeeWfhStatus);
+  const [isApproving, setIsApproving] = useState<boolean>(false);
+  const [isRejecting, setIsRejecting] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -57,6 +66,10 @@ function WfhApprovalView() {
     wfhRequestId: number,
     status: WfhRequestStatus
   ): Promise<void> => {
+    status === WfhRequestStatus.APPROVED
+      ? setIsApproving(true)
+      : setIsRejecting(true);
+
     const token = await getAccessTokenSilently();
     const wfhRequestStatus: WfhRequestStatus = await updateWfhRequestStatus(
       token,
@@ -65,6 +78,8 @@ function WfhApprovalView() {
     );
     setWfhReqStatus(wfhRequestStatus);
     setShowSnackbar(true);
+    setIsApproving(false);
+    setIsRejecting(false);
     loadData();
   };
 
@@ -74,9 +89,9 @@ function WfhApprovalView() {
     setShowDialog(true);
   }
 
-  const toggleShowDialog = (confirmation: boolean) => {
+  const toggleShowDialog = async (confirmation: boolean) => {
     if (confirmation) {
-      handleWfhRequestApproval(employeeUpdateId, employeeUpdateWfhStatus);
+      await handleWfhRequestApproval(employeeUpdateId, employeeUpdateWfhStatus);
     }
     setEmployeeUpdateId(defaultEmployeeUpdateId);
     setEmployeeUpdateWfhStatus(defaultEmployeeWfhStatus);
@@ -154,13 +169,24 @@ function WfhApprovalView() {
           <Button
             variant="outlined"
             color="success"
-            startIcon={<DoneTwoToneIcon />}
+            startIcon={
+              employeeUpdateId === params.row.id && isApproving ? (
+                <CircularProgress size={20} />
+              ) : (
+                <DoneTwoToneIcon />
+              )
+            }
+            disabled={
+              employeeUpdateId === params.row.id && (isApproving || isRejecting)
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row.id, WfhRequestStatus.APPROVED)
             }
           >
-            Approve
+            {employeeUpdateId === params.row.id && isApproving
+              ? "Approving..."
+              : "Approve"}
           </Button>
         );
       },
@@ -177,13 +203,24 @@ function WfhApprovalView() {
           <Button
             variant="outlined"
             color="error"
-            startIcon={<ClearTwoToneIcon />}
+            startIcon={
+              employeeUpdateId === params.row.id && isRejecting ? (
+                <CircularProgress size={20} />
+              ) : (
+                <ClearTwoToneIcon />
+              )
+            }
+            disabled={
+              employeeUpdateId === params.row.id && (isApproving || isRejecting)
+            }
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row.id, WfhRequestStatus.REJECTED)
             }
           >
-            Reject
+            {employeeUpdateId === params.row.id && isRejecting
+              ? "Rejecting..."
+              : "Reject"}
           </Button>
         );
       },
@@ -202,7 +239,7 @@ function WfhApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={pendingWfhRequestData}
             columns={columns}

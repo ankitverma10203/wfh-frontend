@@ -12,6 +12,7 @@ import {
   Typography,
   IconButton,
   Snackbar,
+  CircularProgress,
 } from "@mui/material";
 import { GridColDef, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
@@ -52,6 +53,7 @@ function EmployeeDetailPage() {
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [employeeUpdateData, setEmployeeUpdateData] =
     useState<EmployeeDetailData>(defaultEmployeeUpdateData);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -109,17 +111,18 @@ function EmployeeDetailPage() {
     if (employeeDetail.managerId === "0") {
       employeeDetail.managerId = user?.sub || "0";
     }
+    setIsUpdating(true);
     const token = await getAccessTokenSilently();
     const isEmployeeDetailUpdateSuccessful: boolean = await updateEmployeeData(
       employeeDetail,
       token
     );
+    setIsUpdating(false);
     setSnackbarMessage(
       isEmployeeDetailUpdateSuccessful
         ? "Employee Details updated successfully"
         : "Failed to update the Employee Details"
     );
-    setEmpDetailGettingUpdated(null);
     setShowSnackbar(true);
     loadData();
   };
@@ -141,7 +144,6 @@ function EmployeeDetailPage() {
   }
 
   function handleDiscardChange(row: EmployeeDetailData) {
-    setEmpDetailGettingUpdated(null);
     if (prevEmployeeDetail) {
       const employeeDataListBeforeEdit: EmployeeDetailData[] =
         allEmployeesData.map((employeeData) => {
@@ -160,12 +162,13 @@ function EmployeeDetailPage() {
     setShowDialog(true);
   }
 
-  const toggleShowDialog = (confirmation: boolean) => {
+  const toggleShowDialog = async (confirmation: boolean) => {
     if (confirmation) {
-      updateEmployeeInfo(employeeUpdateData);
+      await updateEmployeeInfo(employeeUpdateData);
     } else {
       handleDiscardChange(employeeUpdateData);
     }
+    setEmpDetailGettingUpdated(null);
     setEmployeeUpdateData(defaultEmployeeUpdateData);
     setShowDialog(false);
   };
@@ -308,17 +311,26 @@ function EmployeeDetailPage() {
             startIcon={
               employeeDetailGettingUpdated &&
               employeeDetailGettingUpdated === params.row.id ? (
-                <DoneTwoToneIcon />
+                isUpdating ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <DoneTwoToneIcon />
+                )
               ) : (
                 <EditTwoToneIcon />
               )
+            }
+            disabled={
+              employeeDetailGettingUpdated === params.row.id && isUpdating
             }
             sx={{ width: "100%", height: "80%" }}
             onClick={() => handleUpdateOrEdit(params.row)}
           >
             {employeeDetailGettingUpdated &&
             employeeDetailGettingUpdated === params.row.id
-              ? "Update"
+              ? isUpdating
+                ? "Updating..."
+                : "Update"
               : "Edit"}
           </Button>
         );
@@ -341,7 +353,8 @@ function EmployeeDetailPage() {
             onClick={() => handleDiscardChange(params.row)}
             disabled={
               employeeDetailGettingUpdated === null ||
-              employeeDetailGettingUpdated !== params.row.id
+              employeeDetailGettingUpdated !== params.row.id ||
+              (employeeDetailGettingUpdated === params.row.id && isUpdating)
             }
           >
             Discard
@@ -370,7 +383,7 @@ function EmployeeDetailPage() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={allEmployeesData}
             columns={columns}

@@ -16,6 +16,7 @@ import {
   SelectChangeEvent,
   Button,
   Snackbar,
+  CircularProgress,
 } from "@mui/material";
 import DoneTwoToneIcon from "@mui/icons-material/DoneTwoTone";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
@@ -56,6 +57,8 @@ function RegistrationApprovalView() {
     useState<EmployeeDetailData>(defaultEmployeeUpdateData);
   const [employeeUpdateStatus, setEmployeeUpdateStatus] =
     useState<EmployeeStatus>(defaultEmployeeStatus);
+  const [isApproving, setIsApproving] = useState<boolean>(false);
+  const [isRejecting, setIsRejecting] = useState<boolean>(false);
 
   useEffect(() => {
     loadData();
@@ -120,6 +123,11 @@ function RegistrationApprovalView() {
       pendingEmployeeDetail.managerId = user?.sub || "0";
     }
     pendingEmployeeDetail.employeeStatus = employeeStatus;
+
+    employeeUpdateStatus === EmployeeStatus.ACTIVE
+      ? setIsApproving(true)
+      : setIsRejecting(true);
+
     const token = await getAccessTokenSilently();
     const isEmployeeDetailUpdateSuccessful: boolean = await updateEmployeeData(
       pendingEmployeeDetail,
@@ -127,6 +135,8 @@ function RegistrationApprovalView() {
     );
     setIsEmpDetailUpdtSuccessful(isEmployeeDetailUpdateSuccessful);
     setShowSnackbar(true);
+    setIsApproving(false);
+    setIsRejecting(false);
     loadData();
   };
 
@@ -139,9 +149,9 @@ function RegistrationApprovalView() {
     setShowDialog(true);
   }
 
-  const toggleShowDialog = (confirmation: boolean) => {
+  const toggleShowDialog = async (confirmation: boolean) => {
     if (confirmation) {
-      updateEmployeeInfo(employeeUpdateData, employeeUpdateStatus);
+      await updateEmployeeInfo(employeeUpdateData, employeeUpdateStatus);
     }
     setEmployeeUpdateData(defaultEmployeeUpdateData);
     setEmployeeUpdateStatus(defaultEmployeeStatus);
@@ -224,7 +234,7 @@ function RegistrationApprovalView() {
             required
             id="managerId"
             name="managerId"
-            value={params.value}
+            value={params.value === "0" ? "" : params.value}
             sx={getStylingForSelectInsideAtableCell()}
             onChange={(e) => {
               handleChange(e, params.row);
@@ -256,13 +266,16 @@ function RegistrationApprovalView() {
           <Button
             variant="outlined"
             color="success"
-            startIcon={<DoneTwoToneIcon />}
+            startIcon={
+              isApproving ? <CircularProgress size={20} /> : <DoneTwoToneIcon />
+            }
+            disabled={isApproving || isRejecting}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.ACTIVE)
             }
           >
-            Approve
+            {isApproving ? "Approving..." : "Approve"}
           </Button>
         );
       },
@@ -279,13 +292,20 @@ function RegistrationApprovalView() {
           <Button
             variant="outlined"
             color="error"
-            startIcon={<ClearTwoToneIcon />}
+            startIcon={
+              isRejecting ? (
+                <CircularProgress size={20} />
+              ) : (
+                <ClearTwoToneIcon />
+              )
+            }
+            disabled={isApproving || isRejecting}
             sx={{ width: "100%", height: "80%" }}
             onClick={() =>
               handleConfirmChoice(params.row, EmployeeStatus.INACTIVE)
             }
           >
-            Reject
+            {isRejecting ? "Rejecting..." : "Reject"}
           </Button>
         );
       },
@@ -304,7 +324,7 @@ function RegistrationApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={pendingEmployeeRegistrationData}
             columns={columns}

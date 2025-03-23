@@ -193,7 +193,7 @@ function WfhAllotmentPage() {
             <Refresh />
           </IconButton>
         </Box>
-        <Box>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={rowData}
             columns={columns}
