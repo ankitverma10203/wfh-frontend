@@ -239,7 +239,7 @@ function WfhApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={pendingWfhRequestData}
             columns={columns}

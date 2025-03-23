@@ -324,7 +324,7 @@ function RegistrationApprovalView() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
           <DataGrid
             rows={pendingEmployeeRegistrationData}
             columns={columns}
