@@ -1,9 +1,9 @@
 import WfhDetailTable from "./WfhDetailTable";
 import WfhBalanceChart from "./WfhDataChart";
 import Box from "@mui/material/Box";
-import WfhRequestView from "../request-wfh/WfhRequestView";
+import WfhRequestView from "./WfhRequestView";
 
-function UserDashboard() {
+function UserDashboardPage() {
   return (
     <>
       <Box
@@ -78,4 +78,4 @@ function UserDashboard() {
   );
 }
 
-export default UserDashboard;
+export default UserDashboardPage;
