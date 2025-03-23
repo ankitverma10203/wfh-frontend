@@ -3,7 +3,11 @@
 This project is a Work From Home (WFH) management system frontend built with React, TypeScript, and Vite. This application is designed to streamline the Work From Home (WFH) request and approval process. It provides a user-friendly interface for employees to submit, view, and manage their WFH requests, and for managers to review and approve or reject these requests.
 
 
-https://github.com/user-attachments/assets/c51fd5a2-5503-486d-9ba8-a3e54dc66b0f
+https://github.com/user-attachments/assets/72b6fb04-eafe-4df4-9882-2736d15d43d3
+
+https://github.com/user-attachments/assets/1ba3f434-9cb6-4506-ad15-cd748984a47e
+
+https://github.com/user-attachments/assets/a3cf2194-ff50-4697-a565-9936ad26e70b
 
 
 **Backend project repo:** [WFH backend code repository](https://github.com/ankitverma10203/wfh)
