@@ -124,6 +124,7 @@ function EmployeeDetailPage() {
         : "Failed to update the Employee Details"
     );
     setShowSnackbar(true);
+    setEmpDetailGettingUpdated(null);
     loadData();
   };
 
@@ -144,6 +145,7 @@ function EmployeeDetailPage() {
   }
 
   function handleDiscardChange(row: EmployeeDetailData) {
+    setEmpDetailGettingUpdated(null);
     if (prevEmployeeDetail) {
       const employeeDataListBeforeEdit: EmployeeDetailData[] =
         allEmployeesData.map((employeeData) => {
@@ -169,7 +171,6 @@ function EmployeeDetailPage() {
     } else {
       handleDiscardChange(employeeUpdateData);
     }
-    setEmpDetailGettingUpdated(null);
     setEmployeeUpdateData(defaultEmployeeUpdateData);
   };
 
