@@ -121,7 +121,7 @@ function WfhDetailTable() {
           </IconButton>
         </Box>
 
-        <Box sx={{ width: "100%", display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
           <DataGrid
             rows={wfhDetailDataList}
             columns={columns}
