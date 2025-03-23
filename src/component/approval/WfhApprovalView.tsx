@@ -90,12 +90,12 @@ function WfhApprovalView() {
   }
 
   const toggleShowDialog = async (confirmation: boolean) => {
+    setShowDialog(false);
     if (confirmation) {
       await handleWfhRequestApproval(employeeUpdateId, employeeUpdateWfhStatus);
     }
     setEmployeeUpdateId(defaultEmployeeUpdateId);
     setEmployeeUpdateWfhStatus(defaultEmployeeWfhStatus);
-    setShowDialog(false);
   };
 
   useEffect(() => {
